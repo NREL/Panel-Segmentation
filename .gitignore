@@ -1,0 +1,8 @@
+# Custom .gitignore files
+
+config.yaml
+*.vs/
+**.pyc
+
+# Jupyter Notebook
+.ipynb_checkpoints

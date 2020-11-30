@@ -1,0 +1,2 @@
+include versioneer.py
+include panel_segmentation/_version.py
