@@ -6,3 +6,7 @@ config.yaml
 
 # Jupyter Notebook
 .ipynb_checkpoints
+
+# sphinx
+build
+generated

@@ -14,11 +14,7 @@ from panel_segmentation import panel_train as pt
 from tensorflow.keras.preprocessing import image as imagex
 import tensorflow as tf
 
-def assert_isinstance(obj, klass):
-    assert isinstance(obj, klass), f'got {type(obj)}, expected {klass}'
 
-
-@pytest.fixture()
 def test_load_images_to_numpy_array():
     """
     Test the loadImagesToNumpyArray() function.
@@ -27,7 +23,7 @@ def test_load_images_to_numpy_array():
     -------
     None.
 
-    """    
+    """
     #Variables
     batch_size= 16
     no_epochs =  10
@@ -39,7 +35,6 @@ def test_load_images_to_numpy_array():
     assert img_np_array.shape == (36, 640, 640, 3)
 
 
-@pytest.fixture()
 def test_train_segmentation():
     """
     Test the trainSegmentation() function.
@@ -48,7 +43,7 @@ def test_train_segmentation():
     -------
     None.
 
-    """    
+    """
     #Variables
     batch_size= 16
     no_epochs =  4
@@ -73,7 +68,7 @@ def test_train_segmentation():
             (list(results.history.keys()) == ['loss', 'accuracy', 'diceCoeff']) & \
             (len(results.history['loss']) == 4)
 
-@pytest.fixture()
+
 def test_train_panel_classifier():
     """
     Test the trainPanelClassifier() function.
@@ -82,7 +77,7 @@ def test_train_panel_classifier():
     -------
     None.
 
-    """    
+    """
     #Variables
     batch_size= 16
     no_epochs =  4

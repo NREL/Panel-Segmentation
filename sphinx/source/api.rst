@@ -1,4 +1,4 @@
-.. currentmodule:: fleets_pipeline
+.. currentmodule:: panel_segmentation
 
 #############
 API reference
@@ -14,7 +14,23 @@ These classes perform analyses used in the Panel-Segmentation project.
    :toctree: generated/
 
    panel_detection.PanelDetection
+   panel_detection.PanelDetection.diceCoeff
+   panel_detection.PanelDetection.diceCoeffLoss
+   panel_detection.PanelDetection.testBatch
+   panel_detection.PanelDetection.testSingle
+   panel_detection.PanelDetection.hasPanels
+   panel_detection.PanelDetection.detectAzimuth
+   panel_detection.PanelDetection.cropPanels
+   panel_detection.PanelDetection.plotEdgeAz
+   panel_detection.PanelDetection.clusterPanels
+   
    panel_train.TrainPanelSegmentationModel
+   panel_train.TrainPanelSegmentationModel.loadImagesToNumpyArray
+   panel_train.TrainPanelSegmentationModel.diceCoeff
+   panel_train.TrainPanelSegmentationModel.diceCoeffLoss
+   panel_train.TrainPanelSegmentationModel.trainSegmentation
+   panel_train.TrainPanelSegmentationModel.trainPanelClassifier
+   panel_train.TrainPanelSegmentationModel.trainingStatistics
 
 
 Models

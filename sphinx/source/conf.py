@@ -23,10 +23,8 @@ project = 'panel-segmentation'
 copyright = ''
 author = 'NREL PVP&R Team'
 
-# The short X.Y version
-version = '0.0.1'
-# The full version, including alpha/beta/rc tags
-release = '0.0.1'
+import panel_segmentation
+version = release = panel_segmentation.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -53,7 +51,7 @@ autosummary_generate = True
 napoleon_use_param = False 
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = []
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -80,8 +78,8 @@ exclude_patterns = []
 pygments_style = None
 
 extlinks = {
-    'issue': ('https://github.nrel.gov/FleetsDataInitiative/Panel-Segmentation/issues/%s', 'GH'),
-    'pull': ('https://github.nrel.gov/FleetsDataInitiative/Panel-Segmentation/pull/%s', 'GH'),
+    'issue': ('https://github.com/NREL/Panel-Segmentation/issues/%s', 'GH'),
+    'pull': ('https://github.com/NREL/Panel-Segmentation/pull/%s', 'GH'),
 }
 
 # -- Options for HTML output -------------------------------------------------
@@ -120,7 +118,6 @@ html_static_path = ['_static']
 def setup(app):
     # A workaround for the responsive tables always having annoying scrollbars.
     app.add_stylesheet("no_scrollbars.css")
-    app.add_stylesheet("equation_numbering.css")
 
 
 # -- Options for HTMLHelp output ---------------------------------------------

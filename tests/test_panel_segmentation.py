@@ -18,7 +18,6 @@ def assert_isinstance(obj, klass):
     assert isinstance(obj, klass), f'got {type(obj)}, expected {klass}'
 
 
-@pytest.fixture()
 def test_generate_satellite_image():
     """
     Test the generateSatelliteImage() function.
@@ -41,7 +40,6 @@ def test_generate_satellite_image():
                                   file_name_save, google_maps_api_key)
     
 
-@pytest.fixture()
 def test_has_panels():
     """
     Test the hasPanels() function.
@@ -65,7 +63,6 @@ def test_has_panels():
     assert_isinstance(panel_loc, bool)
     
 
-@pytest.fixture()
 def test_mask_generator():
     """
     Test the testSingle() function.
@@ -92,7 +89,6 @@ def test_mask_generator():
     assert (type(res) == np.ndarray) & (res.shape == (640, 640))
 
 
-@pytest.fixture()
 def test_crop_panels():
     """
     Test the cropPanels() function.
@@ -120,7 +116,6 @@ def test_crop_panels():
     assert (type(new_res) == np.ndarray) & (new_res.shape == (1, 640, 640, 3))
 
     
-@pytest.fixture()
 def test_estimate_az():
     """
     Test the detectAzimuth() function.
@@ -149,7 +144,6 @@ def test_estimate_az():
     assert_isinstance(az, int)
 
 
-@pytest.fixture()
 def test_plot_az():
     """
     Test the detectAzimuth() function.
@@ -181,7 +175,6 @@ def test_plot_az():
     assert (type(im) == PIL.PngImagePlugin.PngImageFile)
 
 
-@pytest.fixture()
 def test_cluster_panels():
     """
     Test the clusterPanels() function.
@@ -213,7 +206,3 @@ def test_cluster_panels():
         az = pc.detectAzimuth(clusters[ii][np.newaxis,:])
         azimuth_list.append(az)
     assert all(isinstance(x, int) for x in azimuth_list)
-    
-    
-    
-    

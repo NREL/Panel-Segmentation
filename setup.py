@@ -2,7 +2,9 @@ try:
     from setuptools import setup
 except ImportError:
     raise RuntimeError('setuptools is required')
-    
+
+import versioneer
+
 KEYWORDS = [
     'photovoltaic',
     'solar',
@@ -28,26 +30,36 @@ INSTALL_REQUIRES = [
     'botocore>=1.16.14',
     'Pillow>=7.2.0',
     'psycopg2>=2.8.5',
-    'skimage>=0.0'
+    #'skimage>=0.0'
+    'scikit-image',
+    'sklearn',
 ]
 
+TESTS_REQUIRE = [
+    'pytest >= 3.6.3',
+]
+
+EXTRAS_REQUIRE = {
+    'doc': [
+        'sphinx==1.8.5',
+        'sphinx_rtd_theme==0.4.3',
+        'ipython',
+    ],
+    'test': TESTS_REQUIRE
+}
 
 setup(
     name='panel_segmentation',
-    version='0.0.1',
+    version=versioneer.get_version(),
+    install_requires=INSTALL_REQUIRES,
+    tests_require=TESTS_REQUIRE,
+    extras_require=EXTRAS_REQUIRE,
     description='A package to segment solar panels from a satellite image and perform automated metadata extraction.',
-    url='git@github.com:rfschubert/ptolemaios-sdk-package.git',
+    url='https://github.com/NREL/Panel-Segmentation',
     keywords=KEYWORDS,
     author='Ayobami Edun, Kirsten Perry',
     author_email='aedun@ufl.edu; kirsten.perry@nrel.gov',
-    license='unlicense',
+    license='MIT',
     packages=['panel_segmentation'],
     zip_safe=False
 )
-
-
-
-
-
-
-
