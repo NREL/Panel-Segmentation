@@ -16,6 +16,7 @@ Documentation Contents
 
 .. toctree::
    :maxdepth: 2
+
    getting_started
    api
    changelog

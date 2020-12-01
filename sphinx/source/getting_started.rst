@@ -10,26 +10,24 @@ These instructions assume that you already have Anaconda and git installed.
 Installing
 ----------
 
-First, clone the `Panel-Segmentation <https://github.nrel.gov/FleetsDataInitiative/Panel-Segmentation>`_
+First, clone the `Panel-Segmentation <https://github.com/NREL/Panel-Segmentation>`_
 repository to your computer with git. This will bring the source code of the 
 package locally to your computer.
 
-The `requirements.txt` file lists the complete requirements, but some of the
-libraries are tricky and we have to do some prep work before
-``pip install -r requirements.txt`` will work. First, create a new conda
-environment and activate it (optional)::
+First, create a new conda environment and activate it (optional)::
 
     conda create -n panel-segmentation-dev python=3.7
     conda activate panel-segmentation-dev
 
-Now that the special packages are all installed, installing from the
-`requirements.txt` file in the git repo should complete without errors::
-
-    pip install -r requirements.txt
-
-And finally, install the package itself::
+Now you should change the working directory to the Panel-Segmentation repository folder
+and install the package::
 
     pip install .
+
+If you want to use the precise package versions used in the example notebooks,
+you can use the ``requirements.txt`` file::
+
+    pip install -r requirements.txt
 
 Now you should be able to import `panel_segmentation` in a python terminal
 
