@@ -17,7 +17,7 @@ KEYWORDS = [
 
 
 INSTALL_REQUIRES = [
-    'scikit_image>=0.15.0',
+    'scikit_image>=0.16.2',
     'matplotlib>=3.1.2',
     'requests>=2.22.0',
     'psycopg2_binary>=2.8.3',
