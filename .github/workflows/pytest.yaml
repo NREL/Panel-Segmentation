@@ -22,8 +22,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install ${{ matrix.env }}
     - name: Install panel_segmentation
+      run: |
         pip install .
     - name: Install pytest
+      run: |
         pip install pytest
     - name: Test with pytest ${{ matrix.env }}
       run: |
