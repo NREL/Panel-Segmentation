@@ -17,21 +17,19 @@ KEYWORDS = [
 
 
 INSTALL_REQUIRES = [
-    'scikit_image>=0.15.0',
+    'scikit_image>=0.16.2',
     'matplotlib>=3.1.2',
     'requests>=2.22.0',
     'psycopg2_binary>=2.8.3',
     'opencv_python_headless>=4.1.2.30',
     'pandas>=0.25.1',
-    'tensorflow>=2.1.0',
+    'tensorflow>=2.2.0',
     'pytz>=2019.3',
     'numpy>=1.18.1',
     'boto3>=1.12.49',
-    'botocore>=1.16.14',
+    'botocore>=1.15.49',
     'Pillow>=7.2.0',
     'psycopg2>=2.8.5',
-    #'skimage>=0.0'
-    'scikit-image',
     'sklearn',
 ]
 
