@@ -245,9 +245,9 @@ class PanelDetection():
         
         Parameters
         -----------
-        'test_data': (nparray float or int) 
+        test_data: (nparray float or int) 
             the satellite image. The shape should be [a,640,640,3] where 
-                'a' is the number of data or (640,640,3) if it is a single image
+            'a' is the number of data or (640,640,3) if it is a single image
                                        
         Returns
         -----------
@@ -414,7 +414,7 @@ class PanelDetection():
                           
         save_img_file_path: (string) 
             You can pass as input the location to save the plots
-            plot_show: Boolen: If False, it will supress the plot as an output and just save the  plots in a folder
+        plot_show: Boolen: If False, it will supress the plot as an output and just save the  plots in a folder
         
         Returns 
         ----------
