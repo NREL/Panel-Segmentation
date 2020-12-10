@@ -214,12 +214,14 @@ class TrainPanelSegmentationModel():
 
 
         #Training the network
-        results = custom_model.fit(train_image_generator, epochs= self.NO_OF_EPOCHS, 
-                          steps_per_epoch = (NO_OF_TRAINING_IMAGES//self.BATCH_SIZE),
-                          validation_data=val_image_generator, 
-                          validation_steps=(NO_OF_VAL_IMAGES//self.BATCH_SIZE),
-                          callbacks = [checkpoint]                          
-                         )
+        results = custom_model.fit(train_image_generator, 
+                                   epochs= self.NO_OF_EPOCHS, 
+                                   workers = 0,  
+                                   steps_per_epoch = (NO_OF_TRAINING_IMAGES//self.BATCH_SIZE),
+                                   validation_data=val_image_generator, 
+                                   validation_steps=(NO_OF_VAL_IMAGES//self.BATCH_SIZE),
+                                   callbacks = [checkpoint]                          
+                                   )
         return custom_model, results
     
 
@@ -308,12 +310,14 @@ class TrainPanelSegmentationModel():
         checkpoint = tf.keras.callbacks.ModelCheckpoint('./VGG16_classification_model.h5', monitor='val_accuracy', 
                              verbose=1, save_best_only=True, mode='max', save_freq='epoch')
 
-        results = final_class_model.fit(x = train_data, epochs= self.NO_OF_EPOCHS, 
-                          steps_per_epoch = NO_OF_TRAINING_IMAGES//self.BATCH_SIZE,
-                          validation_data = val_data, 
-                          validation_steps = NO_OF_VAL_IMAGES//self.BATCH_SIZE,
-                          callbacks = [checkpoint]                          
-                         )
+        results = final_class_model.fit(x = train_data, 
+                                        workers = 0,
+                                        epochs= self.NO_OF_EPOCHS, 
+                                        steps_per_epoch = NO_OF_TRAINING_IMAGES//self.BATCH_SIZE,
+                                        validation_data = val_data, 
+                                        validation_steps = NO_OF_VAL_IMAGES//self.BATCH_SIZE,
+                                        callbacks = [checkpoint]                          
+                                        )  
         return final_class_model,results
         
 
