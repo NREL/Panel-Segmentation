@@ -32,7 +32,7 @@ def test_load_images_to_numpy_array():
     image_file_path = "./examples/Train/Images/"
     img_np_array = train_ps.loadImagesToNumpyArray(image_file_path)
     #Check the numpy array dimensions
-    assert img_np_array.shape == (36, 640, 640, 3)
+    assert img_np_array.shape == (80, 640, 640, 3)
 
 
 def test_train_segmentation():
@@ -46,7 +46,7 @@ def test_train_segmentation():
     """
     #Variables
     batch_size= 16
-    no_epochs =  4
+    no_epochs =  1
     learning_rate = 1e-5
     train_ps = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
     #Use the images/masks from the examples folder
@@ -65,8 +65,8 @@ def test_train_segmentation():
     #Make assertions about model mod and the results
     assert (type(mod) == tf.python.keras.engine.functional.Functional) & \
             (type(results) == tf.python.keras.callbacks.History) & \
-            (list(results.history.keys()) == ['loss', 'accuracy', 'diceCoeff']) & \
-            (len(results.history['loss']) == 4)
+            (list(results.history.keys()) == ['loss', 'accuracy', 'diceCoeff', 'val_loss', 'val_accuracy', 'val_diceCoeff']) & \
+            (len(results.history['loss']) == 1)
 
 
 def test_train_panel_classifier():
@@ -80,12 +80,13 @@ def test_train_panel_classifier():
     """
     #Variables
     batch_size= 16
-    no_epochs =  4
+    no_epochs =  1
     learning_rate = 1e-5
-    train_ps = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
+    train_ps = pt.TrainPanelSegmentationModel(batch_size, no_epochs, 
+                                              learning_rate)
     #Train the classifier model
-    [mod,results] = train_ps.trainPanelClassifier("./Train_Classifier/", 
-                                                "./Validate_Classifier/")
+    [mod,results] = train_ps.trainPanelClassifier("./examples/Train_Classifier/", 
+                                                "./examples/Validate_Classifier/")
     #Assert the mod and results types.
     assert (type(mod) == tf.python.keras.engine.functional.Functional) & \
             (type(results) == tf.python.keras.callbacks.History) 
