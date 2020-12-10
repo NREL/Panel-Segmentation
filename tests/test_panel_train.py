@@ -44,8 +44,9 @@ def test_train_segmentation():
     None.
 
     """
+    from panel_segmentation import panel_train as pt
     #Variables
-    batch_size= 16
+    batch_size= 32
     no_epochs =  1
     learning_rate = 1e-5
     train_ps = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
@@ -78,8 +79,9 @@ def test_train_panel_classifier():
     None.
 
     """
+    from panel_segmentation import panel_train as pt
     #Variables
-    batch_size= 16
+    batch_size= 32
     no_epochs =  1
     learning_rate = 1e-5
     train_ps = pt.TrainPanelSegmentationModel(batch_size, no_epochs, 
