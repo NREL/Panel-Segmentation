@@ -30,7 +30,7 @@ INSTALL_REQUIRES = [
     'botocore>=1.15.49',
     'Pillow>=7.2.0',
     'psycopg2>=2.8.5',
-    'sklearn',
+    'scikit-learn>=0.22.1',
 ]
 
 TESTS_REQUIRE = [
@@ -55,8 +55,8 @@ setup(
     description='A package to segment solar panels from a satellite image and perform automated metadata extraction.',
     url='https://github.com/NREL/Panel-Segmentation',
     keywords=KEYWORDS,
-    author='Ayobami Edun, Kirsten Perry',
-    author_email='aedun@ufl.edu; kirsten.perry@nrel.gov',
+    author='Ayobami Edun, Kirsten Perry, Kevin Anderson',
+    author_email='aedun@ufl.edu; kirsten.perry@nrel.gov, kevin.anderson@nrel.gov',
     license='MIT',
     packages=['panel_segmentation'],
     zip_safe=False
