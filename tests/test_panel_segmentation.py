@@ -141,7 +141,7 @@ def test_estimate_az():
     new_res = pc.cropPanels(x, res)
     az = pc.detectAzimuth(new_res)
     #Assert that the azimut returned is an int instance
-    assert_isinstance(az, int)
+    assert_isinstance(az, float)
 
 
 def test_plot_az():
@@ -205,4 +205,4 @@ def test_cluster_panels():
     for ii in np.arange(clusters.shape[0]):
         az = pc.detectAzimuth(clusters[ii][np.newaxis,:])
         azimuth_list.append(az)
-    assert all(isinstance(x, int) for x in azimuth_list)
+    assert all(isinstance(float(x), float) for x in azimuth_list)
