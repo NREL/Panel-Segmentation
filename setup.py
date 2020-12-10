@@ -26,8 +26,7 @@ INSTALL_REQUIRES = [
 	'pandas>=1.1.4',
 	'cx_Freeze>=6.4.2',
 	'Pillow>=8.0.1',
-	'scikit_learn>=0.23.2',
-	'skimage>=0.0'
+	'scikit_learn>=0.23.2'
 ]
 
 TESTS_REQUIRE = [
