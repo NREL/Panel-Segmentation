@@ -4,7 +4,7 @@ Test suite for panel segmentation code.
 import os
 
 #Set the current working directory as Panel-Segmentation
-os.chdir(os.path.dirname(os.path.dirname( __file__ )))
+#os.chdir(os.path.dirname(os.path.dirname( __file__ )))
 
 #Import other packages
 import pytest
