@@ -30,7 +30,7 @@ INSTALL_REQUIRES = [
     'botocore>=1.15.49',
     'Pillow>=7.2.0',
     'psycopg2>=2.8.5',
-    'scikit-learn>=0.22.1',
+    'sklearn>=0.22.1',
 ]
 
 TESTS_REQUIRE = [
