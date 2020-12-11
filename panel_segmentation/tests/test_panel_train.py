@@ -27,7 +27,7 @@ def test_load_images_to_numpy_array():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 16
+    batch_size= 64
     no_epochs =  10
     learning_rate = 1e-5
     train_ps = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
@@ -49,7 +49,7 @@ def test_train_segmentation():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 32
+    batch_size= 16
     no_epochs =  1
     learning_rate = 1e-5
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
@@ -85,7 +85,7 @@ def test_train_panel_classifier():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 32
+    batch_size= 16
     no_epochs =  1
     learning_rate = 1e-5
     train_classifier = pt.TrainPanelSegmentationModel(batch_size, no_epochs, 
@@ -96,4 +96,3 @@ def test_train_panel_classifier():
     #Assert the mod and results types.
     assert (type(mod) == tf.python.keras.engine.functional.Functional) & \
             (type(results) == tf.python.keras.callbacks.History) 
-
