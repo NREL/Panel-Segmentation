@@ -46,7 +46,7 @@ def test_train_panel_classifier():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 16
+    batch_size= 4
     no_epochs =  1
     learning_rate = 1e-5
     train_classifier = pt.TrainPanelSegmentationModel(batch_size, no_epochs, 
@@ -61,7 +61,7 @@ def test_train_panel_classifier():
     assert (str(type(mod)) == "<class 'tensorflow.python.keras.engine.training.Model'>") & \
             (str(type(results)) == "<class 'tensorflow.python.keras.callbacks.History'>")
     
-def _test_train_segmentation():
+def test_train_segmentation():
     """
     Test the trainSegmentation() function.
 
@@ -73,7 +73,7 @@ def _test_train_segmentation():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 16
+    batch_size= 4
     no_epochs =  1
     learning_rate = 1e-5
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
