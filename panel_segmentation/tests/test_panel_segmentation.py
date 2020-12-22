@@ -42,16 +42,6 @@ def test_generate_satellite_image():
                                     classifier_file_path = classifier_file_path)
         pc.generateSatelliteImage(latitude, longitude, 
                                   file_name_save, google_maps_api_key)
-    
-
-def test_temporary1():
-    raise ValueError(os.listdir('.'))
-
-def test_temporary2():
-    raise ValueError(os.listdir('./panel_segmentation'))
-
-def test_temporary3():
-    raise ValueError(os.getcwd())
 
 
 def test_has_panels():
