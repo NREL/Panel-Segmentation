@@ -106,7 +106,8 @@ class TrainPanelSegmentationModel():
         return 1-self.diceCoeff(y_true, y_pred)    
 
 
-    def trainSegmentation(self,train_data, train_mask, val_data, val_mask):
+    def trainSegmentation(self, train_data, train_mask, val_data, val_mask,
+                          model_file_path = 'VGG16_complete_model.h5'):
         """
         This function uses VGG16 as the base network and as a transfer learning 
         framework to train a model that segments solar panels from a satellite
@@ -209,7 +210,7 @@ class TrainPanelSegmentationModel():
 
 
 
-        checkpoint = tf.keras.callbacks.ModelCheckpoint('VGG16_complete_model.h5', monitor='val_loss', 
+        checkpoint = tf.keras.callbacks.ModelCheckpoint(model_file_path, monitor='val_loss', 
                              verbose=1, save_best_only=True, mode='max')
 
 
@@ -225,7 +226,8 @@ class TrainPanelSegmentationModel():
         return custom_model, results
     
 
-    def trainPanelClassifier(self, TRAIN_PATH, VAL_PATH):
+    def trainPanelClassifier(self, TRAIN_PATH, VAL_PATH,
+                             model_file_path = './VGG16_classification_model.h5'):
         """
         This function uses VGG16 as the base network and as a transfer learning 
         framework to train a model that predicts the presence of solar panels in a satellite
@@ -307,7 +309,7 @@ class TrainPanelSegmentationModel():
                                  metrics= ['accuracy']
                                  )
         
-        checkpoint = tf.keras.callbacks.ModelCheckpoint('./VGG16_classification_model.h5', monitor='val_accuracy', 
+        checkpoint = tf.keras.callbacks.ModelCheckpoint(model_file_path, monitor='val_accuracy', 
                              verbose=1, save_best_only=True, mode='max', save_freq='epoch')
 
         results = final_class_model.fit(x = train_data, 
