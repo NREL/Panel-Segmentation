@@ -37,7 +37,7 @@ TESTS_REQUIRE = [
 EXTRAS_REQUIRE = {
     'doc': [
         'sphinx==1.8.5',
-        'sphinx_rtd_theme>=0.5.0'
+        'sphinx_rtd_theme>=0.5.0',
         'ipython',
     ],
     'test': TESTS_REQUIRE
