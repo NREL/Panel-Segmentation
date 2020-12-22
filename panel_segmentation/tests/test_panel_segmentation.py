@@ -18,6 +18,10 @@ def assert_isinstance(obj, klass):
     assert isinstance(obj, klass), f'got {type(obj)}, expected {klass}'
 
 
+def test_temporary():
+    msg = str(os.listdir('.'))
+    raise ValueError(msg)
+
 def test_generate_satellite_image():
     """
     Test the generateSatelliteImage() function.

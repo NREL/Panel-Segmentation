@@ -38,9 +38,13 @@ EXTRAS_REQUIRE = {
         'sphinx==1.8.5',
         'sphinx_rtd_theme>=0.5.0'
         'ipython',
-    ],
+    ],  
     'test': TESTS_REQUIRE
 }
+
+
+
+
 
 setup(
     name='panel_segmentation',
@@ -53,6 +57,15 @@ setup(
     keywords=KEYWORDS,
     author='Ayobami Edun, Kirsten Perry, Kevin Anderson',
     author_email='aedun@ufl.edu; kirsten.perry@nrel.gov, kevin.anderson@nrel.gov',
+    package_data={
+        'bifacial_radiance': [
+            'panel_segmentation/VGG16_classification_model.h5',
+	    'panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
+	    'panel_segmentation/examples/*',
+	    'panel_segmentation/tests/*',	
+		],
+    },
+    include_package_data=True,
     license='MIT',
     packages=['panel_segmentation'],
     zip_safe=False
