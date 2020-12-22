@@ -31,7 +31,7 @@ def test_load_images_to_numpy_array():
     image_file_path = "./panel_segmentation/examples/Train/Images/"
     img_np_array = train_ps.loadImagesToNumpyArray(image_file_path)
     #Check the numpy array dimensions
-    assert img_np_array.shape == (80, 640, 640, 3)
+    assert img_np_array.shape == (22, 640, 640, 3)
 
 
 def test_train_panel_classifier():
@@ -46,7 +46,7 @@ def test_train_panel_classifier():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 4
+    batch_size= 16
     no_epochs =  1
     learning_rate = 1e-5
     train_classifier = pt.TrainPanelSegmentationModel(batch_size, no_epochs, 
@@ -73,7 +73,7 @@ def test_train_segmentation():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 4
+    batch_size= 16
     no_epochs =  1
     learning_rate = 1e-5
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
