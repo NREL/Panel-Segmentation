@@ -31,7 +31,7 @@ def test_load_images_to_numpy_array():
     image_file_path = "./panel_segmentation/examples/Train/Images/"
     img_np_array = train_ps.loadImagesToNumpyArray(image_file_path)
     #Check the numpy array dimensions
-    assert img_np_array.shape == (22, 640, 640, 3)
+    assert img_np_array.shape == (4, 640, 640, 3)
 
 
 def test_train_panel_classifier():
