@@ -12,6 +12,7 @@ import numpy as np
 from panel_segmentation import panel_detection as pan_det
 from tensorflow.keras.preprocessing import image as imagex
 import PIL
+import h5py
 
 
 def assert_isinstance(obj, klass):
