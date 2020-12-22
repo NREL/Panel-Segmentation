@@ -12,7 +12,7 @@ from tensorflow.keras.preprocessing import image as imagex
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
-def _test_load_images_to_numpy_array():
+def test_load_images_to_numpy_array():
     """
     Test the loadImagesToNumpyArray() function.
 

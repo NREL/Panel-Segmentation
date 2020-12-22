@@ -172,10 +172,10 @@ def test_plot_az():
     #Crop the panels 
     new_res = pc.cropPanels(x, res)
     pc.plotEdgeAz(new_res, 10, 1, 
-                  save_img_file_path = "./tests/",
+                  save_img_file_path = "./panel_segmentation/tests/",
                   plot_show = True)
     #Open the image and assert that it exists
-    im = PIL.Image.open("./tests/crop_mask_az_0.png")
+    im = PIL.Image.open("./panel_segmentation/tests/crop_mask_az_0.png")
     assert (type(im) == PIL.PngImagePlugin.PngImageFile)
 
 
