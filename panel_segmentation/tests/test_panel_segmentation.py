@@ -13,6 +13,7 @@ from panel_segmentation import panel_detection as pan_det
 from tensorflow.keras.preprocessing import image as imagex
 import PIL
 import h5py
+import os
 
 
 def assert_isinstance(obj, klass):
@@ -35,12 +36,26 @@ def test_generate_satellite_image():
         google_maps_api_key =  "Wrong_API_key"     
         file_name_save = "./examples/Panel_Detection_Examples/sat_img.png"
         print(os.getcwd())
+        model_file_path = os.path.abspath('./panel_segmentation/VGG16Net_ConvTranpose_complete.h5')
+        assert os.path.exists(model_file_path)
+        classifier_file_path = os.path.abspath('./panel_segmentation/VGG16_classification_model.h5')
+        assert os.path.exists(classifier_file_path)
         #Create an instance of the PanelDetection() class.
-        pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
-                                    classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
+        pc = pan_det.PanelDetection(model_file_path = model_file_path, 
+                                    classifier_file_path = classifier_file_path)
         pc.generateSatelliteImage(latitude, longitude, 
                                   file_name_save, google_maps_api_key)
     
+
+def test_temporary1():
+    raise ValueError(os.path.listdir('.'))
+
+def test_temporary2():
+    raise ValueError(os.path.listdir('./panel_segmentation'))
+
+def test_temporary3():
+    raise ValueError(os.getcwd())
+
 
 def test_has_panels():
     """
