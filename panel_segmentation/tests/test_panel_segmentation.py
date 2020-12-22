@@ -35,8 +35,8 @@ def test_generate_satellite_image():
         file_name_save = "./examples/Panel_Detection_Examples/sat_img.png"
         print(os.getcwd())
         #Create an instance of the PanelDetection() class.
-        pc = pan_det.PanelDetection(model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                                    classifier_file_path = './VGG16_classification_model.h5')
+        pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                    classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
         pc.generateSatelliteImage(latitude, longitude, 
                                   file_name_save, google_maps_api_key)
     
@@ -52,8 +52,8 @@ def test_has_panels():
     #Pick the file name to read 
     img_file = "./examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './VGG16_classification_model.h5')
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -76,8 +76,8 @@ def test_mask_generator():
     #Pick the file name to read 
     img_file = "./examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './VGG16_classification_model.h5')
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
     #Read in the image
     #Read in the image
     x = imagex.load_img(img_file, 
@@ -102,8 +102,8 @@ def test_crop_panels():
     #Pick the file name to read 
     img_file = "./examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './VGG16_classification_model.h5')
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -129,8 +129,8 @@ def test_estimate_az():
     #Pick the file name to read 
     img_file = "./examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './VGG16_classification_model.h5')
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -157,8 +157,8 @@ def test_plot_az():
     #Pick the file name to read 
     img_file = "./examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './VGG16_classification_model.h5')
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -188,8 +188,8 @@ def test_cluster_panels():
     #Pick the file name to read 
     img_file = "./examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './VGG16_classification_model.h5')
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
