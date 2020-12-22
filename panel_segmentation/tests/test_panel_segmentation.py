@@ -3,9 +3,6 @@ Test suite for panel segmentation code.
 """
 import os
 
-#Set the current working directory as Panel-Segmentation
-os.chdir('..')
-
 import pytest
 import pandas as pd
 import numpy as np
@@ -48,10 +45,10 @@ def test_generate_satellite_image():
     
 
 def test_temporary1():
-    raise ValueError(os.path.listdir('.'))
+    raise ValueError(os.listdir('.'))
 
 def test_temporary2():
-    raise ValueError(os.path.listdir('./panel_segmentation'))
+    raise ValueError(os.listdir('./panel_segmentation'))
 
 def test_temporary3():
     raise ValueError(os.getcwd())

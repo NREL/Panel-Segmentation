@@ -3,9 +3,6 @@ Test suite for panel segmentation code.
 """
 import os
 
-#Set the current working directory as Panel-Segmentation
-os.chdir('..')
-
 #Import other packages
 import pytest
 import pandas as pd
