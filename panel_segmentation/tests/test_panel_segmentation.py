@@ -4,12 +4,12 @@ Test suite for panel segmentation code.
 import os
 
 #Set the current working directory as Panel-Segmentation
-os.chdir(os.path.dirname(os.path.dirname( __file__ )))
+os.chdir('..')
 
 import pytest
 import pandas as pd
 import numpy as np
-from panel_segmentation import panel_detection as pan_det
+import panel_detection as pan_det
 from tensorflow.keras.preprocessing import image as imagex
 import PIL
 
@@ -206,3 +206,14 @@ def test_cluster_panels():
         az = pc.detectAzimuth(clusters[ii][np.newaxis,:])
         azimuth_list.append(az)
     assert all(isinstance(float(x), float) for x in azimuth_list)
+
+"""
+test_generate_satellite_image()
+test_has_panels()
+test_plot_az()
+test_mask_generator()
+test_estimate_az()
+test_cluster_panels()
+test_estimate_az()
+test_crop_panels()
+"""
