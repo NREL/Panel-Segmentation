@@ -12,7 +12,7 @@ from tensorflow.keras.preprocessing import image as imagex
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
-def test_load_images_to_numpy_array():
+def _test_load_images_to_numpy_array():
     """
     Test the loadImagesToNumpyArray() function.
 
@@ -34,7 +34,7 @@ def test_load_images_to_numpy_array():
     assert img_np_array.shape == (80, 640, 640, 3)
 
 
-def test_train_panel_classifier():
+def _test_train_panel_classifier():
     """
     Test the trainPanelClassifier() function.
 
@@ -61,7 +61,7 @@ def test_train_panel_classifier():
     assert (str(type(mod)) == "<class 'tensorflow.python.keras.engine.training.Model'>") & \
             (str(type(results)) == "<class 'tensorflow.python.keras.callbacks.History'>")
     
-def test_train_segmentation():
+def _test_train_segmentation():
     """
     Test the trainSegmentation() function.
 
