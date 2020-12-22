@@ -34,7 +34,7 @@ def test_load_images_to_numpy_array():
     assert img_np_array.shape == (80, 640, 640, 3)
 
 
-def _test_train_panel_classifier():
+def test_train_panel_classifier():
     """
     Test the trainPanelClassifier() function.
 
