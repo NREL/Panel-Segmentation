@@ -39,8 +39,8 @@ class TrainPanelSegmentationModel():
         
         Parameters
         -----------
-        image_file_path: String. Path to folder where we want to process 
-        png images.
+        image_file_path: String
+            Path to folder where we want to process png images.
         
         Returns
         -----------
@@ -127,7 +127,9 @@ class TrainPanelSegmentationModel():
             This should be the validation images
         val_mask : (nparray float) 
             This should be the validation images mask - ground truth
-            
+
+        Notes
+        -----
         Hence the dimension of the four variables must be [a,b,c,d]
         where [a] is the number of input images, 
         [b,c] are the dimensions of the image - 640 x 640 in this 
@@ -268,7 +270,7 @@ class TrainPanelSegmentationModel():
             This varaiale contains training history and statistics
         final_clas_model: (tf.keras model object)
             The final trianed model. Note that this may not be the best model as the 
-                            best model is saved during training
+            best model is saved during training
         
         """
 

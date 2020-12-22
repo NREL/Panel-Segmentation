@@ -39,12 +39,9 @@ EXTRAS_REQUIRE = {
         'sphinx==1.8.5',
         'sphinx_rtd_theme>=0.5.0'
         'ipython',
-    ],  
+    ],
     'test': TESTS_REQUIRE
 }
-
-
-
 
 
 setup(
@@ -61,10 +58,10 @@ setup(
     package_data={
         'panel_segmentation': [
             'panel_segmentation/VGG16_classification_model.h5',
-	    'panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-	    'panel_segmentation/examples/*',
-	    'panel_segmentation/tests/*',	
-		],
+            'panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
+            'panel_segmentation/examples/*',
+            'panel_segmentation/tests/*',
+        ],
     },
     include_package_data=True,
     license='MIT',
