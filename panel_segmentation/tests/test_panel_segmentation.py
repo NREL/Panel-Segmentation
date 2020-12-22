@@ -9,7 +9,7 @@ os.chdir('..')
 import pytest
 import pandas as pd
 import numpy as np
-import panel_detection as pan_det
+from panel_segmentation import panel_detection as pan_det
 from tensorflow.keras.preprocessing import image as imagex
 import PIL
 
