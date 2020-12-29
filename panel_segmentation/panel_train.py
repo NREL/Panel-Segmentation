@@ -106,7 +106,8 @@ class TrainPanelSegmentationModel():
         return 1-self.diceCoeff(y_true, y_pred)    
 
 
-    def trainSegmentation(self,train_data, train_mask, val_data, val_mask):
+    def trainSegmentation(self, train_data, train_mask, val_data, val_mask,
+                          model_file_path = 'VGG16_complete_model.h5'):
         """
         This function uses VGG16 as the base network and as a transfer learning 
         framework to train a model that segments solar panels from a satellite
@@ -211,21 +212,24 @@ class TrainPanelSegmentationModel():
 
 
 
-        checkpoint = tf.keras.callbacks.ModelCheckpoint('VGG16_complete_model.h5', monitor='val_loss', 
+        checkpoint = tf.keras.callbacks.ModelCheckpoint(model_file_path, monitor='val_loss', 
                              verbose=1, save_best_only=True, mode='max')
 
 
         #Training the network
-        results = custom_model.fit(train_image_generator, epochs= self.NO_OF_EPOCHS, 
-                          steps_per_epoch = (NO_OF_TRAINING_IMAGES//self.BATCH_SIZE),
-                          validation_data=val_image_generator, 
-                          validation_steps=(NO_OF_VAL_IMAGES//self.BATCH_SIZE),
-                          callbacks = [checkpoint]                          
-                         )
+        results = custom_model.fit(train_image_generator, 
+                                   epochs= self.NO_OF_EPOCHS, 
+                                   workers = 0,  
+                                   steps_per_epoch = (NO_OF_TRAINING_IMAGES//self.BATCH_SIZE),
+                                   validation_data=val_image_generator, 
+                                   validation_steps=(NO_OF_VAL_IMAGES//self.BATCH_SIZE),
+                                   callbacks = [checkpoint]                          
+                                   )
         return custom_model, results
     
 
-    def trainPanelClassifier(self, TRAIN_PATH, VAL_PATH):
+    def trainPanelClassifier(self, TRAIN_PATH, VAL_PATH,
+                             model_file_path = './VGG16_classification_model.h5'):
         """
         This function uses VGG16 as the base network and as a transfer learning 
         framework to train a model that predicts the presence of solar panels in a satellite
@@ -270,20 +274,20 @@ class TrainPanelSegmentationModel():
         
         """
 
-        clas_x = self.layer_dict['global_max_pooling2d'].output
-        out1 = Dense(units=512,activation ="relu")(clas_x)
+        class_x = self.layer_dict['global_max_pooling2d'].output
+        out1 = Dense(units=512,activation ="relu")(class_x)
         out1= Dropout(0.2) (out1)
         out2 = Dense(units=512,activation ="relu")(out1)
         out2 = Dropout(0.2) (out2)
 
         out_fin = Dense(units=2,activation ="softmax")(out2)
 
-        final_clas_model = tf.keras.Model(inputs=self.model.input, outputs=out_fin)
+        final_class_model = tf.keras.Model(inputs=self.model.input, outputs=out_fin)
 
-        for layer in final_clas_model.layers[:18]:
+        for layer in final_class_model.layers[:18]:
             layer.trainable = True
     
-        final_clas_model.summary()
+        final_class_model.summary()
 
         tr_gen = image.ImageDataGenerator(rescale=1./255,
                                           dtype='float32')
@@ -302,21 +306,23 @@ class TrainPanelSegmentationModel():
         NO_OF_TRAINING_IMAGES = len(train_data.labels)
         NO_OF_VAL_IMAGES = len(val_data.labels)       
         
-        final_clas_model.compile(loss='categorical_crossentropy',
+        final_class_model.compile(loss='categorical_crossentropy',
                                  optimizer=tf.keras.optimizers.Adam(lr=1e-4, epsilon=1e-08),
                                  metrics= ['accuracy']
                                  )
         
-        checkpoint = tf.keras.callbacks.ModelCheckpoint('./VGG16_classification_model.h5', monitor='val_accuracy', 
+        checkpoint = tf.keras.callbacks.ModelCheckpoint(model_file_path, monitor='val_accuracy', 
                              verbose=1, save_best_only=True, mode='max', save_freq='epoch')
 
-        results = final_clas_model.fit(x = train_data, epochs= self.NO_OF_EPOCHS, 
-                          steps_per_epoch = NO_OF_TRAINING_IMAGES//self.BATCH_SIZE,
-                          validation_data = val_data, 
-                          validation_steps = NO_OF_VAL_IMAGES//self.BATCH_SIZE,
-                          callbacks = [checkpoint]                          
-                         )
-        return final_clas_model,results
+        results = final_class_model.fit(x = train_data, 
+                                        workers = 0,
+                                        epochs= self.NO_OF_EPOCHS, 
+                                        steps_per_epoch = NO_OF_TRAINING_IMAGES//self.BATCH_SIZE,
+                                        validation_data = val_data, 
+                                        validation_steps = NO_OF_VAL_IMAGES//self.BATCH_SIZE,
+                                        callbacks = [checkpoint]                          
+                                        )  
+        return final_class_model,results
         
 
     def trainingStatistics(self, results, mode):

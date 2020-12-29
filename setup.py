@@ -17,34 +17,32 @@ KEYWORDS = [
 
 
 INSTALL_REQUIRES = [
-    'scikit_image>=0.16.2',
-    'matplotlib>=3.1.2',
-    'requests>=2.22.0',
-    'psycopg2_binary>=2.8.3',
-    'opencv_python_headless>=4.1.2.30',
-    'pandas>=0.25.1',
-    'tensorflow>=2.2.0',
-    'pytz>=2019.3',
-    'numpy>=1.18.1',
-    'boto3>=1.12.49',
-    'botocore>=1.15.49',
-    'Pillow>=7.2.0',
-    'psycopg2>=2.8.5',
-    'sklearn',
+	'opencv_python_headless>=4.4.0.46',
+	'numpy>=1.18.1',
+	'scikit_image>=0.16.2',
+	'matplotlib>=3.1.3',
+	'requests>=2.22.0',
+	'tensorflow>=2.2.0',
+	'pandas>=1.1.4',
+	'cx_Freeze>=6.4.2',
+	'Pillow>=8.0.1',
+	'scikit_learn>=0.23.2',
+	'h5py>=2.10.0'
 ]
 
 TESTS_REQUIRE = [
-    'pytest >= 3.6.3',
+    'pytest>=5.3.5'
 ]
 
 EXTRAS_REQUIRE = {
     'doc': [
         'sphinx==1.8.5',
-        'sphinx_rtd_theme==0.4.3',
+        'sphinx_rtd_theme>=0.5.0',
         'ipython',
     ],
     'test': TESTS_REQUIRE
 }
+
 
 setup(
     name='panel_segmentation',
@@ -55,8 +53,17 @@ setup(
     description='A package to segment solar panels from a satellite image and perform automated metadata extraction.',
     url='https://github.com/NREL/Panel-Segmentation',
     keywords=KEYWORDS,
-    author='Ayobami Edun, Kirsten Perry',
-    author_email='aedun@ufl.edu; kirsten.perry@nrel.gov',
+    author='Ayobami Edun, Kirsten Perry, Kevin Anderson',
+    author_email='aedun@ufl.edu; kirsten.perry@nrel.gov, kevin.anderson@nrel.gov',
+    package_data={
+        'panel_segmentation': [
+            'panel_segmentation/VGG16_classification_model.h5',
+            'panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
+            'panel_segmentation/examples/*',
+            'panel_segmentation/tests/*',
+        ],
+    },
+    include_package_data=True,
     license='MIT',
     packages=['panel_segmentation'],
     zip_safe=False
