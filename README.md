@@ -14,6 +14,13 @@ image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_Con
 - Perform azimuth estimation on each solar array cluster in the masked image.
 
 
+To install this package, type the following into the command line:
+
+git lfs install --skip-smudge
+pip install git+https://github.com/NREL/Panel-Segmentation.git
+
+
+
 
 
 
