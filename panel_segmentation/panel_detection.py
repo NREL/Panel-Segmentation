@@ -14,7 +14,10 @@ from sklearn.cluster import spectral_clustering
 from sklearn.feature_extraction import image as imagex
 import requests
 from PIL import Image
+from os import path
 
+panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
+panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
 
 class PanelDetection():
     '''
@@ -22,8 +25,8 @@ class PanelDetection():
     detecting solar arrays from a satellite image, performing spectral
     clustering, and predicting the Azimuth.
     '''
-    def __init__(self, model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
-                 classifier_file_path = './VGG16_classification_model.h5'):
+    def __init__(self, model_file_path = panel_seg_model_path, 
+                 classifier_file_path = panel_classification_model_path):
         self.model = load_model(model_file_path, 
                                 custom_objects=None, 
                                 compile=False)

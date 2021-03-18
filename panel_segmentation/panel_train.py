@@ -12,6 +12,10 @@ import matplotlib.pyplot as plt
 from tensorflow.keras import backend as K
 import glob
 import cv2
+from os import path
+
+panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
+panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
 
 class TrainPanelSegmentationModel():
     '''
@@ -107,7 +111,7 @@ class TrainPanelSegmentationModel():
 
 
     def trainSegmentation(self, train_data, train_mask, val_data, val_mask,
-                          model_file_path = 'VGG16_complete_model.h5'):
+                          model_file_path = panel_seg_model_path):
         """
         This function uses VGG16 as the base network and as a transfer learning 
         framework to train a model that segments solar panels from a satellite
@@ -229,7 +233,7 @@ class TrainPanelSegmentationModel():
     
 
     def trainPanelClassifier(self, TRAIN_PATH, VAL_PATH,
-                             model_file_path = './VGG16_classification_model.h5'):
+                             model_file_path = panel_classification_model_path):
         """
         This function uses VGG16 as the base network and as a transfer learning 
         framework to train a model that predicts the presence of solar panels in a satellite
