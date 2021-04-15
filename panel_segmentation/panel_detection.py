@@ -577,8 +577,7 @@ class PanelDetection():
         #Continue running through the function if all the inputs are correct
         if (len(test_mask.shape) < 3):
             test_mask = cv2.cvtColor(test_mask,cv2.COLOR_GRAY2RGB)
-            
-        mask = test_mask.astype(bool)            
+                   
         test_mask =  test_mask.reshape(640,640,3) 
         
         # Converting those pixels with values 0-0.5 to 0 and others to 1
@@ -601,11 +600,6 @@ class PanelDetection():
         #Initialize each clusters
         clusters = np.uint8(np.zeros((num_labels-1, 640, 640,3)))
         
-        #TO-DO
-        #We might probably want to tell the algorithm to ignore clusters with
-        #small number of pixels. Needs a threshold
-        
-        
         #starting from 1 to ignore background
         for i in np.arange(1,num_labels):
             clus = np.copy(test_mask)
@@ -616,6 +610,20 @@ class PanelDetection():
             clus[(1-c_mask).astype(bool),2] = 0
             #clus_label = np.stack((clus_label,)*3, axis=-1)
             clusters[i-1] = clus
+
+        # Loop through each cluster, and detect number of non-zero values
+        # in each cluster.
+        clusters_list_keep = []
+        for cluster_number in range(clusters.shape[0]):
+            cluster = clusters[cluster_number]
+            # Get the number of non-zero values as a ratio of total pixels
+            pixel_count = len(cluster[cluster>0])
+            total_pixels = len(cluster)
+            # Must greater than 3% non-zero pixels or we omit the cluster
+            if (pixel_count / total_pixels) >= 0.1:
+                clusters_list_keep.append(cluster_number)
+        # Filter clusters
+        clusters = clusters[clusters_list_keep]
             
         if fig == True:
                 #Showing Image after Component Labeling
@@ -625,7 +633,7 @@ class PanelDetection():
                 plt.title("Image after Component Labeling")
                 plt.show()
     
-        return num_labels-1,clusters
+        return len(clusters), clusters
     
     
 
