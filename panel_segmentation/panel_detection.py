@@ -579,7 +579,7 @@ class PanelDetection():
             test_mask = cv2.cvtColor(test_mask,cv2.COLOR_GRAY2RGB)
             
         mask = test_mask.astype(bool)            
-        test_mask =  test_data.reshape(640,640,3) 
+        test_mask =  test_mask.reshape(640,640,3) 
         
         # Converting those pixels with values 0-0.5 to 0 and others to 1
         img = cv2.threshold(test_mask, 0.5, 1, cv2.THRESH_BINARY)[1]
