@@ -608,7 +608,7 @@ class PanelDetection():
         
         #starting from 1 to ignore background
         for i in np.arange(1,num_labels):
-            clus = np.copy(test_data)
+            clus = np.copy(test_mask)
             c_mask = labels==i
             #clus_label = np.zeros((640,640,3))
             clus[(1-c_mask).astype(bool),0] = 0
