@@ -25,8 +25,8 @@ class PanelDetection():
     detecting solar arrays from a satellite image, performing spectral
     clustering, and predicting the Azimuth.
     '''
-    def __init__(self, model_file_path = panel_seg_model_path, 
-                 classifier_file_path = panel_classification_model_path):
+    def __init__(self, model_file_path = './VGG16Net_ConvTranpose_complete.h5', 
+                 classifier_file_path = './VGG16_classification_model.h5'):
         
         #This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path, 
@@ -579,20 +579,23 @@ class PanelDetection():
             raise ValueError("Numpy array test_data shape should be 3 or 4 dimensions.")
         if type(test_mask) != np.ndarray:
             raise TypeError("Variable test_mask must be of type Numpy ndarray.")
-        if type(number_clusters) != int:
-            raise TypeError("Variable number_clusters must be of type int.")
+        #if type(number_clusters) != int:
+            #raise TypeError("Variable number_clusters must be of type int.")
         if type(fig) != bool:
             raise TypeError("Variable fig must be of type bool.")        
         #Continue running through the function if all the inputs are correct
         mask = test_mask.astype(bool)            
-        test_data =  test_data.reshape(640,640,3)     
-        panel_crop = test_data[:,:,2].astype(float)
+        test_data =  test_data.reshape(640,640,3)
+        test_mask =  test_data.reshape(640,640,3) 
+        #panel_crop = test_data[:,:,2].astype(float)
         
         # Converting those pixels with values 1-127 to 0 and others to 1
-        img = cv2.threshold(panel_crop.reshape(640,640), 127, 255, cv2.THRESH_BINARY)[1]
+        #img = cv2.threshold(test_mask, 127, 255, cv2.THRESH_BINARY)[1]
+        img = cv2.threshold(test_mask, 0.5, 1, cv2.THRESH_BINARY)[1]
         
         # Applying cv2.connectedComponents() 
-        num_labels, labels = cv2.connectedComponents(img)
+        num_labels, labels = cv2.connectedComponents(img[:,:,2].reshape(640,640))
+        #num_labels, labels = cv2.connectedComponents(img)
         
             
         # Map component labels to hue val, 0-179 is the hue range in OpenCV
