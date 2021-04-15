@@ -550,19 +550,14 @@ class PanelDetection():
                 print("Enter valid parameters")
                 
 
-    def clusterPanels(self, test_data, test_mask, fig=False):
+    def clusterPanels(self, test_mask, fig=False):
         '''
         This function uses connected component algorithm to cluster the panels
 
         Parameters
         ----------
-        test_data : (float)
-            This is the cropped image using the mask. The shape should be 
-            (640,640,3) or (1,640,640,3) 
-        test_mask : (bool)
-            The predicted mask. Dimension is (640,640)
-        number_clusters : (int)
-            The number of clusters to output.
+        test_mask : (bool) or (float)
+            The predicted mask. Dimension is (640,640) or can be converted to RGB (640,640,3)
         fig : (bool)
             shows the clustering image if fig = True
 
@@ -570,33 +565,27 @@ class PanelDetection():
         -------
         (uint8)
         Masked image containing detected clusters each of dimension(640,640,3)
+        
+        (uint8)
+        The optimal number of clusters
         '''
         #Check that the input variables are of the correct type
-        if type(test_data) != np.ndarray:
-            raise TypeError("Variable test_data must be of type Numpy ndarray.")
-        #Test that the input array has 3 to 4 channels
-        if (len(test_data.shape) > 4) | (len(test_data.shape) < 3):
-            raise ValueError("Numpy array test_data shape should be 3 or 4 dimensions.")
         if type(test_mask) != np.ndarray:
             raise TypeError("Variable test_mask must be of type Numpy ndarray.")
-        #if type(number_clusters) != int:
-            #raise TypeError("Variable number_clusters must be of type int.")
         if type(fig) != bool:
             raise TypeError("Variable fig must be of type bool.")        
         #Continue running through the function if all the inputs are correct
+        if (len(test_mask.shape) < 3):
+            test_mask = cv2.cvtColor(test_mask,cv2.COLOR_GRAY2RGB)
+            
         mask = test_mask.astype(bool)            
-        test_data =  test_data.reshape(640,640,3)
         test_mask =  test_data.reshape(640,640,3) 
-        #panel_crop = test_data[:,:,2].astype(float)
         
-        # Converting those pixels with values 1-127 to 0 and others to 1
-        #img = cv2.threshold(test_mask, 127, 255, cv2.THRESH_BINARY)[1]
+        # Converting those pixels with values 0-0.5 to 0 and others to 1
         img = cv2.threshold(test_mask, 0.5, 1, cv2.THRESH_BINARY)[1]
         
         # Applying cv2.connectedComponents() 
-        num_labels, labels = cv2.connectedComponents(img[:,:,2].reshape(640,640))
-        #num_labels, labels = cv2.connectedComponents(img)
-        
+        num_labels, labels = cv2.connectedComponents(img[:,:,2].reshape(640,640))        
             
         # Map component labels to hue val, 0-179 is the hue range in OpenCV
         label_hue = np.uint8(179*labels/np.max(labels))
@@ -606,11 +595,18 @@ class PanelDetection():
         # Converting cvt to BGR
         labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
 
-        # set bg label to black
+        # set background label to black
         labeled_img[label_hue==0] = 0
      
+        #Initialize each clusters
         clusters = np.uint8(np.zeros((num_labels-1, 640, 640,3)))
-
+        
+        #TO-DO
+        #We might probably want to tell the algorithm to ignore clusters with
+        #small number of pixels. Needs a threshold
+        
+        
+        #starting from 1 to ignore background
         for i in np.arange(1,num_labels):
             clus = np.copy(test_data)
             c_mask = labels==i
