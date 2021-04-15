@@ -27,14 +27,17 @@ class PanelDetection():
     '''
     def __init__(self, model_file_path = panel_seg_model_path, 
                  classifier_file_path = panel_classification_model_path):
-        self.model = load_model(model_file_path, 
-                                custom_objects=None, 
-                                compile=False)
-    
+        
         #This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path, 
                                      custom_objects=None, 
                                      compile=False)
+        
+        self.model = load_model(model_file_path, 
+                                custom_objects=None, 
+                                compile=False)
+    
+        
         
         
     def generateSatelliteImage(self,latitude, longitude, 
@@ -547,9 +550,9 @@ class PanelDetection():
                 print("Enter valid parameters")
                 
 
-    def clusterPanels(self, test_data, test_mask, number_clusters, fig=False):
+    def clusterPanels(self, test_data, test_mask, fig=False):
         '''
-        This function uses Spectral clustering to cluster the panels
+        This function uses connected component algorithm to cluster the panels
 
         Parameters
         ----------
@@ -585,29 +588,46 @@ class PanelDetection():
         test_data =  test_data.reshape(640,640,3)     
         panel_crop = test_data[:,:,2].astype(float)
         
-        eps = 1e-3
-        graph = imagex.img_to_graph(panel_crop, mask = mask)
-        graph.data = np.exp(-graph.data / graph.data.std())+eps
+        # Converting those pixels with values 1-127 to 0 and others to 1
+        img = cv2.threshold(panel_crop.reshape(640,640), 127, 255, cv2.THRESH_BINARY)[1]
+        
+        # Applying cv2.connectedComponents() 
+        num_labels, labels = cv2.connectedComponents(img)
+        
+            
+        # Map component labels to hue val, 0-179 is the hue range in OpenCV
+        label_hue = np.uint8(179*labels/np.max(labels))
+        blank_ch = 255*np.ones_like(label_hue)
+        labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
 
+        # Converting cvt to BGR
+        labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
 
-        labels = spectral_clustering(graph, n_clusters=number_clusters,assign_labels='discretize',eigen_solver='arpack')
-        label_im = np.full(mask.shape, -1.)
-        label_im[mask] = labels
+        # set bg label to black
+        labeled_img[label_hue==0] = 0
      
-        clusters = np.uint8(np.zeros((number_clusters, 640, 640,3)))
+        clusters = np.uint8(np.zeros((num_labels-1, 640, 640,3)))
 
-        for i in np.arange(0,number_clusters):
+        for i in np.arange(1,num_labels):
             clus = np.copy(test_data)
-            c_mask = label_im==i
+            c_mask = labels==i
             #clus_label = np.zeros((640,640,3))
             clus[(1-c_mask).astype(bool),0] = 0
             clus[(1-c_mask).astype(bool),1] = 0
             clus[(1-c_mask).astype(bool),2] = 0
             #clus_label = np.stack((clus_label,)*3, axis=-1)
-            clusters[i] = clus
+            clusters[i-1] = clus
             
         if fig == True:
-            plt.matshow(label_im)
+                #Showing Image after Component Labeling
+                plt.figure()
+                plt.imshow(cv2.cvtColor(labeled_img, cv2.COLOR_BGR2RGB))
+                plt.axis('off')
+                plt.title("Image after Component Labeling")
+                plt.show()
     
-        return clusters
-        
+        return num_labels-1,clusters
+    
+    
+
+    
