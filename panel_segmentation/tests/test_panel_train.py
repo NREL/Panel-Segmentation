@@ -100,9 +100,3 @@ def test_train_segmentation():
             (str(type(results)) == "<class 'tensorflow.python.keras.callbacks.History'>") & \
             (list(results.history.keys()) == ['loss', 'accuracy', 'diceCoeff', 'val_loss', 'val_accuracy', 'val_diceCoeff']) & \
             (len(results.history['loss']) == 1)
-
-"""
-test_load_images_to_numpy_array()
-test_train_panel_classifier()
-test_train_segmentation()
-"""

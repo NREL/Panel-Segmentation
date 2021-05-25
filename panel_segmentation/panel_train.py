@@ -27,8 +27,7 @@ class TrainPanelSegmentationModel():
         self.NO_OF_EPOCHS = no_epochs
         self. BATCH_SIZE = batch_size
         self.learning_rate = learning_rate
-        #we used 1e-5 for learning rate
-        
+        #we used 1e-5 for learning rate        
         #Base VGG16 network
         self.model = tf.keras.applications.VGG16(
             include_top=False, weights='imagenet',  input_shape=(640,640,3), 
@@ -150,76 +149,53 @@ class TrainPanelSegmentationModel():
         """
         train_mask = train_mask/np.max(train_mask)
         val_mask = val_mask/np.max(val_mask)
-        
-        
         train_datagen = image.ImageDataGenerator(
                 rescale=1./255,
-                dtype='float32')
-        
+                dtype='float32')        
         val_datagen = image.ImageDataGenerator(
                 rescale=1./255,
-                dtype='float32')
-        
+                dtype='float32')        
         train_image_generator = train_datagen.flow(
                     train_data,train_mask,
-                    batch_size = self.BATCH_SIZE)
-        
+                    batch_size = self.BATCH_SIZE)        
         val_image_generator = val_datagen.flow(
                 val_data,val_mask,
                 batch_size = self.BATCH_SIZE)
-        
-    
-        x = self.layer_dict['block5_conv3'].output
-        
+        x = self.layer_dict['block5_conv3'].output        
         u5 = Conv2DTranspose(512, (2, 2), strides=(2, 2), padding='same') (x)
         u5 = concatenate([u5, self.layer_dict['block4_conv3'].output])
         c5 = Conv2D(512, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (u5)
         c5 = Dropout(0.2) (c5)
-        c5 = Conv2D(512, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c5)
-        
+        c5 = Conv2D(512, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c5)        
         u6 = Conv2DTranspose(256, (2, 2), strides=(2, 2), padding='same') (c5)
         u6 = concatenate([u6, self.layer_dict['block3_conv2'].output])
         c6 = Conv2D(256, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (u6)
         c6 = Dropout(0.2) (c6)
-        c6 = Conv2D(256, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c6)
-        
+        c6 = Conv2D(256, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c6)        
         u7 = Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same') (c6)
         u7 = concatenate([u7, self.layer_dict['block2_conv2'].output])
         c7 = Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (u7)
         c7 = Dropout(0.2) (c7)
-        c7 = Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c7)
-        
+        c7 = Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c7)        
         u8 = Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same') (c7)
         u8 = concatenate([u8, self.layer_dict['block1_conv2'].output], axis=3)
         c8 = Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (u8)
         c8 = Dropout(0.1) (c8)
-        c8 = Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c8)
-        
+        c8 = Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c8)        
         outputs = Conv2D(1, (1, 1), activation='sigmoid') (c8)
-
-        custom_model = tf.keras.Model(inputs=self.model.input, outputs=outputs)
-        
+        custom_model = tf.keras.Model(inputs=self.model.input, outputs=outputs)        
         #we fix the weights of the VGG16 architecture, You can choose to make those layers trainable too but it will take a long time
         for layer in custom_model.layers[:18]:
-            layer.trainable = False
-    
+            layer.trainable = False    
         #custom_model.summary()
-
         custom_model.compile(loss='binary_crossentropy',
                 optimizer=tf.keras.optimizers.Adam(lr=self.learning_rate, epsilon=1e-08),
                      metrics= ['accuracy', self.diceCoeff]
                      )
-
-
         NO_OF_TRAINING_IMAGES = np.shape(train_data)[0]
         NO_OF_VAL_IMAGES = np.shape(val_data)[0]
-
-
-
         checkpoint = tf.keras.callbacks.ModelCheckpoint(model_file_path, monitor='val_loss', 
                              verbose=1, save_best_only=True, mode='max')
-
-
         #Training the network
         results = custom_model.fit(train_image_generator, 
                                    epochs= self.NO_OF_EPOCHS, 
@@ -277,47 +253,33 @@ class TrainPanelSegmentationModel():
             best model is saved during training
         
         """
-
         class_x = self.layer_dict['global_max_pooling2d'].output
         out1 = Dense(units=512,activation ="relu")(class_x)
         out1= Dropout(0.2) (out1)
         out2 = Dense(units=512,activation ="relu")(out1)
         out2 = Dropout(0.2) (out2)
-
         out_fin = Dense(units=2,activation ="softmax")(out2)
-
         final_class_model = tf.keras.Model(inputs=self.model.input, outputs=out_fin)
-
         for layer in final_class_model.layers[:18]:
-            layer.trainable = True
-    
+            layer.trainable = True    
         final_class_model.summary()
-
         tr_gen = image.ImageDataGenerator(rescale=1./255,
                                           dtype='float32')
-
         train_data = tr_gen.flow_from_directory(directory=TRAIN_PATH, 
                                         target_size=(640,640),
                                         batch_size= self.BATCH_SIZE)
-
         val_data = tr_gen.flow_from_directory(directory=VAL_PATH, 
                                       target_size=(640,640),
                                       batch_size= self.BATCH_SIZE)
-        
-       
-        
         #Get the number of images in the training and validation sets
         NO_OF_TRAINING_IMAGES = len(train_data.labels)
-        NO_OF_VAL_IMAGES = len(val_data.labels)       
-        
+        NO_OF_VAL_IMAGES = len(val_data.labels)               
         final_class_model.compile(loss='categorical_crossentropy',
                                  optimizer=tf.keras.optimizers.Adam(lr=1e-4, epsilon=1e-08),
                                  metrics= ['accuracy']
-                                 )
-        
+                                 )        
         checkpoint = tf.keras.callbacks.ModelCheckpoint(model_file_path, monitor='val_accuracy', 
                              verbose=1, save_best_only=True, mode='max', save_freq='epoch')
-
         results = final_class_model.fit(x = train_data, 
                                         workers = 0,
                                         epochs= self.NO_OF_EPOCHS, 
@@ -353,8 +315,7 @@ class TrainPanelSegmentationModel():
         train_accuracy = results.history['accuracy']
         train_loss = results.history['loss']
         if mode == 1:
-            train_dice_coef = results.history['diceCoeff']
-        
+            train_dice_coef = results.history['diceCoeff']        
         validation_metrics = True
         try:
             val_accuracy = results.history['val_accuracy']
@@ -367,51 +328,38 @@ class TrainPanelSegmentationModel():
         #------------------------------------------------------------
         if mode == 1:
             plt.plot(train_dice_coef)
-
             plt.xlabel('Epochs')
             plt.ylabel('Percentage')
             plt.savefig('Train_dice_coef',dpi=300)
             plt.show()
-
         plt.plot(train_loss)
-
         plt.xlabel('Epochs')
         plt.ylabel('Percentage')
         plt.savefig('Train_loss',dpi=300)
         plt.show()
-        
-        
         plt.plot(train_accuracy)
-        
         plt.xlabel('Epochs')
         plt.ylabel('Percentage')
         plt.savefig('Train_accuracy',dpi=300)
         plt.show()
         #--------------------------------------------------------------------
-        
         if validation_metrics == True:
             if mode == 1:
                 plt.plot(val_dice_coef)
-        
                 plt.xlabel('Epochs')
                 plt.ylabel('Percentage')
                 plt.savefig('VAL_dice_coef',dpi=300)
-                plt.show()
-            
+                plt.show()    
             plt.plot(val_loss)
-        
             plt.xlabel('Epochs')
             plt.ylabel('Percentage')
             plt.savefig('VAL_loss',dpi=300)
             plt.show()
-        
             plt.plot(val_accuracy)
-        
             plt.xlabel('Epochs')
             plt.ylabel('Percentage')
             plt.savefig('VAL_accuracy',dpi=300)
             plt.show()
-        
         #------------------------------------
         plt.plot(train_accuracy,label='train_accuracy')
         plt.plot(train_loss,label='train_loss')
@@ -422,7 +370,6 @@ class TrainPanelSegmentationModel():
         plt.legend()
         plt.savefig('Training statistics',dpi=300)
         plt.show()
-        
         if validation_metrics == True:
             plt.plot(val_accuracy,label='val_accuracy')
             plt.plot(val_loss,label='val_loss')
@@ -433,4 +380,5 @@ class TrainPanelSegmentationModel():
             plt.legend()
             plt.savefig('Validation statistics',dpi=300)
             plt.show()
+        return
 

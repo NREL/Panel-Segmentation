@@ -202,22 +202,9 @@ def test_cluster_panels():
     res = pc.testSingle(x.astype(float), test_mask=None,  model =None)    
     #Use the mask to isolate the panels
     new_res = pc.cropPanels(x, res)
-    number_arrays = 5
-    clusters = pc.clusterPanels(new_res, res, 
-                                number_arrays)
+    n, clusters = pc.clusterPanels(new_res)
     azimuth_list = []
     for ii in np.arange(clusters.shape[0]):
         az = pc.detectAzimuth(clusters[ii][np.newaxis,:])
         azimuth_list.append(az)
     assert all(isinstance(float(x), float) for x in azimuth_list)
-
-"""
-test_generate_satellite_image()
-test_has_panels()
-test_plot_az()
-test_mask_generator()
-test_estimate_az()
-test_cluster_panels()
-test_estimate_az()
-test_crop_panels()
-"""
