@@ -10,7 +10,7 @@ https://developers.google.com/maps/documentation/javascript/get-api-key?utm_sour
 classification model (VGG16_classification_model.h5).
 - Perform image segmentation on the satellite image, to locate the solar array(s) in the 
 image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_ConvTranpose_complete.h5).
-- Using spectral clustering, isolate individual solar arrays in the masked image.
+- Using connected components clustering, isolate individual solar arrays in the masked image.
 - Perform azimuth estimation on each solar array cluster in the masked image.
 
 
