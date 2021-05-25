@@ -10,8 +10,6 @@ import cv2
 import matplotlib.pyplot as plt
 from skimage.transform import hough_line, hough_line_peaks
 from matplotlib import cm
-from sklearn.cluster import spectral_clustering
-from sklearn.feature_extraction import image as imagex
 import requests
 from PIL import Image
 from os import path
@@ -36,8 +34,6 @@ class PanelDetection():
         self.model = load_model(model_file_path, 
                                 custom_objects=None, 
                                 compile=False)
-    
-        
         
         
     def generateSatelliteImage(self,latitude, longitude, 
@@ -176,19 +172,14 @@ class PanelDetection():
             raise TypeError("Variable test_data should be of type np.ndarray.")
         if type(BATCH_SIZE) != int:
             raise TypeError("Variable BATCH_SIZE should be of type int.")        
-        
         test_datagen = image.ImageDataGenerator(rescale=1./255,dtype='float32')
-        
         test_image_generator = test_datagen.flow(
                 test_data,
                 batch_size = BATCH_SIZE, shuffle=False)
-
         if model != None:
             test_res = model.predict(test_image_generator)
         else :
             test_res = self.model.predict(test_image_generator)
-            
-            
         if test_mask != None: 
             test_mask = test_mask/np.max(test_mask)
             accuracy = self.dice_coef(test_mask,test_res)  
@@ -234,7 +225,6 @@ class PanelDetection():
         else :
             test_res = self.model.predict(test_data)
             test_res = (test_res[0].reshape(640,640))
-              
         if test_mask != None: 
             test_mask = test_mask/np.max(test_mask)
             accuracy = self.dice_coef(test_mask,test_res)  
@@ -277,7 +267,7 @@ class PanelDetection():
             return False
         
 
-    def detectAzimuth(self, in_img, number_lines=10):
+    def detectAzimuth(self, in_img, number_lines=5):
         """
         This function uses canny edge detection to first extract the edges of the input image. 
         To use this function, you have to first predict the mask of the test image 
@@ -325,10 +315,8 @@ class PanelDetection():
             else:
                 az[ind] = 270 + deg_ang
             ind =ind+1
-                    
         unique_elements, counts_elements = np.unique(az, return_counts=True)
         check = counts_elements[np.argmax(counts_elements)]
-                
         if check == 1:
             for _, angle, dist in zip(*hough_line_peaks(h, theta, d, num_peaks=1, threshold =0.25*np.max(h))):
                 deg_ang = int(np.rad2deg(angle))
@@ -338,14 +326,14 @@ class PanelDetection():
                     azimuth = 270 + deg_ang
         else:
             azimuth = (unique_elements[np.argmax(counts_elements)])
-         
         return azimuth    
 
     
     def cropPanels(self, test_data, test_res):
         """
         This function basically isolates regions with solar panels in a 
-        satellite image using the predicted mask. It zeros out otherpixels that does not contain a panel.
+        satellite image using the predicted mask. It zeros out other pixels that does not 
+        contain a panel.
         You can use this for a single test data or multiple test data. 
         
         Parameters 
@@ -373,9 +361,7 @@ class PanelDetection():
         #Convert the test_data array from 3D to 4D
         if test_data.ndim == 3:
             test_data = test_data[np.newaxis, :]
-            
         new_test_res = np.uint8(np.zeros((test_data.shape[0],640,640,3)))
-        
         for ju in np.arange(test_data.shape[0]):
             try:
                 in_img = test_res[ju].reshape(640,640)
@@ -384,17 +370,15 @@ class PanelDetection():
             in_img[in_img < 0.9] = 0
             in_img[in_img >= 0.9] = 1
             in_img = np.uint8(in_img)
-
             test2 = np.copy(test_data[ju])
             test2[(1-in_img).astype(bool),0] = 0
             test2[(1-in_img).astype(bool),1] = 0
             test2[(1-in_img).astype(bool),2] = 0
-            new_test_res[ju] = test2
-            
+            new_test_res[ju] = test2    
         return new_test_res
         
     
-    def plotEdgeAz(self, test_results, no_lines=10, 
+    def plotEdgeAz(self, test_results, no_lines=5, 
                     no_figs=1, save_img_file_path = None,
                     plot_show = False):
         """
@@ -577,29 +561,21 @@ class PanelDetection():
         #Continue running through the function if all the inputs are correct
         if (len(test_mask.shape) < 3):
             test_mask = cv2.cvtColor(test_mask,cv2.COLOR_GRAY2RGB)
-                   
         test_mask =  test_mask.reshape(640,640,3) 
-        
         # Converting those pixels with values 0-0.5 to 0 and others to 1
         img = cv2.threshold(test_mask, 0.5, 1, cv2.THRESH_BINARY)[1]
-        
         # Applying cv2.connectedComponents() 
         num_labels, labels = cv2.connectedComponents(img[:,:,2].reshape(640,640))        
-            
         # Map component labels to hue val, 0-179 is the hue range in OpenCV
         label_hue = np.uint8(179*labels/np.max(labels))
         blank_ch = 255*np.ones_like(label_hue)
         labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
-
         # Converting cvt to BGR
         labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
-
         # set background label to black
         labeled_img[label_hue==0] = 0
-     
         #Initialize each clusters
         clusters = np.uint8(np.zeros((num_labels-1, 640, 640,3)))
-        
         #starting from 1 to ignore background
         for i in np.arange(1,num_labels):
             clus = np.copy(test_mask)
@@ -610,7 +586,6 @@ class PanelDetection():
             clus[(1-c_mask).astype(bool),2] = 0
             #clus_label = np.stack((clus_label,)*3, axis=-1)
             clusters[i-1] = clus
-
         # Loop through each cluster, and detect number of non-zero values
         # in each cluster.
         clusters_list_keep = []
@@ -618,13 +593,13 @@ class PanelDetection():
             cluster = clusters[cluster_number]
             # Get the number of non-zero values as a ratio of total pixels
             pixel_count = len(cluster[cluster>0])
-            total_pixels = len(cluster)
+            total_pixels = cluster.shape[0] * cluster.shape[1] * cluster.shape[2]
             # Must greater than 3% non-zero pixels or we omit the cluster
-            if (pixel_count / total_pixels) >= 0.1:
+            print(pixel_count / total_pixels)
+            if (pixel_count / total_pixels) >= 0.0015:
                 clusters_list_keep.append(cluster_number)
         # Filter clusters
         clusters = clusters[clusters_list_keep]
-            
         if fig == True:
                 #Showing Image after Component Labeling
                 plt.figure()
@@ -632,8 +607,7 @@ class PanelDetection():
                 plt.axis('off')
                 plt.title("Image after Component Labeling")
                 plt.show()
-    
-        return len(clusters), clusters
+        return len(clusters),clusters
     
     
 
