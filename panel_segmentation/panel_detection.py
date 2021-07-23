@@ -42,14 +42,14 @@ class PanelDetection:
     def __init__(self, model_file_path='./VGG16Net_ConvTranpose_complete.h5',
                  classifier_file_path='./VGG16_classification_model.h5',):
         
-        #This is the model used for detecting if there is a panel or not
-        # self.classifier = load_model(classifier_file_path,
-        #                              custom_objects=None,
-        #                              compile=False)
-        #
-        # self.model = load_model(model_file_path,
-        #                         custom_objects=None,
-        #                         compile=False)
+        # This is the model used for detecting if there is a panel or not
+        self.classifier = load_model(classifier_file_path,
+                                     custom_objects=None,
+                                     compile=False)
+
+        self.model = load_model(model_file_path,
+                                custom_objects=None,
+                                compile=False)
         self.classifier = None
         self.model = None
 
@@ -99,26 +99,45 @@ class PanelDetection:
         #Read in the image and return it via the console
         return Image.open(file_name_save)
 
-    def get_classification_and_score_from_long_and_lat(self, latitude, longitude, google_maps_api_key, file_name="image.jpeg",
-                                                       inference_save_dir=None, regular_file_dir=None):
-        """Return classification, score, and labeled img"""
+    def get_classification_and_score_from_long_and_lat(self, latitude, longitude, google_maps_api_key,
+                                                       file_name="image.jpeg", inference_save_dir=None,
+                                                       regular_file_dir=None):
+        """
+        Generates inferred satellite image via Google Maps, using the passed lat-long coordinates.
+
+        Parameters
+        -----------
+        latitude: Float. Latitude coordinate of the site.
+        longitude: Float. Longitude coordinate of the site.
+        google_maps_api_key: String. Google Maps API Key for automatically
+            pulling satellite images.
+        file_name: String. File path that we want to save the image to. PNG file.
+        inference_save_dir: String. Folder path for inferred images to save in.
+        regular_file_dir: String. Folder path for images pre-inference to be saved in.
+
+        Returns
+        -----------
+        Returns None.
+        """
         if regular_file_dir is None:
             regular_file_dir = "{0}/{1}".format(path.abspath(path.join(dir_path, "clean")), file_name)
         if inference_save_dir is None:
             inference_save_dir = "{0}/{1}".format(path.abspath(path.join(dir_path, "inferred")), file_name)
-        self.generateSatelliteImage(latitude=latitude, longitude=longitude,
-                                           file_name_save=regular_file_dir, google_maps_api_key=google_maps_api_key)
+        # self.generateSatelliteImage(latitude=latitude, longitude=longitude,
+        #                             file_name_save=regular_file_dir,
+        #                             google_maps_api_key=google_maps_api_key)
+
         image = load_image_into_numpy_array(regular_file_dir)
 
         output_dict = run_inference_for_single_image(model, image)
-        # output_dict = delete_over_lapping(output_dict, 0.1)
+        output_dict = delete_over_lapping(output_dict)
         vis_util.visualize_boxes_and_labels_on_image_array(
             image,
             output_dict['detection_boxes'],
             output_dict['detection_classes'],
             output_dict['detection_scores'],
             category_index,
-            agnostic_mode=True,
+            agnostic_mode=False,
             instance_masks=output_dict.get('detection_masks_reframed', None),
             use_normalized_coordinates=True,
             line_thickness=8)
@@ -126,29 +145,6 @@ class PanelDetection:
         img.save("{}".format(inference_save_dir))
         print("{} inference made".format(path.basename(inference_save_dir)))
 
-    def get_inferred_satellite_image(self, latitude, longitude,
-                               file_name_save, google_maps_api_key):
-        """
-        Generates satellite image via Google Maps, using the passed lat-long coordinates.
-
-        Parameters
-        -----------
-        latitude: Float. Latitude coordinate of the site.
-        longitude: Float. Longitude coordinate of the site.
-        file_name_save: String. File path that we want to save the image to. PNG file.
-        google_maps_api_key: String. Google Maps API Key for automatically
-            pulling satellite images.
-
-        Returns
-        -----------
-        Returned satellite image.
-        """
-        img = self.generateSatelliteImage(latitude, longitude, file_name_save, google_maps_api_key)
-        img = np.array(img)  # Converts from Pil to numpy array
-
-
-
-        pass
 
     def diceCoeff(self, y_true, y_pred, smooth=1):
         """
@@ -675,7 +671,3 @@ class PanelDetection:
                 plt.title("Image after Component Labeling")
                 plt.show()
         return len(clusters),clusters
-
-
-
-    
