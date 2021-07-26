@@ -11,26 +11,27 @@ import cv2
 import matplotlib.pyplot as plt
 from skimage.transform import hough_line, hough_line_peaks
 from matplotlib import cm
-from models.research.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
-    vis_util, delete_over_lapping, label_map_util
+from pv_learning.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
+    vis_util, delete_over_lapping_in_image, label_map_util, filter_score
 import requests
 from PIL import Image
 from os import path
 
 panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
 panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
+
 output_directory = 'inference_graph'
-train_record_path = "../models/research/object_detection/pv-learning/train.record"
-test_record_path = "../models/research/object_detection/pv-learning/test.record"
-labelmap_path = "../models/research/object_detection/pv-learning/labelmap.pbtxt"
-base_config_path = "../models/research/object_detection/configs/tf2/ssd_efficientdet_d0_512x512_coco17_tpu-8.config"
+train_record_path = "pv_learning/train.record"
+test_record_path = "pv_learning/test.record"
+labelmap_path = "pv_learning/labelmap.pbtxt"
+base_config_path = "pv_learning/faster_rcnn_resnet50_v1_640x640_coco17_tpu-8.config"
 dir_path = path.abspath(path.join(__file__, "..", ".."))
 tf.gfile = tf.io.gfile
 category_index = \
     label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
 
 tf.keras.backend.clear_session()
-model = tf.saved_model.load(f'../models/research/object_detection/{output_directory}/saved_model')
+model = tf.saved_model.load(f'pv_learning/{output_directory}/saved_model')
 
 
 class PanelDetection:
@@ -43,6 +44,8 @@ class PanelDetection:
                  classifier_file_path='./VGG16_classification_model.h5',):
         
         # This is the model used for detecting if there is a panel or not
+        if path.isfile(classifier_file_path):
+            print("{} Exists!".format(classifier_file_path))
         self.classifier = load_model(classifier_file_path,
                                      custom_objects=None,
                                      compile=False)
@@ -50,8 +53,9 @@ class PanelDetection:
         self.model = load_model(model_file_path,
                                 custom_objects=None,
                                 compile=False)
-        self.classifier = None
-        self.model = None
+        # self.model = None
+        # self.classifier = None
+
 
     def generateSatelliteImage(self, latitude, longitude,
                                file_name_save, google_maps_api_key):
@@ -99,7 +103,8 @@ class PanelDetection:
         #Read in the image and return it via the console
         return Image.open(file_name_save)
 
-    def get_classification_and_score_from_long_and_lat(self, latitude, longitude, google_maps_api_key,
+    @staticmethod
+    def get_classification_and_score_from_long_and_lat(latitude, longitude, google_maps_api_key,
                                                        file_name="image.jpeg", inference_save_dir=None,
                                                        regular_file_dir=None):
         """
@@ -130,19 +135,23 @@ class PanelDetection:
         image = load_image_into_numpy_array(regular_file_dir)
 
         output_dict = run_inference_for_single_image(model, image)
-        output_dict = delete_over_lapping(output_dict)
-        vis_util.visualize_boxes_and_labels_on_image_array(
-            image,
-            output_dict['detection_boxes'],
-            output_dict['detection_classes'],
-            output_dict['detection_scores'],
-            category_index,
-            agnostic_mode=False,
-            instance_masks=output_dict.get('detection_masks_reframed', None),
-            use_normalized_coordinates=True,
-            line_thickness=8)
-        img = Image.fromarray(image)
-        img.save("{}".format(inference_save_dir))
+        output_dict = filter_score(output_dict, 0.9)
+        output_dict = delete_over_lapping_in_image(output_dict)
+        if output_dict['num_detections'] <= 0:
+            pass
+        else:
+            vis_util.visualize_boxes_and_labels_on_image_array(
+                image,
+                output_dict['detection_boxes'],
+                output_dict['detection_classes'],
+                output_dict['detection_scores'],
+                category_index,
+                agnostic_mode=False,
+                instance_masks=None,
+                use_normalized_coordinates=True,
+                line_thickness=8)
+            img = Image.fromarray(image)
+            img.save("{}".format(inference_save_dir))
         print("{} inference made".format(path.basename(inference_save_dir)))
 
 
