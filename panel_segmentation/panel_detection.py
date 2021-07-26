@@ -11,26 +11,26 @@ import cv2
 import matplotlib.pyplot as plt
 from skimage.transform import hough_line, hough_line_peaks
 from matplotlib import cm
-from models.research.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
-    vis_util, delete_over_lapping, label_map_util
+# from models.research.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
+#     vis_util, delete_over_lapping, label_map_util
 import requests
 from PIL import Image
 from os import path
 
-panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
-panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
-output_directory = 'inference_graph'
-train_record_path = "../models/research/object_detection/pv-learning/train.record"
-test_record_path = "../models/research/object_detection/pv-learning/test.record"
-labelmap_path = "../models/research/object_detection/pv-learning/labelmap.pbtxt"
-base_config_path = "../models/research/object_detection/configs/tf2/ssd_efficientdet_d0_512x512_coco17_tpu-8.config"
-dir_path = path.abspath(path.join(__file__, "..", ".."))
-tf.gfile = tf.io.gfile
-category_index = \
-    label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
+# panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
+# panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
+# output_directory = 'inference_graph'
+# train_record_path = "../models/research/object_detection/pv-learning/train.record"
+# test_record_path = "../models/research/object_detection/pv-learning/test.record"
+# labelmap_path = "../models/research/object_detection/pv-learning/labelmap.pbtxt"
+# base_config_path = "../models/research/object_detection/configs/tf2/ssd_efficientdet_d0_512x512_coco17_tpu-8.config"
+# dir_path = path.abspath(path.join(__file__, "..", ".."))
+# tf.gfile = tf.io.gfile
+# category_index = \
+#     label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
 
-tf.keras.backend.clear_session()
-model = tf.saved_model.load(f'../models/research/object_detection/{output_directory}/saved_model')
+# tf.keras.backend.clear_session()
+# model = tf.saved_model.load(f'../models/research/object_detection/{output_directory}/saved_model')
 
 
 class PanelDetection:
@@ -40,7 +40,7 @@ class PanelDetection:
     clustering, and predicting the Azimuth.
     '''
     def __init__(self, model_file_path='./VGG16Net_ConvTranpose_complete.h5',
-                 classifier_file_path='./VGG16_classification_model.h5',):
+                 classifier_file_path='./VGG16_classification_model.h5'):
         
         # This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path,
