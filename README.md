@@ -13,6 +13,18 @@ image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_Con
 - Using connected components clustering, isolate individual solar arrays in the masked image.
 - Perform azimuth estimation on each solar array cluster in the masked image.
 
+To install Panel-Segmentation, perform the following steps:
+
+1. You must have Git large file storage (lfs) on your computer in order to download the deep learning models in this package. Go to the following site to download Git lfs: 
+
+https://git-lfs.github.com/
+
+2. Once git lfs is installed, you can now install Panel-Segmentation on your computer. We are still working on making panel-segmentation availble via PyPi, so entering the following in the command line will install the package locally on your computer:
+
+pip install git+https://github.com/NREL/Panel-Segmentation.git@master#egg=panel-segmentation
+
+
+
 
 
 
