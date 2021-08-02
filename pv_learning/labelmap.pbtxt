@@ -1,0 +1,21 @@
+item {
+    id: 1
+    name: 'ground-fixed'
+}
+item {
+    id: 2
+    name: 'carport-fixed'
+}
+item {
+    id: 3
+    name: 'rooftop-fixed'
+}
+item {
+    id: 4
+    name: 'ground-single_axis_tracker'
+}
+item {
+    id: 5
+    name: 'ground-double_axis_tracker'
+}
+
