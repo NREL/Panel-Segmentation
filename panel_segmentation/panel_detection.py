@@ -11,12 +11,18 @@ import cv2
 import matplotlib.pyplot as plt
 from skimage.transform import hough_line, hough_line_peaks
 from matplotlib import cm
+<<<<<<< HEAD
 # from models.research.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
 #     vis_util, delete_over_lapping, label_map_util
+=======
+from pv_learning.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
+    vis_util, delete_over_lapping_in_image, label_map_util, filter_score
+>>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
 import requests
 from PIL import Image
 from os import path
 
+<<<<<<< HEAD
 # panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
 # panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
 # output_directory = 'inference_graph'
@@ -24,14 +30,36 @@ from os import path
 # test_record_path = "../models/research/object_detection/pv-learning/test.record"
 # labelmap_path = "../models/research/object_detection/pv-learning/labelmap.pbtxt"
 # base_config_path = "../models/research/object_detection/configs/tf2/ssd_efficientdet_d0_512x512_coco17_tpu-8.config"
+=======
+panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
+panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
+base_dir = path.abspath(path.join(path.dirname(__file__), ".."))
+#
+# output_directory = 'inference_graph'
+# train_record_path = "pv_learning/train.record"
+# test_record_path = "pv_learning/test.record"
+# labelmap_path = "pv_learning/labelmap.pbtxt"
+# base_config_path = "pv_learning/faster_rcnn_resnet50_v1_640x640_coco17_tpu-8.config"
+>>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
 # dir_path = path.abspath(path.join(__file__, "..", ".."))
 # tf.gfile = tf.io.gfile
 # category_index = \
 #     label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
+<<<<<<< HEAD
 
 # tf.keras.backend.clear_session()
 # model = tf.saved_model.load(f'../models/research/object_detection/{output_directory}/saved_model')
 
+=======
+#
+# tf.keras.backend.clear_session()
+# model = tf.saved_model.load(f'pv_learning/{output_directory}/saved_model')
+
+train_record_path = "pv_learning/train.record"
+test_record_path = "pv_learning/test.record"
+labelmap_path = "pv_learning/labelmap.pbtxt"
+base_config_path = "pv_learning/faster_rcnn_resnet50_v1_640x640_coco17_tpu-8.config"
+>>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
 
 class PanelDetection:
     '''
@@ -40,8 +68,12 @@ class PanelDetection:
     clustering, and predicting the Azimuth.
     '''
     def __init__(self, model_file_path='./VGG16Net_ConvTranpose_complete.h5',
+<<<<<<< HEAD
                  classifier_file_path='./VGG16_classification_model.h5'):
         
+=======
+                 classifier_file_path='./VGG16_classification_model.h5',):
+>>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
         # This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path,
                                      custom_objects=None,
@@ -50,8 +82,20 @@ class PanelDetection:
         self.model = load_model(model_file_path,
                                 custom_objects=None,
                                 compile=False)
+<<<<<<< HEAD
         self.classifier = None
         self.model = None
+=======
+        output_directory = f'{base_dir}/pv_learning/inference_graph'
+        labelmap_path = f"{base_dir}/pv_learning/labelmap.pbtxt"
+        self.dir_path = path.abspath(path.join(__file__, "..", ".."))
+        tf.gfile = tf.io.gfile
+        tf.keras.backend.clear_session()
+        self.solar_array_detection_model = tf.saved_model.load(f'{output_directory}/saved_model')
+        self.category_index = label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
+
+
+>>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
 
     def generateSatelliteImage(self, latitude, longitude,
                                file_name_save, google_maps_api_key):
@@ -120,6 +164,7 @@ class PanelDetection:
         Returns None.
         """
         if regular_file_dir is None:
+<<<<<<< HEAD
             regular_file_dir = "{0}/{1}".format(path.abspath(path.join(dir_path, "clean")), file_name)
         if inference_save_dir is None:
             inference_save_dir = "{0}/{1}".format(path.abspath(path.join(dir_path, "inferred")), file_name)
@@ -143,6 +188,35 @@ class PanelDetection:
             line_thickness=8)
         img = Image.fromarray(image)
         img.save("{}".format(inference_save_dir))
+=======
+            regular_file_dir = "{0}/{1}".format(path.abspath(path.join(self.out_dir_path, "clean")), file_name)
+        if inference_save_dir is None:
+            inference_save_dir = "{0}/{1}".format(path.abspath(path.join(self.out_dir_path, "inferred")), file_name)
+        self.generateSatelliteImage(latitude=latitude, longitude=longitude,
+                                    file_name_save=regular_file_dir,
+                                    google_maps_api_key=google_maps_api_key)
+
+        image = load_image_into_numpy_array(regular_file_dir)
+
+        output_dict = run_inference_for_single_image(self.solar_array_detection_model, image)
+        output_dict = filter_score(output_dict, 0.9)
+        output_dict = delete_over_lapping_in_image(output_dict)
+        if output_dict['num_detections'] <= 0:
+            pass
+        else:
+            vis_util.visualize_boxes_and_labels_on_image_array(
+                image,
+                output_dict['detection_boxes'],
+                output_dict['detection_classes'],
+                output_dict['detection_scores'],
+                self.category_index,
+                agnostic_mode=False,
+                instance_masks=None,
+                use_normalized_coordinates=True,
+                line_thickness=8)
+            img = Image.fromarray(image)
+            img.save("{}".format(inference_save_dir))
+>>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
         print("{} inference made".format(path.basename(inference_save_dir)))
 
 
@@ -671,3 +745,8 @@ class PanelDetection:
                 plt.title("Image after Component Labeling")
                 plt.show()
         return len(clusters),clusters
+<<<<<<< HEAD
+=======
+
+p = PanelDetection()
+>>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7

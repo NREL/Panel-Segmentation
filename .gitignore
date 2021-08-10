@@ -10,3 +10,6 @@ config.yaml
 # sphinx
 build
 generated
+
+venv/
+.idea/
