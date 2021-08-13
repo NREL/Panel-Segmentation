@@ -11,55 +11,18 @@ import cv2
 import matplotlib.pyplot as plt
 from skimage.transform import hough_line, hough_line_peaks
 from matplotlib import cm
-<<<<<<< HEAD
-# from models.research.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
-#     vis_util, delete_over_lapping, label_map_util
-=======
-from pv_learning.main_inference import load_image_into_numpy_array, run_inference_for_single_image, \
-    vis_util, delete_over_lapping_in_image, label_map_util, filter_score
->>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
-import requests
+import mounting_config_inference as inf
 from PIL import Image
 from os import path
+import requests
 
-<<<<<<< HEAD
-# panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
-# panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
-# output_directory = 'inference_graph'
-# train_record_path = "../models/research/object_detection/pv-learning/train.record"
-# test_record_path = "../models/research/object_detection/pv-learning/test.record"
-# labelmap_path = "../models/research/object_detection/pv-learning/labelmap.pbtxt"
-# base_config_path = "../models/research/object_detection/configs/tf2/ssd_efficientdet_d0_512x512_coco17_tpu-8.config"
-=======
-panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
-panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
-base_dir = path.abspath(path.join(path.dirname(__file__), ".."))
-#
-# output_directory = 'inference_graph'
-# train_record_path = "pv_learning/train.record"
-# test_record_path = "pv_learning/test.record"
-# labelmap_path = "pv_learning/labelmap.pbtxt"
-# base_config_path = "pv_learning/faster_rcnn_resnet50_v1_640x640_coco17_tpu-8.config"
->>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
-# dir_path = path.abspath(path.join(__file__, "..", ".."))
-# tf.gfile = tf.io.gfile
-# category_index = \
-#     label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
-<<<<<<< HEAD
+panel_seg_model_path = path.join(path.dirname(__file__),
+                                 'VGG16Net_ConvTranpose_complete.h5')
+panel_classification_model_path = path.join(path.dirname(__file__),
+                                            'VGG16_classification_model.h5')
+mounting_classification_model_path = path.join(path.dirname(__file__),
+                                               'saved_model.pb')
 
-# tf.keras.backend.clear_session()
-# model = tf.saved_model.load(f'../models/research/object_detection/{output_directory}/saved_model')
-
-=======
-#
-# tf.keras.backend.clear_session()
-# model = tf.saved_model.load(f'pv_learning/{output_directory}/saved_model')
-
-train_record_path = "pv_learning/train.record"
-test_record_path = "pv_learning/test.record"
-labelmap_path = "pv_learning/labelmap.pbtxt"
-base_config_path = "pv_learning/faster_rcnn_resnet50_v1_640x640_coco17_tpu-8.config"
->>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
 
 class PanelDetection:
     '''
@@ -67,40 +30,29 @@ class PanelDetection:
     detecting solar arrays from a satellite image, performing spectral
     clustering, and predicting the Azimuth.
     '''
+
     def __init__(self, model_file_path='./VGG16Net_ConvTranpose_complete.h5',
-<<<<<<< HEAD
-                 classifier_file_path='./VGG16_classification_model.h5'):
-        
-=======
-                 classifier_file_path='./VGG16_classification_model.h5',):
->>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
+                 classifier_file_path='./VGG16_classification_model.h5',
+                 mounting_classifier_file_path='./Faster_RCNN_ResNet50_mounting_classification_model.pb',
+                 mounting_label_config='./labelmap.pbtxt'):
         # This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path,
                                      custom_objects=None,
                                      compile=False)
-
         self.model = load_model(model_file_path,
                                 custom_objects=None,
                                 compile=False)
-<<<<<<< HEAD
-        self.classifier = None
-        self.model = None
-=======
-        output_directory = f'{base_dir}/pv_learning/inference_graph'
-        labelmap_path = f"{base_dir}/pv_learning/labelmap.pbtxt"
+        self.mounting_classifier = tf.keras.models.load_model("C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/inference_graph/saved_model")
         self.dir_path = path.abspath(path.join(__file__, "..", ".."))
-        tf.gfile = tf.io.gfile
-        tf.keras.backend.clear_session()
-        self.solar_array_detection_model = tf.saved_model.load(f'{output_directory}/saved_model')
-        self.category_index = label_map_util.create_category_index_from_labelmap(labelmap_path, use_display_name=True)
+        self.category_index = inf.create_category_index_from_labelmap(
+            mounting_label_config, use_display_name=True)
 
-
->>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
 
     def generateSatelliteImage(self, latitude, longitude,
                                file_name_save, google_maps_api_key):
         """
-        Generates satellite image via Google Maps, using the passed lat-long coordinates.
+        Generates satellite image via Google Maps, using the passed lat-long
+        coordinates.
         
         Parameters
         -----------
@@ -111,114 +63,70 @@ class PanelDetection:
             pulling satellite images.
                 
         Returns
-        -----------    
+        -----------
         Returned satellite image.
         """
-        #Check input variable for types
+        # Check input variable for types
         if type(latitude) != float:
             raise TypeError("latitude variable must be of type float.")
         if type(longitude) != float:
-            raise TypeError("longitude variable must be of type float.")    
+            raise TypeError("longitude variable must be of type float.")
         if type(file_name_save) != str:
             raise TypeError("file_name_save variable must be of type string.")
         if type(google_maps_api_key) != str:
-            raise TypeError("google_maps_api_key variable must be of type string.")
-        #Build up the lat_long string from the latitude-longitude coordinates
-        lat_long = str(latitude)+ ", "+ str(longitude)
-        # get method of requests module 
-        # return response object 
+            raise TypeError("google_maps_api_key variable must be "
+                            "of type string.")
+        # Build up the lat_long string from the latitude-longitude coordinates
+        lat_long = str(latitude) + ", " + str(longitude)
+        # get method of requests module
+        # return response object
         r = requests.get("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" + lat_long + "&zoom=18&size=35000x35000&key="+google_maps_api_key,
                          verify= False)    
         #Raise an exception if the satellite image is not successfully returned
         if r.status_code != 200:
-            raise ValueError("Response status code " + str(r.status_code) + ": Image not pulled successfully from API.")
-        # wb mode is stand for write binary mode 
-        f = open(file_name_save, 'wb')     
-        # r.content gives content, 
-        # in this case gives image 
+            raise ValueError("Response status code " +
+                             str(r.status_code) +
+                             ": Image not pulled successfully from API.")
+        # wb mode is stand for write binary mode
+        f = open(file_name_save, 'wb')
+        # r.content gives content,
+        # in this case gives image
         f.write(r.content)
-        # close method of file object 
-        # save and close the file 
+        # close method of file object
+        # save and close the file
         f.close()
-        #Read in the image and return it via the console
+        # Read in the image and return it via the console
         return Image.open(file_name_save)
 
-    def get_classification_and_score_from_long_and_lat(self, latitude, longitude, google_maps_api_key,
-                                                       file_name="image.jpeg", inference_save_dir=None,
-                                                       regular_file_dir=None):
+
+    def classifyMountingConfiguration(self, image_file_path):
         """
         Generates inferred satellite image via Google Maps, using the passed lat-long coordinates.
 
         Parameters
         -----------
-        latitude: Float. Latitude coordinate of the site.
-        longitude: Float. Longitude coordinate of the site.
-        google_maps_api_key: String. Google Maps API Key for automatically
-            pulling satellite images.
-        file_name: String. File path that we want to save the image to. PNG file.
-        inference_save_dir: String. Folder path for inferred images to save in.
-        regular_file_dir: String. Folder path for images pre-inference to be saved in.
-
+        image_file_path: Str. file path of the image.
+        
         Returns
         -----------
         Returns None.
         """
-        if regular_file_dir is None:
-<<<<<<< HEAD
-            regular_file_dir = "{0}/{1}".format(path.abspath(path.join(dir_path, "clean")), file_name)
-        if inference_save_dir is None:
-            inference_save_dir = "{0}/{1}".format(path.abspath(path.join(dir_path, "inferred")), file_name)
-        # self.generateSatelliteImage(latitude=latitude, longitude=longitude,
-        #                             file_name_save=regular_file_dir,
-        #                             google_maps_api_key=google_maps_api_key)
-
-        image = load_image_into_numpy_array(regular_file_dir)
-
-        output_dict = run_inference_for_single_image(model, image)
-        output_dict = delete_over_lapping(output_dict)
-        vis_util.visualize_boxes_and_labels_on_image_array(
-            image,
-            output_dict['detection_boxes'],
-            output_dict['detection_classes'],
-            output_dict['detection_scores'],
-            category_index,
-            agnostic_mode=False,
-            instance_masks=output_dict.get('detection_masks_reframed', None),
-            use_normalized_coordinates=True,
-            line_thickness=8)
-        img = Image.fromarray(image)
-        img.save("{}".format(inference_save_dir))
-=======
-            regular_file_dir = "{0}/{1}".format(path.abspath(path.join(self.out_dir_path, "clean")), file_name)
-        if inference_save_dir is None:
-            inference_save_dir = "{0}/{1}".format(path.abspath(path.join(self.out_dir_path, "inferred")), file_name)
-        self.generateSatelliteImage(latitude=latitude, longitude=longitude,
-                                    file_name_save=regular_file_dir,
-                                    google_maps_api_key=google_maps_api_key)
-
-        image = load_image_into_numpy_array(regular_file_dir)
-
-        output_dict = run_inference_for_single_image(self.solar_array_detection_model, image)
-        output_dict = filter_score(output_dict, 0.9)
-        output_dict = delete_over_lapping_in_image(output_dict)
-        if output_dict['num_detections'] <= 0:
-            pass
-        else:
-            vis_util.visualize_boxes_and_labels_on_image_array(
-                image,
-                output_dict['detection_boxes'],
-                output_dict['detection_classes'],
-                output_dict['detection_scores'],
-                self.category_index,
-                agnostic_mode=False,
-                instance_masks=None,
-                use_normalized_coordinates=True,
-                line_thickness=8)
-            img = Image.fromarray(image)
-            img.save("{}".format(inference_save_dir))
->>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
-        print("{} inference made".format(path.basename(inference_save_dir)))
-
+        image_array = inf.load_image_into_numpy_array(image_file_path)
+        output_dict = inf.run_inference_for_single_image(self.mounting_classifier,
+                                                         image_array)
+        output_dict = inf.delete_overlapping(output_dict)
+        inf.visualize_boxes_and_labels_on_image_array(
+                                        image_array,
+                                        output_dict['detection_boxes'],
+                                        output_dict['detection_classes'],
+                                        output_dict['detection_scores'],
+                                        self.category_index,
+                                        agnostic_mode=False,
+                                        instance_masks=output_dict.get('detection_masks_reframed', None),
+                                        use_normalized_coordinates=True,
+                                        line_thickness=8)
+        img = Image.fromarray(image_array)
+        return img
 
     def diceCoeff(self, y_true, y_pred, smooth=1):
         """
@@ -745,8 +653,3 @@ class PanelDetection:
                 plt.title("Image after Component Labeling")
                 plt.show()
         return len(clusters),clusters
-<<<<<<< HEAD
-=======
-
-p = PanelDetection()
->>>>>>> 9dcbc9a593444238240087d29d3b26275f4a4ad7
