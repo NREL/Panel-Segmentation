@@ -33,7 +33,7 @@ class PanelDetection:
 
     def __init__(self, model_file_path='./VGG16Net_ConvTranpose_complete.h5',
                  classifier_file_path='./VGG16_classification_model.h5',
-                 mounting_classifier_file_path='./Faster_RCNN_ResNet50_mounting_classification_model.pb',
+                 mounting_classifier_file_path='./inference_graph/saved_model',
                  mounting_label_config='./labelmap.pbtxt'):
         # This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path,
@@ -42,8 +42,7 @@ class PanelDetection:
         self.model = load_model(model_file_path,
                                 custom_objects=None,
                                 compile=False)
-        self.mounting_classifier = tf.keras.models.load_model("C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/inference_graph/saved_model")
-        self.dir_path = path.abspath(path.join(__file__, "..", ".."))
+        self.mounting_classifier = tf.keras.models.load_model(mounting_classifier_file_path)
         self.category_index = inf.create_category_index_from_labelmap(
             mounting_label_config, use_display_name=True)
 
