@@ -6,23 +6,25 @@ import numpy as np
 from tensorflow.keras import backend as K
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.models import load_model
-import tensorflow as tf
 import cv2
 import matplotlib.pyplot as plt
 from skimage.transform import hough_line, hough_line_peaks
 from matplotlib import cm
-import mounting_config_inference as inf
 from PIL import Image
 from os import path
 import requests
+from detecto import core
+from detecto.utils import read_image
+from detecto.visualize import show_labeled_image
+import torch
+
 
 panel_seg_model_path = path.join(path.dirname(__file__),
                                  'VGG16Net_ConvTranpose_complete.h5')
 panel_classification_model_path = path.join(path.dirname(__file__),
                                             'VGG16_classification_model.h5')
 mounting_classification_model_path = path.join(path.dirname(__file__),
-                                               'saved_model.pb')
-
+                                               'object_detection_model.pth')
 
 class PanelDetection:
     '''
@@ -33,8 +35,7 @@ class PanelDetection:
 
     def __init__(self, model_file_path='./VGG16Net_ConvTranpose_complete.h5',
                  classifier_file_path='./VGG16_classification_model.h5',
-                 mounting_classifier_file_path='./inference_graph/saved_model',
-                 mounting_label_config='./labelmap.pbtxt'):
+                 mounting_classifier_file_path='./object_detection_model.pth'):
         # This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path,
                                      custom_objects=None,
@@ -42,9 +43,11 @@ class PanelDetection:
         self.model = load_model(model_file_path,
                                 custom_objects=None,
                                 compile=False)
-        self.mounting_classifier = tf.keras.models.load_model(mounting_classifier_file_path)
-        self.category_index = inf.create_category_index_from_labelmap(
-            mounting_label_config, use_display_name=True)
+        self.mounting_classifier = core.Model.load(mounting_classifier_file_path,
+                                                   ["ground-fixed",
+                                                    "carport-fixed",
+                                                    "rooftop-fixed",
+                                                    "ground-single_axis_tracker"])
 
 
     def generateSatelliteImage(self, latitude, longitude,
@@ -80,8 +83,8 @@ class PanelDetection:
         # get method of requests module
         # return response object
         r = requests.get("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" + lat_long + "&zoom=18&size=35000x35000&key="+google_maps_api_key,
-                         verify= False)    
-        #Raise an exception if the satellite image is not successfully returned
+                         verify=False)
+        # Raise an exception if image is not successfully returned
         if r.status_code != 200:
             raise ValueError("Response status code " +
                              str(r.status_code) +
@@ -97,35 +100,34 @@ class PanelDetection:
         # Read in the image and return it via the console
         return Image.open(file_name_save)
 
-
-    def classifyMountingConfiguration(self, image_file_path):
+    def classifyMountingConfiguration(self, image_file_path,
+                                      acc_cutoff = .65):
         """
-        Generates inferred satellite image via Google Maps, using the passed lat-long coordinates.
+        This function is used to detect and classify the mounting configuration
+        of solar installations in satellite imagery. It leverages the Detecto 
+        package's functionality (https://detecto.readthedocs.io/en/latest/api/index.html),
+        to perform object detection on a satelllite image.
 
         Parameters
         -----------
-        image_file_path: Str. file path of the image.
+        image_file_path: Str. file path of the image. PNG file.
+        acc_cutoff: Float. 
         
         Returns
         -----------
         Returns None.
         """
-        image_array = inf.load_image_into_numpy_array(image_file_path)
-        output_dict = inf.run_inference_for_single_image(self.mounting_classifier,
-                                                         image_array)
-        output_dict = inf.delete_overlapping(output_dict)
-        inf.visualize_boxes_and_labels_on_image_array(
-                                        image_array,
-                                        output_dict['detection_boxes'],
-                                        output_dict['detection_classes'],
-                                        output_dict['detection_scores'],
-                                        self.category_index,
-                                        agnostic_mode=False,
-                                        instance_masks=output_dict.get('detection_masks_reframed', None),
-                                        use_normalized_coordinates=True,
-                                        line_thickness=8)
-        img = Image.fromarray(image_array)
-        return img
+        image = read_image(image_file_path)
+        labels, boxes, scores = self.mounting_classifier.predict(image)
+        mask = [float(x)>acc_cutoff for x in scores]
+        scores_to_keep = list(np.array(scores)[mask])
+        labels_to_keep = list(np.array(labels)[mask])
+        boxes_to_keep = torch.tensor(np.array(boxes)[mask])
+        # TODO: add in the box merging script here
+        
+        # Show the labeled image with predictions
+        show_labeled_image(image, boxes_to_keep, labels_to_keep)
+        return image
 
     def diceCoeff(self, y_true, y_pred, smooth=1):
         """
@@ -160,7 +162,6 @@ class PanelDetection:
         union = K.sum(y_true, axis=[1,2,3]) + K.sum(y_pred, axis=[1,2,3])
         dice = K.mean((2. * intersection + smooth)/(union + smooth), axis=0)
         return dice
-
     
     def diceCoeffLoss(self, y_true, y_pred):
         """
@@ -186,7 +187,6 @@ class PanelDetection:
         if type(y_pred) != np.ndarray:
             raise TypeError("Variable y_pred should be of type np.ndarray.")
         return 1-self.dice_coef(y_true, y_pred)
-    
 
     def testBatch(self, test_data, test_mask=None, BATCH_SIZE = 16, model =None):
         """

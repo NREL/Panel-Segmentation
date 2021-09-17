@@ -13,9 +13,21 @@ from tensorflow.keras import backend as K
 import glob
 import cv2
 from os import path
+import pandas as pd
+import os
+from detecto import core, utils
+from torchvision import transforms
+from random import choices
+from sklearn.utils import shuffle
+
 
 panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
 panel_classification_model_path = path.join(path.dirname(__file__), 'VGG16_classification_model.h5')
+#mounting_classification_model_path = path.join(path.dirname(__file__),
+#                                               'saved_model.pb')
+mounting_classification_model_path = path.join(path.dirname(__file__),
+                                               'object_detection_model.pth')
+
 
 class TrainPanelSegmentationModel():
     '''
@@ -25,15 +37,20 @@ class TrainPanelSegmentationModel():
     '''
     def __init__(self,batch_size, no_epochs, learning_rate):
         self.NO_OF_EPOCHS = no_epochs
-        self. BATCH_SIZE = batch_size
+        self.BATCH_SIZE = batch_size
         self.learning_rate = learning_rate
         #we used 1e-5 for learning rate        
         #Base VGG16 network
         self.model = tf.keras.applications.VGG16(
             include_top=False, weights='imagenet',  input_shape=(640,640,3), 
             pooling= 'max')
-               
-        self.layer_dict = dict([(layer.name, layer) for layer in self.model.layers])
+        #Base ResNet 50 classifier dictionary
+        self.mounting_config_dict = {'ground-fixed': 0,
+                                     'carport-fixed': 1,
+                                     'rooftop-fixed': 2,
+                                     'ground-single_axis_tracker': 3,
+                                     'ground-double_axis_tracker': 4}
+        
         
     def loadImagesToNumpyArray(self, image_file_path):
         """
@@ -87,7 +104,6 @@ class TrainPanelSegmentationModel():
         dice = K.mean((2. * intersection + smooth)/(union + smooth), axis=0)
         return dice
 
-    
     def diceCoeffLoss(self, y_true, y_pred):
         """
         This function is a loss function that can be used when training the segmentation model.
@@ -107,7 +123,6 @@ class TrainPanelSegmentationModel():
         
         """
         return 1-self.diceCoeff(y_true, y_pred)    
-
 
     def trainSegmentation(self, train_data, train_mask, val_data, val_mask,
                           model_file_path = panel_seg_model_path):
@@ -207,7 +222,6 @@ class TrainPanelSegmentationModel():
                                    )
         return custom_model, results
     
-
     def trainPanelClassifier(self, TRAIN_PATH, VAL_PATH,
                              model_file_path = panel_classification_model_path):
         """
@@ -289,6 +303,101 @@ class TrainPanelSegmentationModel():
                                         callbacks = [checkpoint]                          
                                         )  
         return final_class_model,results
+
+    def trainMountingConfigClassifier(self, TRAIN_PATH, VAL_PATH,
+                             model_file_path = mounting_classification_model_path):
+        """
+        This function uses Faster R-CNN ResNet50 FPN as the base network and as a
+        transfer learning framework to train a model that performs object detection
+        on the mounting configuration of solar arrays. It uses the training data to locate and
+        classify mounting configuration of the solar installation. It uses the validation
+        data to prevent overfitting and to test the prediction on the fly.
+                
+        Parameters
+        -----------
+        TRAIN_PATH: (string)
+            This is the path to the folder that contains the training images
+            Note that the directory must be structured in this format.
+        
+                    TRAIN_PATH/
+                        ...images/
+                            ......a_image_1.png
+                            ......a_image_2.png
+                        ...annotations/
+                            ......b_image_1.xml
+                            ......b_image_2.xml
+                            
+        VAL_PATH: (string) 
+            This is the path to the folder that contains the validation images
+            Note that the directory must be structured in this format.
+        
+                    VAL_PATH/
+                        ...images/
+                            ......a_image_1.png
+                            ......a_image_2.png
+                        ...annotations/
+                            ......b_image_1.xml
+                            ......b_image_2.xml
+                            
+        Returns
+        -----------
+        model: 
+        
+        """
+        # Convert the data set combinations (png + xml) to a CSV record.
+        val_labels_path = os.path.join(VAL_PATH, '/val_labels.csv')
+        train_labels_path = os.path.join(TRAIN_PATH, '/train_labels.csv')
+        utils.xml_to_csv(os.path.join(TRAIN_PATH, '/annotations/'),
+                         train_labels_path)
+        utils.xml_to_csv(os.path.join(VAL_PATH, '/annotations/'),
+                         val_labels_path)
+        # Custom oversampling to balance out our classes
+        train_data = pd.read_csv(train_labels_path)
+        class_count = pd.Series(train_data['class'].value_counts())
+        train_data_resampled = train_data.copy()
+        for index, count in class_count.iteritems():
+            number_times_resample = class_count.max() - count
+            # Randomly sample a class X times
+            class_index_list = list(train_data[train_data['class'] == index].index)
+            # Resample the list with with replacement
+            idx_to_duplicate = choices(class_index_list,
+                                       k=number_times_resample)
+            for idx in idx_to_duplicate:
+                dup = train_data.loc[idx]
+                # Add to the dataframe
+                train_data_resampled = train_data_resampled.append(dup,
+                                                                   ignore_index=True)
+        # Reindex after all of the duplicates have been added
+        train_data_resampled = train_data_resampled.reset_index(drop=True)
+        # Re-write the resampled data set
+        train_data_resampled.to_csv(train_labels_path, index=False)
+        custom_transforms = transforms.Compose([
+                        transforms.ToPILImage(),
+                        transforms.Resize(800),
+                        transforms.ToTensor(),
+                        utils.normalize_transform()
+                        ])
+        # Load in the training and validation data sets
+        dataset = core.Dataset(train_labels_path,
+                               os.path.join(TRAIN_PATH, '/images'),
+                               transform=custom_transforms)
+        val_dataset = core.Dataset(val_labels_path,
+                                   os.path.join(VAL_PATH, '/images'))
+        # Customize training options
+        loader = core.DataLoader(dataset,
+                                 batch_size=self.BATCH_SIZE,
+                                 shuffle=True)
+        model = core.Model(["ground-fixed",
+                            "carport-fixed",
+                            "rooftop-fixed",
+                            "ground-single_axis_tracker"])
+        losses = model.fit(loader, val_dataset,
+                           epochs=self.NO_OF_EPOCHS,  # 10 for original model
+                           learning_rate=self.learning_rate,  # 0.001 for original
+                           verbose=True)
+        plt.plot(losses)
+        plt.show()
+        return model
         
 
     def trainingStatistics(self, results, mode):

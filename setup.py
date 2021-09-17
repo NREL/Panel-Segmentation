@@ -27,7 +27,8 @@ INSTALL_REQUIRES = [
 	'cx_Freeze>=6.4.2',
 	'Pillow>=8.0.1',
 	'scikit_learn>=0.23.2',
-	'h5py>=2.10.0'
+	'h5py>=2.10.0',
+	'detecto>=1.2.1'
 ]
 
 TESTS_REQUIRE = [
@@ -53,12 +54,13 @@ setup(
     description='A package to segment solar panels from a satellite image and perform automated metadata extraction.',
     url='https://github.com/NREL/Panel-Segmentation',
     keywords=KEYWORDS,
-    author='Ayobami Edun, Kirsten Perry, Kevin Anderson',
-    author_email='aedun@ufl.edu; kirsten.perry@nrel.gov, kevin.anderson@nrel.gov',
+    author='Ayobami Edun, Kirsten Perry, Kevin Anderson, Christopher Campos',
+    author_email='aedun@ufl.edu; kirsten.perry@nrel.gov; kevin.anderson@nrel.gov; chris.acampos@yahoo.com',
     package_data={
         'panel_segmentation': [
             'panel_segmentation/VGG16_classification_model.h5',
             'panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
+	    'panel_segmentation/object_detection_model.pth',
             'panel_segmentation/examples/*',
             'panel_segmentation/tests/*',
         ],
