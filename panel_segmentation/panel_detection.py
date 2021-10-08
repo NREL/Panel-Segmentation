@@ -13,11 +13,15 @@ from matplotlib import cm
 from PIL import Image
 from os import path
 import requests
+import cv2
 from detecto import core
-from detecto.utils import read_image
-from detecto.visualize import show_labeled_image
+from detecto.utils import read_image, reverse_normalize, \
+                _is_iterable
+import matplotlib.patches as patches
 import torch
-
+from tensorflow.keras.preprocessing import image as imagex
+from torchvision import transforms
+from statistics import mode
 
 panel_seg_model_path = path.join(path.dirname(__file__),
                                  'VGG16Net_ConvTranpose_complete.h5')
@@ -101,7 +105,8 @@ class PanelDetection:
         return Image.open(file_name_save)
 
     def classifyMountingConfiguration(self, image_file_path,
-                                      acc_cutoff = .65):
+                                      acc_cutoff = .65,
+                                      file_name_save = None):
         """
         This function is used to detect and classify the mounting configuration
         of solar installations in satellite imagery. It leverages the Detecto 
@@ -110,24 +115,62 @@ class PanelDetection:
 
         Parameters
         -----------
-        image_file_path: Str. file path of the image. PNG file.
-        acc_cutoff: Float. 
-        
+        image_file_path: (string)
+            File path of the image. PNG file.
+        acc_cutoff: (float)
+            Default set to 0.65. Confidence cutoff for whether or not to 
+            count a object detection classification as real. All returned
+            classications greater than or equal to the accuracy cutoff are
+            counted, and all classifications less than the accuracy cutoff
+            are thrown out.
         Returns
         -----------
-        Returns None.
+        Returns 
+            (tuple)
+            Tuple consisting of (scores, labels, boxes), where 'scores' is 
+            the list of object detection confidence scores, 'labels' is a
+            list of all corresponding labels, and 'boxes' is a tensor object
+            containing the associated boxes for the associated labels and 
+            confidence scores.
         """
         image = read_image(image_file_path)
         labels, boxes, scores = self.mounting_classifier.predict(image)
         mask = [float(x)>acc_cutoff for x in scores]
-        scores_to_keep = list(np.array(scores)[mask])
-        labels_to_keep = list(np.array(labels)[mask])
-        boxes_to_keep = torch.tensor(np.array(boxes)[mask])
+        scores = list(np.array(scores)[mask])
+        labels = list(np.array(labels)[mask])
+        boxes = torch.tensor(np.array(boxes)[mask])
         # TODO: add in the box merging script here
         
-        # Show the labeled image with predictions
-        show_labeled_image(image, boxes_to_keep, labels_to_keep)
-        return image
+        # This code is adapted from the Detecto package's show_labeled_image()
+        # function. See the following link as reference: 
+        # https://github.com/alankbi/detecto/blob/master/detecto/visualize.py
+        #Generate the image associated with the classifications
+        fig, ax = plt.subplots(1)
+        # If the image is already a tensor, convert it back to a PILImage
+        # and reverse normalize it
+        if isinstance(image, torch.Tensor):
+            image = reverse_normalize(image)
+            image = transforms.ToPILImage()(image)
+        ax.imshow(image)
+        # Show a single box or multiple if provided
+        if boxes.ndim == 1:
+            boxes = boxes.view(1, 4)
+        if labels is not None and not _is_iterable(labels):
+            labels = [labels]    
+        # Plot each box
+        for i in range(boxes.shape[0]):
+            box = boxes[i]
+            width, height = (box[2] - box[0]).item(), (box[3] - box[1]).item()
+            initial_pos = (box[0].item(), box[1].item())
+            rect = patches.Rectangle(initial_pos,  width, height, linewidth=1,
+                                     edgecolor='r', facecolor='none')
+            if labels:
+                ax.text(box[0] + 5, box[1] - 5, '{}'.format(labels[i]), color='red')
+            ax.add_patch(rect)
+        if file_name_save != None:
+            plt.savefig(file_name_save)
+        plt.show()
+        return (scores, labels, boxes)
 
     def diceCoeff(self, y_true, y_pred, smooth=1):
         """
@@ -513,7 +556,7 @@ class PanelDetection:
                     ax.set_title('Azimuth = %i' %azimuth)
                 #save the image
                 if save_img_file_path != None:
-                    plt.savefig(save_img_file_path + '/crop_mask_az_'+str(ii),
+                    plt.savefig(save_img_file_path + 'crop_mask_az_'+str(ii),
                                 dpi=300)
                 #Show the plot if plot_show = True
                 if plot_show == True:
@@ -652,3 +695,97 @@ class PanelDetection:
                 plt.title("Image after Component Labeling")
                 plt.show()
         return len(clusters),clusters
+    
+    def runSiteAnalysisPipeline(self, latitude,
+                                longitude,
+                                google_maps_api_key,
+                                file_name_save_img, 
+                                file_name_save_mount,
+                                file_path_save_azimuth):
+        """
+        This function runs a site analysis on a site, when latitude 
+        and longitude coordinates are given. It includes the following steps:
+           1. Taking a satellite image in Google Maps of site location,
+           based on its latitude-longitude coordinates. The satellite image
+           is then saved under 'file_name_save_img' path.
+           2. Running the satellite image through the mounting configuration/type pipeline.
+           The associated mount predictions are returned, and the most frequently
+           occurring mounting configuration of the predictions is selected. The
+           associated labeled image is stored under the 'file_name_save_mount' path.
+           3. Running the satellite image through the azimuth estimation algorithm. 
+           A default single azimuth is calculated in this pipeline for simplicity.
+           The detected azimuth image is saved via the file_path_save_azimuth path.
+           4. If a mounting configuration is detected as a single-axis tracker, an 
+           azimuth correction of 90 degrees is applied, as azimuth runs parallel to the
+           installation, as opposed to perpendicular.
+           5. A final dictionary of analysed site metadata is returned, including
+           latitude, longitude, detected azimuth, and mounting configuration.
+
+        Parameters
+        ----------
+        latitude: (float)
+            Latitude coordinate of the site.
+        longitude: (float) 
+            Longitude coordinate of the site.
+        google_maps_api_key: (string)
+            Google Maps API Key for automatically pulling satellite images.
+        file_name_save_img: (string)
+            File path that we want to save the raw 
+            satellite image to. PNG file.
+        file_name_save_mount: (string)
+            File path that we want to save the 
+            labeled mounting configuration image to. PNG file.
+        file_name_save_azimuth: (string)
+            File path that we want to save the
+            predicted azimuth image to. PNG file.
+
+        Returns
+        -------
+        (Python dictionary)
+        Dictionary containing the latitude, longitude, classified mounting 
+            configuration, and the estimated azimuth of a site.
+        """
+        # Generate the associated satellite image
+        self.generateSatelliteImage(latitude,
+                                    longitude,
+                                    file_name_save_img,
+                                    google_maps_api_key)
+        # Run through the mounting configuration pipeline
+        (scores, labels, boxes) = self.classifyMountingConfiguration(image_file_path = file_name_save_img,
+                                                                     acc_cutoff = .65,
+                                                                     file_name_save = file_name_save_mount)
+        if labels == []:
+            mount_classification = None
+        else:
+            mount_classification = mode(labels)
+        # Run the azimuth detection pipeline
+        x = imagex.load_img(file_name_save_img, 
+                            color_mode='rgb', 
+                            target_size=(640,640))
+        x = np.array(x)
+        # Mask the satellite image
+        res = self.testSingle(x.astype(float), test_mask=None,  model =None)    
+        # Use the mask to isolate the panels
+        new_res = self.cropPanels(x, res)
+        plt.imshow(new_res.reshape(640,640,3))    
+        # Check azimuth 
+        az = self.detectAzimuth(new_res) 
+        # Update the azimuth value if the site is a single-axis tracker
+        # system. This logic handles single axis tracker cases that are 
+        # labeled at 90 or 270 (perpendicular to row direction)
+        if mount_classification == 'ground-single_axis_tracker':
+            if az <= 120:
+                az = az + 90
+            elif az> 200:
+                az = az - 90
+            else:
+                pass
+        # Plot edges + azimuth 
+        self.plotEdgeAz(new_res,5, 1,                         
+                        save_img_file_path = file_path_save_azimuth)
+        site_analysis_dict = {"latitude": latitude,
+                              "longitude": longitude,
+                              "associated_azimuths": az,
+                              "mounting_type": mount_classification
+                              }   
+        return site_analysis_dict
