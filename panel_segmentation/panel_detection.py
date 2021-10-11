@@ -700,8 +700,8 @@ class PanelDetection:
                                 longitude,
                                 google_maps_api_key,
                                 file_name_save_img, 
-                                file_name_save_mount,
-                                file_path_save_azimuth):
+                                file_name_save_mount = None,
+                                file_path_save_azimuth = None):
         """
         This function runs a site analysis on a site, when latitude 
         and longitude coordinates are given. It includes the following steps:

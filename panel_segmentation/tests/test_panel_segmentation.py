@@ -37,9 +37,12 @@ def test_generate_satellite_image():
         assert os.path.exists(model_file_path)
         classifier_file_path = os.path.abspath('./panel_segmentation/VGG16_classification_model.h5')
         assert os.path.exists(classifier_file_path)
+        mounting_classifier_model_path = os.path.abspath('./panel_segmentation/object_detection_model.pth')
+        assert os.path.exists(mounting_classifier_model_path)
         #Create an instance of the PanelDetection() class.
         pc = pan_det.PanelDetection(model_file_path = model_file_path, 
-                                    classifier_file_path = classifier_file_path)
+                                    classifier_file_path = classifier_file_path,
+                                     mounting_classifier_file_path = mounting_classifier_model_path)
         pc.generateSatelliteImage(latitude, longitude, 
                                   file_name_save, google_maps_api_key)
 
@@ -56,7 +59,8 @@ def test_has_panels():
     img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -80,7 +84,8 @@ def test_mask_generator():
     img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
     #Read in the image
     #Read in the image
     x = imagex.load_img(img_file, 
@@ -106,7 +111,8 @@ def test_crop_panels():
     img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -133,7 +139,8 @@ def test_estimate_az():
     img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -146,7 +153,29 @@ def test_estimate_az():
     az = pc.detectAzimuth(new_res)
     #Assert that the azimut returned is an int instance
     assert_isinstance(az, float)
+    
+    
+def test_classify_mounting_config():
+    """
+    Test the classifyMountingConfiguration() function.
 
+    Returns
+    -------
+    None.
+
+    """
+    #Pick the file name to read 
+    img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
+    #Create an instance of the PanelDetection() class.
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
+    (scores, labels, boxes) = pc.classifyMountingConfiguration(img_file,
+                                                               acc_cutoff = .65,
+                                                               file_name_save = None)
+    
+    
+    
 
 def test_plot_az():
     """
@@ -161,7 +190,8 @@ def test_plot_az():
     img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -192,7 +222,8 @@ def test_cluster_panels():
     img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
     #Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
-                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5')
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
     #Read in the image
     x = imagex.load_img(img_file, 
                         color_mode='rgb', 
@@ -208,3 +239,29 @@ def test_cluster_panels():
         az = pc.detectAzimuth(clusters[ii][np.newaxis,:])
         azimuth_list.append(az)
     assert all(isinstance(float(x), float) for x in azimuth_list)
+    
+    
+def test_run_site_analysis_pipeline():
+    """
+    Test the runSiteAnalysisPipeline() function.
+
+    Returns
+    -------
+    None.
+
+    """
+    #Pick the file name to read 
+    img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
+    latitude = 39.7407
+    longitude = -105.1694
+    google_maps_api_key =  "Wrong_API_key"  
+    #Create an instance of the PanelDetection() class.
+    pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
+                                classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
+                                mounting_classifier_file_path = './panel_segmentation/object_detection_model.pth')
+    site_analysis_dict = pc.runSiteAnalysisPipeline(latitude,
+                                                    longitude,
+                                                    google_maps_api_key,
+                                                    file_name_save_img = None, 
+                                                    file_name_save_mount = None,
+                                                    file_path_save_azimuth = None)
