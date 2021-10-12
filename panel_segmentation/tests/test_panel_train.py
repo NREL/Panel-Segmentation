@@ -100,3 +100,26 @@ def test_train_segmentation():
             (str(type(results)) == "<class 'tensorflow.python.keras.callbacks.History'>") & \
             (list(results.history.keys()) == ['loss', 'accuracy', 'diceCoeff', 'val_loss', 'val_accuracy', 'val_diceCoeff']) & \
             (len(results.history['loss']) == 1)
+            
+
+def test_train_mounting_config_classifier():
+    """
+    Test the trainMountingConfigClassifier() function.
+
+    Returns
+    -------
+    None.
+
+    """
+    #Variables
+    batch_size= 10
+    no_epochs =  1
+    learning_rate = 1e-5
+    train_mask_path = "C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/examples/Train_Mount_Object_Detection"
+    val_data_path = "C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/examples/Validate_Mount_Object_Detection"
+    train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs,
+                                               learning_rate)
+    model = train_seg.trainMountingConfigClassifier(TRAIN_PATH = train_mask_path, 
+                                                    VAL_PATH = val_data_path)
+    
+    

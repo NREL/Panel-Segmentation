@@ -19,6 +19,7 @@ from detecto import core, utils
 from torchvision import transforms
 from random import choices
 from sklearn.utils import shuffle
+import torch
 
 
 panel_seg_model_path = path.join(path.dirname(__file__), 'VGG16Net_ConvTranpose_complete.h5')
@@ -44,12 +45,6 @@ class TrainPanelSegmentationModel():
         self.model = tf.keras.applications.VGG16(
             include_top=False, weights='imagenet',  input_shape=(640,640,3), 
             pooling= 'max')
-        #Base ResNet 50 classifier dictionary
-        self.mounting_config_dict = {'ground-fixed': 0,
-                                     'carport-fixed': 1,
-                                     'rooftop-fixed': 2,
-                                     'ground-single_axis_tracker': 3,
-                                     'ground-double_axis_tracker': 4}
         
         
     def loadImagesToNumpyArray(self, image_file_path):
@@ -305,7 +300,7 @@ class TrainPanelSegmentationModel():
         return final_class_model,results
 
     def trainMountingConfigClassifier(self, TRAIN_PATH, VAL_PATH,
-                             model_file_path = mounting_classification_model_path):
+                                      device = torch.device('cuda')):
         """
         This function uses Faster R-CNN ResNet50 FPN as the base network and as a
         transfer learning framework to train a model that performs object detection
@@ -338,18 +333,24 @@ class TrainPanelSegmentationModel():
                         ...annotations/
                             ......b_image_1.xml
                             ......b_image_2.xml
-                            
+        
+        device: (string)
+            This argument is passed to the Model() class in Detecto. It determines
+            how to run the model: either on GPU via Cuda (default setting), or 
+            on CPU. Please not that running the model on GPU results in significantly
+            faster training times.
+            
         Returns
         -----------
         model: 
         
         """
         # Convert the data set combinations (png + xml) to a CSV record.
-        val_labels_path = os.path.join(VAL_PATH, '/val_labels.csv')
-        train_labels_path = os.path.join(TRAIN_PATH, '/train_labels.csv')
-        utils.xml_to_csv(os.path.join(TRAIN_PATH, '/annotations/'),
+        val_labels_path = (VAL_PATH + '/val_labels.csv')
+        train_labels_path = (TRAIN_PATH + '/train_labels.csv')
+        utils.xml_to_csv(TRAIN_PATH + '/annotations/',
                          train_labels_path)
-        utils.xml_to_csv(os.path.join(VAL_PATH, '/annotations/'),
+        utils.xml_to_csv(VAL_PATH + '/annotations/',
                          val_labels_path)
         # Custom oversampling to balance out our classes
         train_data = pd.read_csv(train_labels_path)
@@ -379,21 +380,22 @@ class TrainPanelSegmentationModel():
                         ])
         # Load in the training and validation data sets
         dataset = core.Dataset(train_labels_path,
-                               os.path.join(TRAIN_PATH, '/images'),
+                               TRAIN_PATH +'/images',
                                transform=custom_transforms)
         val_dataset = core.Dataset(val_labels_path,
-                                   os.path.join(VAL_PATH, '/images'))
+                                   VAL_PATH + '/images')
         # Customize training options
         loader = core.DataLoader(dataset,
-                                 batch_size=self.BATCH_SIZE,
+                                 batch_size=self.BATCH_SIZE, # 1 for original model
                                  shuffle=True)
         model = core.Model(["ground-fixed",
                             "carport-fixed",
                             "rooftop-fixed",
-                            "ground-single_axis_tracker"])
+                            "ground-single_axis_tracker"],
+                           device=device)
         losses = model.fit(loader, val_dataset,
                            epochs=self.NO_OF_EPOCHS,  # 10 for original model
-                           learning_rate=self.learning_rate,  # 0.001 for original
+                           learning_rate=self.learning_rate,  # 0.001 for original model
                            verbose=True)
         plt.plot(losses)
         plt.show()
