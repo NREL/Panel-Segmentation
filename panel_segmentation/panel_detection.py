@@ -701,11 +701,12 @@ class PanelDetection:
                                 google_maps_api_key,
                                 file_name_save_img, 
                                 file_name_save_mount = None,
-                                file_path_save_azimuth = None):
+                                file_path_save_azimuth = None,
+                                generate_image = False):
         """
         This function runs a site analysis on a site, when latitude 
         and longitude coordinates are given. It includes the following steps:
-           1. Taking a satellite image in Google Maps of site location,
+           1. If generate_image = True, taking a satellite image in Google Maps of site location,
            based on its latitude-longitude coordinates. The satellite image
            is then saved under 'file_name_save_img' path.
            2. Running the satellite image through the mounting configuration/type pipeline.
@@ -738,18 +739,27 @@ class PanelDetection:
         file_name_save_azimuth: (string)
             File path that we want to save the
             predicted azimuth image to. PNG file.
-
+        generate_image: (bool)
+            Whether or not we should generate the image via the Google
+            Maps API. If set to True, satellite image is generated and
+            saved. Otherwise, no image is generated and the image
+            saved under the file_name_save_img path is used.
+            
         Returns
         -------
         (Python dictionary)
         Dictionary containing the latitude, longitude, classified mounting 
             configuration, and the estimated azimuth of a site.
         """
-        # Generate the associated satellite image
-        self.generateSatelliteImage(latitude,
-                                    longitude,
-                                    file_name_save_img,
-                                    google_maps_api_key)
+        # Generate the associated satellite image, if generate_image 
+        # is set to True
+        if generate_image == True:
+            self.generateSatelliteImage(latitude,
+                                        longitude,
+                                        file_name_save_img,
+                                        google_maps_api_key)
+        else:
+            print("Image not generated. Using image " + str(file_name_save_img) + "...")
         # Run through the mounting configuration pipeline
         (scores, labels, boxes) = self.classifyMountingConfiguration(image_file_path = file_name_save_img,
                                                                      acc_cutoff = .65,
