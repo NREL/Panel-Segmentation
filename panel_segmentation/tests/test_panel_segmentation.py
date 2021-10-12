@@ -6,7 +6,8 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
-from panel_segmentation import panel_detection as pan_det
+#from panel_segmentation import panel_detection as pan_det
+import panel_detection as pan_det
 from tensorflow.keras.preprocessing import image as imagex
 import PIL
 import h5py
@@ -173,9 +174,12 @@ def test_classify_mounting_config():
     (scores, labels, boxes) = pc.classifyMountingConfiguration(img_file,
                                                                acc_cutoff = .65,
                                                                file_name_save = None)
-    
-    
-    
+    # Verify that we return 4 different labels, each
+    # one associated with a carport installation
+    assert (len(labels) ==4) & (len(scores) ==4) & (len(boxes) ==4)
+    assert (all([label =='carport-fixed' for label in labels]))
+    # Assert that all scores associated with the labels are above .65
+    assert(all([score>0.65 for score in scores]))
 
 def test_plot_az():
     """
@@ -207,7 +211,6 @@ def test_plot_az():
     #Open the image and assert that it exists
     im = PIL.Image.open("./panel_segmentation/tests/crop_mask_az_0.png")
     assert (type(im) == PIL.PngImagePlugin.PngImageFile)
-
 
 def test_cluster_panels():
     """
@@ -254,7 +257,7 @@ def test_run_site_analysis_pipeline():
     img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
     latitude = 39.7407
     longitude = -105.1694
-    google_maps_api_key =  "Wrong_API_key"  
+    google_maps_api_key = None
     #Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(model_file_path = './panel_segmentation/VGG16Net_ConvTranpose_complete.h5', 
                                 classifier_file_path = './panel_segmentation/VGG16_classification_model.h5',
@@ -262,6 +265,14 @@ def test_run_site_analysis_pipeline():
     site_analysis_dict = pc.runSiteAnalysisPipeline(latitude,
                                                     longitude,
                                                     google_maps_api_key,
-                                                    file_name_save_img = None, 
+                                                    file_name_save_img = img_file, 
                                                     file_name_save_mount = None,
-                                                    file_path_save_azimuth = None)
+                                                    file_path_save_azimuth = None,
+                                                    generate_image = False)
+    # Assert that a dictionary is returned with specific 
+    # attributes
+    assert (type(site_analysis_dict)==dict) & \
+        (site_analysis_dict['latitude'] == latitude) & \
+        (site_analysis_dict['longitude'] == longitude) & \
+        (site_analysis_dict['carport-fixed'] == 'carport-fixed')
+        
