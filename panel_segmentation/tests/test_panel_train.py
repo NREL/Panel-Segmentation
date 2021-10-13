@@ -76,7 +76,7 @@ def test_train_segmentation():
     #Variables
     batch_size= 4
     no_epochs =  1
-    learning_rate = 1e-5
+    learning_rate = .1
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
     #Use the images/masks from the examples folder
     train_data_path = "./panel_segmentation/examples/Train/Images/"
@@ -113,7 +113,7 @@ def test_train_mounting_config_classifier():
 
     """
     #Variables
-    batch_size= 10
+    batch_size= 20
     no_epochs =  1
     learning_rate = .1
     train_mask_path = "./panel_segmentation/examples/Train_Mount_Object_Detection"
