@@ -122,6 +122,6 @@ def test_train_mounting_config_classifier():
                                                 learning_rate)
     model = train_seg.trainMountingConfigClassifier(TRAIN_PATH = train_mask_path, 
                                                     VAL_PATH = val_data_path,
-                                                      device = torch.device('cuda'))
+                                                      device = torch.device('cpu'))
     assert (str(type(model)) == "<class 'detecto.core.Model'>")
     
