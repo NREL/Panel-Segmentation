@@ -23,7 +23,9 @@ These classes perform analyses used in the Panel-Segmentation project.
    panel_detection.PanelDetection.cropPanels
    panel_detection.PanelDetection.plotEdgeAz
    panel_detection.PanelDetection.clusterPanels
-   
+   panel_detection.PanelDetection.runSiteAnalysisPipeline 
+   panel_detection.PanelDetection.classifyMountingConfiguration
+
    panel_train.TrainPanelSegmentationModel
    panel_train.TrainPanelSegmentationModel.loadImagesToNumpyArray
    panel_train.TrainPanelSegmentationModel.diceCoeff
@@ -31,7 +33,7 @@ These classes perform analyses used in the Panel-Segmentation project.
    panel_train.TrainPanelSegmentationModel.trainSegmentation
    panel_train.TrainPanelSegmentationModel.trainPanelClassifier
    panel_train.TrainPanelSegmentationModel.trainingStatistics
-
+   panel_train.TrainPanelSegmentationModel.trainMountingConfigClassifier
 
 Models
 ========

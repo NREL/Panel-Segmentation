@@ -3,6 +3,24 @@
 
 Change Log
 ==========
+Version 0.0.2 (October 13, 2021)
+--------------------------------
+
+Added the mounting object detection algorithm, to detect and classify the mounting
+configuration of solar installations in satellite imagery. 
+
+Documentation
+~~~~~~~~~~~~~
+- Updated Sphinx Documentation to account for new functions.
+- Updated the Jupyter notebooks to reflect pipeline changes: adding in the mounting configuration detection classifier and running it on satellite imagery.
+
+
+Scripts
+~~~~~~~~~~~~~
+- Add the function trainMountingConfigClassifier() to the TrainPanelSegmentationModel() class.
+- Add the functions runSiteAnalysisPipeline() and classifyMountingConfiguration() to the PanelDetection() class.
+- Add unit testing for the trainMountingConfigClassifier(), runSiteAnalysisPipeline(), and trainMountingConfigClassifier() functions.
+
 
 Version 0.0.1 (October 27, 2020)
 --------------------------------
