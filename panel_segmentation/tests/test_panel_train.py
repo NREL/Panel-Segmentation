@@ -7,8 +7,7 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
-#from panel_segmentation import panel_train as pt
-import panel_train as pt
+from panel_segmentation import panel_train as pt
 from tensorflow.keras.preprocessing import image as imagex
 import tensorflow as tf
 import tensorflow.keras.backend as K
