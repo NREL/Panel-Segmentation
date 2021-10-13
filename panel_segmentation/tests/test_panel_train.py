@@ -117,8 +117,8 @@ def test_train_mounting_config_classifier():
     batch_size= 10
     no_epochs =  1
     learning_rate = .1
-    train_mask_path = "C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/examples/Train_Mount_Object_Detection"
-    val_data_path = "C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/examples/Validate_Mount_Object_Detection"
+    train_mask_path = "./panel_segmentation/examples/Train_Mount_Object_Detection"
+    val_data_path = "./panel_segmentation/examples/Validate_Mount_Object_Detection"
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs,
                                                learning_rate)
     model = train_seg.trainMountingConfigClassifier(TRAIN_PATH = train_mask_path, 
