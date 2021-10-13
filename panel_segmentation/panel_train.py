@@ -45,6 +45,7 @@ class TrainPanelSegmentationModel():
         self.model = tf.keras.applications.VGG16(
             include_top=False, weights='imagenet',  input_shape=(640,640,3), 
             pooling= 'max')
+        self.layer_dict = dict([(layer.name, layer) for layer in self.model.layers])
         
         
     def loadImagesToNumpyArray(self, image_file_path):
