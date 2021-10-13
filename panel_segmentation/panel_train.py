@@ -346,8 +346,8 @@ class TrainPanelSegmentationModel():
         
         """
         # Convert the data set combinations (png + xml) to a CSV record.
-        val_labels_path = (VAL_PATH + '/val_labels.csv')
-        train_labels_path = (TRAIN_PATH + '/train_labels.csv')
+        val_labels_path = (VAL_PATH + '/annotations.csv')
+        train_labels_path = (TRAIN_PATH + '/annotations.csv')
         utils.xml_to_csv(TRAIN_PATH + '/annotations/',
                          train_labels_path)
         utils.xml_to_csv(VAL_PATH + '/annotations/',

@@ -7,10 +7,12 @@ import os
 import pytest
 import pandas as pd
 import numpy as np
-from panel_segmentation import panel_train as pt
+#from panel_segmentation import panel_train as pt
+import panel_train as pt
 from tensorflow.keras.preprocessing import image as imagex
 import tensorflow as tf
 import tensorflow.keras.backend as K
+import torch
 
 def test_load_images_to_numpy_array():
     """
@@ -114,12 +116,13 @@ def test_train_mounting_config_classifier():
     #Variables
     batch_size= 10
     no_epochs =  1
-    learning_rate = 1e-5
+    learning_rate = .1
     train_mask_path = "C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/examples/Train_Mount_Object_Detection"
     val_data_path = "C:/Users/kperry/Documents/source/repos/Panel-Segmentation/panel_segmentation/examples/Validate_Mount_Object_Detection"
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs,
                                                learning_rate)
     model = train_seg.trainMountingConfigClassifier(TRAIN_PATH = train_mask_path, 
-                                                    VAL_PATH = val_data_path)
-    
+                                                    VAL_PATH = val_data_path,
+                                                     device = torch.device('cpu'))
+    assert (str(type(model)) == "<class 'detecto.core.Model'>")
     
