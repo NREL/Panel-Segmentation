@@ -104,6 +104,84 @@ class PanelDetection:
         # Read in the image and return it via the console
         return Image.open(file_name_save)
 
+
+    def calculateOverlappingArea(self, box1, box2):
+        """
+        Calculate the overlapping area between two boxes.
+        """
+        area_1 = abs(box1[0] - box1[2]) * abs(box1[1] - box1[3])
+        area_2 = abs(box2[0] - box2[2]) * abs(box2[1] - box2[3])
+        x_dist = min(box1[2], box2[2]) - max(box1[0], box2[0])
+        y_dist = min(box1[3], box2[3]) - max(box1[1], box2[1])
+        intersecting_area = 0
+        if x_dist > 0 and y_dist > 0:
+            intersecting_area = x_dist * y_dist
+        return area_1 + area_2 - intersecting_area
+
+    
+    def detectPossibleOverlaps(self, input_dict):
+        """
+        Detect overlapping boxes in the mounting object
+        detection algorithm.
+        """
+        for idx in range(0, len(input_dict['detection_classes'])):
+            for jdx in range(idx, len(input_dict['detection_classes'])):
+                if idx == jdx:
+                    pass
+                else:
+                    box1 = input_dict['detection_boxes'][idx]
+                    box2 = input_dict['detection_boxes'][jdx]
+                    o_area = self.calculateOverlappingArea(box1, box2)
+                    if o_area > 0:
+                        print("over-lapped: {}".format(o_area))
+                        return True
+        return False
+    
+    
+    def deleteOverlappingBoxes(self, input_dict):
+        delete_idx = list()
+        out_dict = {"num_detections": input_dict['num_detections'],
+                           'detection_classes': np.copy(input_dict['detection_classes']),
+                           'detection_boxes': np.copy(input_dict['detection_boxes']),
+                           'detection_scores': np.copy(input_dict['detection_scores'])
+                           }
+        for idx in range(0, len(input_dict['detection_classes'])):
+            for jdx in range(idx, len(input_dict['detection_classes'])):
+                if idx == jdx or (idx in delete_idx and jdx in delete_idx):
+                    pass
+                else:
+                    box1 = out_dict['detection_boxes'][idx]
+                    box2 = out_dict['detection_boxes'][jdx]
+                    if self.calculateOverlappingArea(box1, box2) > 0:
+                        area_1 = abs(box1[0] - box1[2]) * abs(box1[1] - box1[3])
+                        area_2 = abs(box2[0] - box2[2]) * abs(box2[1] - box2[3])    
+                        if area_1 > area_2:
+                            detection_classes = out_dict['detection_classes'][idx]
+                            detection_scores = out_dict['detection_scores'][idx]
+                        else:
+                            detection_classes = out_dict['detection_classes'][jdx]
+                            detection_scores = out_dict['detection_scores'][jdx]
+                        p1 = [min(box1[0], box2[0], box1[2], box2[2]), min(box1[1], box2[1], box1[3], box2[3])]
+                        p2 = [max(box1[0], box2[0], box1[2], box2[2]), max(box1[1], box2[1], box1[3], box2[3])]
+                        new_coords = [p1[0], p1[1], p2[0], p2[1]]
+                        detection_boxes = np.ndarray(shape=(1, 4), dtype=np.float32, buffer=np.array(new_coords))
+                        out_dict['detection_boxes'] = np.append(out_dict['detection_boxes'], detection_boxes, axis=0)
+                        out_dict['detection_classes'] = np.append(out_dict['detection_classes'], detection_classes)
+                        out_dict['detection_scores'] = np.append(out_dict['detection_scores'], detection_scores)
+                        if jdx not in delete_idx:
+                            delete_idx.append(jdx)
+                        if idx not in delete_idx:
+                            delete_idx.append(idx)
+                        out_dict['num_detections'] += 1
+        delete_idx.sort(reverse=True)
+        for idx in delete_idx:
+            out_dict['detection_scores'] = np.delete(out_dict['detection_scores'], idx)
+            out_dict['detection_classes'] = np.delete(out_dict['detection_classes'], idx)
+            out_dict['detection_boxes'] = np.delete(out_dict['detection_boxes'], idx, 0)
+        out_dict['num_detections'] -= len(delete_idx)
+        return out_dict
+
+
     def classifyMountingConfiguration(self, image_file_path,
                                       acc_cutoff = .65,
                                       file_name_save = None):
