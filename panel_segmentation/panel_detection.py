@@ -139,7 +139,7 @@ class PanelDetection:
         # Perform non-maximum suppression (NMS) on the detections
         nms_idx = nms(boxes = boxes,
                       scores = scores,
-                      iou_threshold=0.4)
+                      iou_threshold=0.25)
         scores = scores[nms_idx]
         boxes = boxes[nms_idx]
         labels = [labels[nms] for nms in nms_idx]
