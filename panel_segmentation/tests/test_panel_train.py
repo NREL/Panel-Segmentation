@@ -25,14 +25,14 @@ def test_load_images_to_numpy_array():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 4
+    batch_size= 2
     no_epochs =  1
     learning_rate = 1e-5
     train_ps = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
     image_file_path = "./panel_segmentation/examples/Train/Images/"
     img_np_array = train_ps.loadImagesToNumpyArray(image_file_path)
     #Check the numpy array dimensions
-    assert img_np_array.shape == (4, 640, 640, 3)
+    assert img_np_array.shape == (2, 640, 640, 3)
 
 
 def test_train_panel_classifier():
@@ -74,7 +74,7 @@ def test_train_segmentation():
     #Clear the tensorflow.keras session (just in case)
     K.clear_session()
     #Variables
-    batch_size= 4
+    batch_size= 2
     no_epochs =  1
     learning_rate = .1
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs, learning_rate)
@@ -97,8 +97,8 @@ def test_train_segmentation():
     #Delete the model 
     os.remove('./panel_segmentation/tests/semantic_segmentation.h5')
     #Make assertions about model mod and the results
-    assert (str(type(mod)) == "<class 'tensorflow.python.keras.engine.training.Model'>") & \
-            (str(type(results)) == "<class 'tensorflow.python.keras.callbacks.History'>") & \
+    assert (str(type(mod)) == "<class 'keras.engine.functional.Functional'>") & \
+            (str(type(results)) == "<class 'keras.callbacks.History'>") & \
             (list(results.history.keys()) == ['loss', 'accuracy', 'diceCoeff', 'val_loss', 'val_accuracy', 'val_diceCoeff']) & \
             (len(results.history['loss']) == 1)
             
