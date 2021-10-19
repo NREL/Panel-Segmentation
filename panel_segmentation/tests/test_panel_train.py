@@ -97,8 +97,8 @@ def test_train_segmentation():
     #Delete the model 
     os.remove('./panel_segmentation/tests/semantic_segmentation.h5')
     #Make assertions about model mod and the results
-    assert (str(type(mod)) == "<class 'keras.engine.functional.Functional'>") & \
-            (str(type(results)) == "<class 'keras.callbacks.History'>") & \
+    assert (str(type(mod)) == "<class 'tensorflow.python.keras.engine.training.Model'>") & \
+            (str(type(results)) == "<class 'tensorflow.python.keras.callbacks.History'>") & \
             (list(results.history.keys()) == ['loss', 'accuracy', 'diceCoeff', 'val_loss', 'val_accuracy', 'val_diceCoeff']) & \
             (len(results.history['loss']) == 1)
             
