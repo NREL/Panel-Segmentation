@@ -37,6 +37,7 @@ TESTS_REQUIRE = [
 EXTRAS_REQUIRE = {
     'doc': [
         'sphinx==3.2',
+        'jinja2<3.1',
         'nbsphinx==0.8.8',
         'nbsphinx-link==1.3.0',
         'sphinx_rtd_theme==0.5.2',
