@@ -24,7 +24,6 @@ INSTALL_REQUIRES = [
     'requests>=2.22.0',
     'tensorflow>=2.2.0',
     'pandas>=1.1.4',
-    'cx_Freeze>=6.4.2',
     'Pillow>=8.0.1',
     'scikit_learn>=0.23.2',
     'h5py>=2.10.0',
