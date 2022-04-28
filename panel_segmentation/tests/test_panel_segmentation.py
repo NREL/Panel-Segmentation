@@ -292,4 +292,5 @@ def test_run_site_analysis_pipeline():
     assert (type(site_analysis_dict) == dict) & \
         (site_analysis_dict['latitude'] == latitude) & \
         (site_analysis_dict['longitude'] == longitude) & \
-        (site_analysis_dict["mounting_type"] == 'carport-fixed')
+        (all([label == 'carport-fixed' for label in
+              site_analysis_dict["mounting_type"]]))

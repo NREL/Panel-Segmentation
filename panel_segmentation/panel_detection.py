@@ -188,7 +188,7 @@ class PanelDetection:
             ax.add_patch(rect)
         if file_name_save is not None:
             plt.savefig(file_name_save)
-        return (scores, labels, boxes), fig
+        return (scores, labels, boxes)
 
     def diceCoeff(self, y_true, y_pred, smooth=1):
         """
@@ -828,7 +828,7 @@ class PanelDetection:
             print("Image not generated. Using image " +
                   str(file_name_save_img) + "...")
         # Run through the mounting configuration pipeline
-        (scores, labels, boxes), image =\
+        (scores, labels, boxes) =\
             self.classifyMountingConfiguration(
                 image_file_path=file_name_save_img,
                 acc_cutoff=.65,
