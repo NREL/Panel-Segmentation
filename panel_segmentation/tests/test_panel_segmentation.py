@@ -28,7 +28,6 @@ def test_generate_satellite_image():
         longitude = -105.1694
         google_maps_api_key = "Wrong_API_key"
         file_name_save = "./examples/Panel_Detection_Examples/sat_img.png"
-        print(os.getcwd())
         model_file_path = os.path.abspath(
             './panel_segmentation/VGG16Net_ConvTranpose_complete.h5')
         assert os.path.exists(model_file_path)

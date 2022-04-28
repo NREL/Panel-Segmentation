@@ -494,9 +494,9 @@ class PanelDetection:
         # Convert the test_data array from 3D to 4D
         if test_data.ndim == 3:
             test_data = test_data[np.newaxis, :]
+        if test_res.ndim == 2:
+            test_res = test_res[np.newaxis, :]
         new_test_res = np.uint8(np.zeros((test_data.shape[0], 640, 640, 3)))
-        if len(test_data.shape) == 3:
-            test_data = test_data.reshape(1, 640, 640, 3)
         for ju in np.arange(test_data.shape[0]):
             in_img = test_res[ju].reshape(640, 640)
             in_img[in_img < 0.9] = 0
