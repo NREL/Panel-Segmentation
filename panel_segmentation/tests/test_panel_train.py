@@ -2,7 +2,6 @@
 Test suite for panel segmentation code.
 """
 import os
-import pytest
 from panel_segmentation import panel_train as pt
 import tensorflow.keras.backend as K
 import torch
