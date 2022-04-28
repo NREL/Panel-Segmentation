@@ -92,11 +92,11 @@ def test_train_segmentation():
     # Train the segmentation model
     [mod, results] = \
         train_seg.trainSegmentation(
-            train_data=train_data,
-            train_mask=train_mask,
-            val_data=val_data,
-            val_mask=val_mask,
-            model_file_path='./panel_segmentation/tests/semantic_segmentation.h5')
+            train_data,
+            train_mask,
+            val_data,
+            val_mask,
+            './panel_segmentation/tests/semantic_segmentation.h5')
     # Delete the model
     os.remove('./panel_segmentation/tests/semantic_segmentation.h5')
     # Make assertions about model mod and the results
