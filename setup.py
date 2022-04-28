@@ -17,7 +17,7 @@ KEYWORDS = [
 
 
 INSTALL_REQUIRES = [
-    'opencv_python_headless>=4.4.0.46',
+    'opencv_python_headless==4.5.2.52',
     'numpy>=1.18.1',
     'scikit_image>=0.16.2',
     'matplotlib>=3.1.3',
