@@ -77,7 +77,8 @@ class PanelDetection:
 
         Returns
         -----------
-        Returned satellite image.
+        (fig)
+            Figure of the satellite image
         """
         # Check input variable for types
         if type(latitude) != float:
@@ -243,7 +244,8 @@ class PanelDetection:
 
         Returns
         -----------
-        float: returns the loss metric between prediction and ground truth
+        (float)
+        The loss metric between prediction and ground truth
         """
         # Ensure that the inputs are of the correct type
         if type(y_true) != np.ndarray:
@@ -367,7 +369,8 @@ class PanelDetection:
 
         Returns
         -----------
-        Boolean. Returns True if solar array is detected in an image,
+        (boolean)
+        True if solar array is detected in an image,
         and False otherwise.
         """
         # Check that the input is correct
@@ -544,6 +547,7 @@ class PanelDetection:
 
         Returns
         ----------
+        (fig)
         Plot of the masked image, with detected Hough Lines and azimuth
         estimate.
         """

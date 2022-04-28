@@ -57,7 +57,9 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        4D numpy array with dimensions (number images in folder, 640, 640, 3).
+        (np array)
+            4D numpy array with dimensions
+            (number images in folder, 640, 640, 3).
         """
         # Get a list of the images in the folder
         image_file_list = []
@@ -437,7 +439,8 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        Plots
+        (figs):
+            Figures based on the model training statistics
         """
         train_accuracy = results.history['accuracy']
         train_loss = results.history['loss']
