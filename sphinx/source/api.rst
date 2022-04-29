@@ -45,3 +45,4 @@ The following deep learning models are included in the Panel-Segmentation packag
 
    VGG16_classification_model.h5
    VGG16Net_ConvTranpose_complete.h5
+   object_detection_model.pth

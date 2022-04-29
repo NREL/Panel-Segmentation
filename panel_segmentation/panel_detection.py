@@ -77,7 +77,7 @@ class PanelDetection:
 
         Returns
         -----------
-        (fig)
+            (fig)
             Figure of the satellite image
         """
         # Check input variable for types
@@ -244,8 +244,8 @@ class PanelDetection:
 
         Returns
         -----------
-        (float)
-        The loss metric between prediction and ground truth
+            (float)
+            The loss metric between prediction and ground truth
         """
         # Ensure that the inputs are of the correct type
         if type(y_true) != np.ndarray:
@@ -369,9 +369,9 @@ class PanelDetection:
 
         Returns
         -----------
-        (boolean)
-        True if solar array is detected in an image,
-        and False otherwise.
+            (boolean)
+            True if solar array is detected in an image,
+            and False otherwise.
         """
         # Check that the input is correct
         if type(test_data) != np.ndarray:
@@ -547,9 +547,9 @@ class PanelDetection:
 
         Returns
         ----------
-        (fig)
-        Plot of the masked image, with detected Hough Lines and azimuth
-        estimate.
+            (fig)
+            Plot of the masked image, with detected Hough Lines and azimuth
+            estimate.
         """
         # Check that the input variables are of the correct type
         if type(test_results) != np.ndarray:
@@ -698,11 +698,12 @@ class PanelDetection:
 
         Returns
         -------
-        (uint8)
-        Masked image containing detected clusters each of dimension(640,640,3)
+            (uint8)
+            Masked image containing detected clusters each of
+            dimension (640,640,3)
 
-        (uint8)
-        The optimal number of clusters
+            (uint8)
+            The optimal number of clusters
         '''
         # Check that the input variables are of the correct type
         if type(test_mask) != np.ndarray:
@@ -761,10 +762,11 @@ class PanelDetection:
             plt.show()
         return len(clusters), clusters
 
-    def runSiteAnalysisPipeline(self, latitude,
-                                longitude,
-                                google_maps_api_key,
+    def runSiteAnalysisPipeline(self,
                                 file_name_save_img,
+                                latitude=None,
+                                longitude=None,
+                                google_maps_api_key=None,
                                 file_name_save_mount=None,
                                 file_path_save_azimuth=None,
                                 generate_image=False):
@@ -794,15 +796,19 @@ class PanelDetection:
 
         Parameters
         ----------
-        latitude: (float)
-            Latitude coordinate of the site.
-        longitude: (float)
-            Longitude coordinate of the site.
-        google_maps_api_key: (string)
-            Google Maps API Key for automatically pulling satellite images.
         file_name_save_img: (string)
             File path that we want to save the raw satellite image to.
             PNG file.
+        latitude: (float)
+            Default None. Latitude coordinate of the site. Not required if
+            we're using a pre-generated satellite image.
+        longitude: (float)
+            Default None. Longitude coordinate of the site. Not required if
+            we're using a pre-generated satellite image.
+        google_maps_api_key: (string)
+            Default None. Google Maps API Key for automatically pulling
+            satellite images. Not required if we're using a pre-generated
+            satellite image.
         file_name_save_mount: (string)
             File path that we want to save the
             labeled mounting configuration image to. PNG file.
@@ -818,7 +824,7 @@ class PanelDetection:
         Returns
         -------
         (Python dictionary)
-        Dictionary containing the latitude, longitude, classified mounting
+            Dictionary containing the latitude, longitude, classified mounting
             configuration, and the estimated azimuth of a site.
         """
         # Generate the associated satellite image, if generate_image

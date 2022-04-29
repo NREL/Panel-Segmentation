@@ -57,7 +57,7 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        (np array)
+            (np array)
             4D numpy array with dimensions
             (number images in folder, 640, 640, 3).
         """
@@ -359,7 +359,9 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        model:
+        model: (detecto.core.Model object)
+            The final trained mounting configuration object detection
+            model.
         """
         # Convert the data set combinations (png + xml) to a CSV record.
         val_labels_path = (VAL_PATH + '/annotations.csv')
@@ -439,7 +441,7 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        (figs):
+            (figs)
             Figures based on the model training statistics
         """
         train_accuracy = results.history['accuracy']
