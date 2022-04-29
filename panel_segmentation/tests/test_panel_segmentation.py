@@ -285,4 +285,6 @@ def test_run_site_analysis_pipeline():
     # attributes
     assert (type(site_analysis_dict) == dict) & \
         (all([label == 'carport-fixed' for label in
-              site_analysis_dict["mounting_type"]]))
+              site_analysis_dict["mounting_type"]])) & \
+        (sorted(site_analysis_dict['associated_azimuths']) ==
+         [90.0, 91.0, 161.0, 179.0])
