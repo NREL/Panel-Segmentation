@@ -908,9 +908,7 @@ class PanelDetection:
         # Plot edges + azimuth
         self.plotEdgeAz(clusters, 5, 1,
                         save_img_file_path=file_path_save_azimuth)
-        site_analysis_dict = {"latitude": latitude,
-                              "longitude": longitude,
-                              "associated_azimuths": az_list_updated,
+        site_analysis_dict = {"associated_azimuths": az_list_updated,
                               "mounting_type": mounting_config_list_updated
                               }
         return site_analysis_dict

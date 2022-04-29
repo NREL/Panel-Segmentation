@@ -271,18 +271,12 @@ def test_run_site_analysis_pipeline():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    latitude = 39.7407
-    longitude = -105.1694
-    google_maps_api_key = None
     # Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(
         './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
         './panel_segmentation/VGG16_classification_model.h5',
         './panel_segmentation/object_detection_model.pth')
     site_analysis_dict = pc.runSiteAnalysisPipeline(
-        latitude,
-        longitude,
-        google_maps_api_key,
         file_name_save_img=img_file,
         file_name_save_mount=None,
         file_path_save_azimuth=None,
@@ -290,7 +284,5 @@ def test_run_site_analysis_pipeline():
     # Assert that a dictionary is returned with specific
     # attributes
     assert (type(site_analysis_dict) == dict) & \
-        (site_analysis_dict['latitude'] == latitude) & \
-        (site_analysis_dict['longitude'] == longitude) & \
         (all([label == 'carport-fixed' for label in
               site_analysis_dict["mounting_type"]]))
