@@ -8,9 +8,33 @@ from panel_segmentation import panel_detection as pan_det
 from tensorflow.keras.preprocessing import image as imagex
 import PIL
 
+img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
 
 def assert_isinstance(obj, klass):
     assert isinstance(obj, klass), f'got {type(obj)}, expected {klass}'
+    
+    
+@pytest.fixture()
+def panelDetectionClass():
+    '''Generate an instance of the PanelDetection() class to run unit
+    tests on.'''
+    # Create an instance of the PanelDetection() class.
+    pc = pan_det.PanelDetection(
+        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
+        './panel_segmentation/VGG16_classification_model.h5',
+        './panel_segmentation/object_detection_model.pth')
+    return pc
+
+
+@pytest.fixture()
+def satelliteImg():
+    '''Load in satellite image as fixture.'''
+    # Read in the image
+    x = imagex.load_img(img_file,
+                        color_mode='rgb',
+                        target_size=(640, 640))
+    x = np.array(x)
+    return x
 
 
 def testGenerateSatelliteImage():
@@ -38,104 +62,51 @@ def testGenerateSatelliteImage():
                                   file_name_save, google_maps_api_key)
 
 
-def testHasPanels():
-    # Pick the file name to read
-    img_file = \
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    # Read in the image
-    x = imagex.load_img(img_file,
-                        color_mode='rgb',
-                        target_size=(640, 640))
-    x = np.array(x)
+def testHasPanels(panelDetectionClass, satelliteImg):
     # Assert that the returned value is a boolean
-    panel_loc = pc.hasPanels(x)
+    panel_loc = panelDetectionClass.hasPanels(satelliteImg)
     assert_isinstance(panel_loc, bool)
 
 
-def testTestSingle():
-    # Pick the file name to read
-    img_file =\
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    # Read in the image
-    # Read in the image
-    x = imagex.load_img(img_file,
-                        color_mode='rgb',
-                        target_size=(640, 640))
-    x = np.array(x)
+def testTestSingle(panelDetectionClass, satelliteImg):
     # Mask the satellite image
-    res = pc.testSingle(x.astype(float), test_mask=None,  model=None)
+    res = panelDetectionClass.testSingle(satelliteImg.astype(float),
+                                         test_mask=None,
+                                         model=None)
     # Assert that the 'res' variable is a numpy array and the dimensions.
     assert (type(res) == np.ndarray) & (res.shape == (640, 640))
 
 
-def testCropPanels():
-    # Pick the file name to read
-    img_file = \
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    # Read in the image
-    x = imagex.load_img(img_file,
-                        color_mode='rgb',
-                        target_size=(640, 640))
-    x = np.array(x)
+def testCropPanels(panelDetectionClass, satelliteImg):
     # Mask the satellite image
-    res = pc.testSingle(x.astype(float), test_mask=None,  model=None)
+    res = panelDetectionClass.testSingle(satelliteImg.astype(float),
+                                         test_mask=None,
+                                         model=None)
     # Crop the panels
-    new_res = pc.cropPanels(x, res)
+    new_res = panelDetectionClass.cropPanels(satelliteImg, res)
     # Assert that the 'new_res' variable is a numpy array and the dimensions.
     assert (type(new_res) == np.ndarray) & (new_res.shape == (1, 640, 640, 3))
 
 
-def testDetectAzimuth():
-    # Pick the file name to read
-    img_file = \
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    # Read in the image
-    x = imagex.load_img(img_file,
-                        color_mode='rgb',
-                        target_size=(640, 640))
-    x = np.array(x)
+def testDetectAzimuth(panelDetectionClass, satelliteImg):
     # Mask the satellite image
-    res = pc.testSingle(x.astype(float), test_mask=None,  model=None)
+    res = panelDetectionClass.testSingle(satelliteImg.astype(float),
+                                         test_mask=None,
+                                         model=None)
     # Crop the panels
-    new_res = pc.cropPanels(x, res)
+    new_res = pc.cropPanels(satelliteImg, res)
     az = pc.detectAzimuth(new_res)
     # Assert that the azimut returned is an int instance
     assert_isinstance(az, float)
 
 
-def testClassifyMountingConfiguration():
-    # Pick the file name to read
-    img_file = \
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    (scores, labels, boxes) = pc.classifyMountingConfiguration(
-        img_file,
-        acc_cutoff=.65,
-        file_name_save=None)
+def testClassifyMountingConfiguration(panelDetectionClass,
+                                      satelliteImg):
+    (scores, labels, boxes) = \
+        panelDetectionClass.classifyMountingConfiguration(
+            img_file,
+            acc_cutoff=.65,
+            file_name_save=None)
     # Verify that we return 4 different labels, each
     # one associated with a carport installation
     assert (len(labels) == 4) & (len(scores) == 4) & (len(boxes) == 4)
@@ -144,50 +115,28 @@ def testClassifyMountingConfiguration():
     assert(all([score > 0.65 for score in scores]))
 
 
-def testPlotEdgeAz():
-    # Pick the file name to read
-    img_file = \
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    # Read in the image
-    x = imagex.load_img(img_file,
-                        color_mode='rgb',
-                        target_size=(640, 640))
-    x = np.array(x)
+def testPlotEdgeAz(panelDetectionClass, satelliteImg):
     # Mask the satellite image
-    res = pc.testSingle(x.astype(float), test_mask=None,  model=None)
+    res = panelDetectionClass.testSingle(satelliteImg.astype(float),
+                                         test_mask=None,
+                                         model=None)
     # Crop the panels
-    new_res = pc.cropPanels(x, res)
-    pc.plotEdgeAz(new_res, 10, 1,
-                  save_img_file_path="./panel_segmentation/tests/",
-                  plot_show=True)
+    new_res = panelDetectionClass.cropPanels(satelliteImg, res)
+    panelDetectionClass.plotEdgeAz(new_res, 10, 1,
+                                   save_img_file_path=\
+                                       "./panel_segmentation/tests/",
+                                   plot_show=True)
     # Open the image and assert that it exists
     im = PIL.Image.open("./panel_segmentation/tests/crop_mask_az_0.png")
     assert (type(im) == PIL.PngImagePlugin.PngImageFile)
 
 
-def testClusterPanels():
-    # Pick the file name to read
-    img_file = \
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    # Read in the image
-    x = imagex.load_img(img_file,
-                        color_mode='rgb',
-                        target_size=(640, 640))
-    x = np.array(x)
+def testClusterPanels(panelDetectionClass, satelliteImg):
     # Mask the satellite image
-    res = pc.testSingle(x.astype(float), test_mask=None,  model=None)
+    res = pc.testSingle(satelliteImg.astype(float),
+                        test_mask=None,  model=None)
     # Use the mask to isolate the panels
-    new_res = pc.cropPanels(x, res)
+    new_res = pc.cropPanels(satelliteImg, res)
     n, clusters = pc.clusterPanels(new_res)
     azimuth_list = []
     for ii in np.arange(clusters.shape[0]):
@@ -196,16 +145,8 @@ def testClusterPanels():
     assert all(isinstance(float(x), float) for x in azimuth_list)
 
 
-def testRunSiteAnalysisPipeline():
-    # Pick the file name to read
-    img_file = \
-        "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
-    # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
-    site_analysis_dict = pc.runSiteAnalysisPipeline(
+def testRunSiteAnalysisPipeline(panelDetectionClass):
+    site_analysis_dict = panelDetectionClass.runSiteAnalysisPipeline(
         file_name_save_img=img_file,
         file_name_save_mount=None,
         file_path_save_azimuth=None,
