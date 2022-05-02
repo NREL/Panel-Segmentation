@@ -14,6 +14,8 @@ These classes perform analyses used in the Panel-Segmentation project.
    :toctree: generated/
 
    panel_detection.PanelDetection
+   panel_detection.PanelDetection.generateSatelliteImage
+   panel_detection.PanelDetection.classifyMountingConfiguration
    panel_detection.PanelDetection.diceCoeff
    panel_detection.PanelDetection.diceCoeffLoss
    panel_detection.PanelDetection.testBatch
@@ -24,7 +26,6 @@ These classes perform analyses used in the Panel-Segmentation project.
    panel_detection.PanelDetection.plotEdgeAz
    panel_detection.PanelDetection.clusterPanels
    panel_detection.PanelDetection.runSiteAnalysisPipeline 
-   panel_detection.PanelDetection.classifyMountingConfiguration
 
    panel_train.TrainPanelSegmentationModel
    panel_train.TrainPanelSegmentationModel.loadImagesToNumpyArray
@@ -32,8 +33,8 @@ These classes perform analyses used in the Panel-Segmentation project.
    panel_train.TrainPanelSegmentationModel.diceCoeffLoss
    panel_train.TrainPanelSegmentationModel.trainSegmentation
    panel_train.TrainPanelSegmentationModel.trainPanelClassifier
-   panel_train.TrainPanelSegmentationModel.trainingStatistics
    panel_train.TrainPanelSegmentationModel.trainMountingConfigClassifier
+   panel_train.TrainPanelSegmentationModel.trainingStatistics
 
 Models
 ========
