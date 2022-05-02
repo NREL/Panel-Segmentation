@@ -5,6 +5,8 @@ import os
 from panel_segmentation import panel_train as pt
 import tensorflow.keras.backend as K
 import torch
+import tensorflow
+import detecto
 
 
 def assert_isinstance(obj, klass):
@@ -80,8 +82,8 @@ def testTrainSegmentation():
     assert_isinstance(mod, tensorflow.python.keras.engine.training.Model)
     assert_isinstance(results, tensorflow.python.keras.callbacks.History)
     assert (list(results.history.keys()) ==
-         ['loss', 'accuracy', 'diceCoeff', 'val_loss',
-          'val_accuracy', 'val_diceCoeff'])
+            ['loss', 'accuracy', 'diceCoeff', 'val_loss',
+             'val_accuracy', 'val_diceCoeff'])
     assert (len(results.history['loss']) == 1)
 
 

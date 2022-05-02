@@ -10,10 +10,11 @@ import PIL
 
 img_file = "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
 
+
 def assert_isinstance(obj, klass):
     assert isinstance(obj, klass), f'got {type(obj)}, expected {klass}'
-    
-    
+
+
 @pytest.fixture()
 def panelDetectionClass():
     '''Generate an instance of the PanelDetection() class to run unit
@@ -95,8 +96,8 @@ def testDetectAzimuth(panelDetectionClass, satelliteImg):
                                          test_mask=None,
                                          model=None)
     # Crop the panels
-    new_res = pc.cropPanels(satelliteImg, res)
-    az = pc.detectAzimuth(new_res)
+    new_res = panelDetectionClass.cropPanels(satelliteImg, res)
+    az = panelDetectionClass.detectAzimuth(new_res)
     # Assert that the azimuth returned is a float instance
     assert_isinstance(az, float)
 
@@ -123,10 +124,10 @@ def testPlotEdgeAz(panelDetectionClass, satelliteImg):
                                          model=None)
     # Crop the panels
     new_res = panelDetectionClass.cropPanels(satelliteImg, res)
-    panelDetectionClass.plotEdgeAz(new_res, 10, 1,
-                                   save_img_file_path=\
-                                       "./panel_segmentation/tests/",
-                                   plot_show=True)
+    panelDetectionClass.plotEdgeAz(
+        new_res, 10, 1,
+        save_img_file_path="./panel_segmentation/tests/",
+        plot_show=True)
     # Open the image and assert that it exists
     im = PIL.Image.open("./panel_segmentation/tests/crop_mask_az_0.png")
     assert_isinstance(im, PIL.PngImagePlugin.PngImageFile)
@@ -134,14 +135,14 @@ def testPlotEdgeAz(panelDetectionClass, satelliteImg):
 
 def testClusterPanels(panelDetectionClass, satelliteImg):
     # Mask the satellite image
-    res = pc.testSingle(satelliteImg.astype(float),
-                        test_mask=None,  model=None)
+    res = panelDetectionClass.testSingle(satelliteImg.astype(float),
+                                         test_mask=None,  model=None)
     # Use the mask to isolate the panels
-    new_res = pc.cropPanels(satelliteImg, res)
-    n, clusters = pc.clusterPanels(new_res)
+    new_res = panelDetectionClass.cropPanels(satelliteImg, res)
+    n, clusters = panelDetectionClass.clusterPanels(new_res)
     azimuth_list = []
     for ii in np.arange(clusters.shape[0]):
-        az = pc.detectAzimuth(clusters[ii][np.newaxis, :])
+        az = panelDetectionClass.detectAzimuth(clusters[ii][np.newaxis, :])
         azimuth_list.append(az)
     assert all(isinstance(float(x), float) for x in azimuth_list)
 
@@ -156,6 +157,6 @@ def testRunSiteAnalysisPipeline(panelDetectionClass):
     # attributes
     assert (type(site_analysis_dict) == dict)
     assert (all([label == 'carport-fixed' for label in
-              site_analysis_dict["mounting_type"]]))
+                 site_analysis_dict["mounting_type"]]))
     assert (sorted(site_analysis_dict['associated_azimuths']) ==
             [90.0, 91.0, 161.0, 179.0])
