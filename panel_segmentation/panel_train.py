@@ -52,12 +52,12 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        image_file_path: (string)
+        image_file_path: string
             Path to folder where we want to process png images.
 
         Returns
         -----------
-            (np array)
+            nparray
             4D numpy array with dimensions
             (number images in folder, 640, 640, 3).
         """
@@ -79,11 +79,11 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        y_true: (nparray float)
+        y_true: nparray float
             the true mask of the image
-        y_pred: (nparray float)
+        y_pred: nparray float
             the predicted mask of the data
-        smooth: (int)
+        smooth: int
             a parameter to ensure we are not dividing by zero and also a
             smoothing parameter. For back propagation. If the prediction
             is hard threshold to 0 and 1, it is difficult to back
@@ -92,7 +92,7 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        dice: (float)
+        dice: float
             The metric of similarity between prediction and ground truth
         """
         intersection = K.sum(y_true * y_pred, axis=[1, 2, 3])
@@ -109,14 +109,14 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        y_true: (nparray float)
+        y_true: nparray float
             The true mask of the image
-        y_pred: (nparray float)
+        y_pred: nparray float
             The predicted mask of the data
 
         Returns
         -----------
-        (float):
+            float
             The loss metric between prediction and ground truth
         """
         return 1-self.diceCoeff(y_true, y_pred)
@@ -134,13 +134,13 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        train_data: (nparray float)
+        train_data: nparray float
             This should be the training images.
-        train_mask: (nparray int/float)
+        train_mask: nparray int/float
             This should be the training images mask - ground truth
-        val_data : (nparray float)
+        val_data : nparray float
             This should be the validation images
-        val_mask : (nparray float)
+        val_mask : nparray float
             This should be the validation images mask - ground truth
 
         Notes
@@ -152,9 +152,9 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        results: (tf.keras.fit_generator History object)
+        results: tf.keras.fit_generator History object
             This varaiale contains training history and statistics
-        custom_model: (tf.keras model object)
+        custom_model: tf.keras model object
             The final trianed model. Note that this may not be the
             best model as the best model is saved during training
         """
@@ -245,7 +245,7 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        train_path: (string)
+        train_path: string
             This is the path to the folder that contains the training images
             Note that the directory must be structured in this format:
                     train_path/
@@ -255,7 +255,7 @@ class TrainPanelSegmentationModel():
                         ...no panels/
                             ......b_image_1.jpg
                             ......b_image_2.jpg
-        val_path: (string)
+        val_path: string
             This is the path to the folder that contains the validation images
             Note that the directory must be structured in this format:
                     val_path/
@@ -268,9 +268,9 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        results: (tf.keras.fit_generator History object)
+        results: tf.keras.fit_generator History object
             This varaiale contains training history and statistics
-        final_clas_model: (tf.keras model object)
+        final_clas_model: tf.keras model object
             The final trianed model. Note that this may not be the
             best model as the best model is saved during training
         """
@@ -331,7 +331,7 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        train_path: (string)
+        train_path: string
             This is the path to the folder that contains the training images
             Note that the directory must be structured in this format:
                     train_path/
@@ -341,7 +341,7 @@ class TrainPanelSegmentationModel():
                         ...annotations/
                             ......b_image_1.xml
                             ......b_image_2.xml
-        val_path: (string)
+        val_path: string
             This is the path to the folder that contains the validation images
             Note that the directory must be structured in this format:
                     val_path/
@@ -351,7 +351,7 @@ class TrainPanelSegmentationModel():
                         ...annotations/
                             ......b_image_1.xml
                             ......b_image_2.xml
-        device: (string)
+        device: string
             This argument is passed to the Model() class in Detecto.
             It determines how to run the model: either on GPU via Cuda
             (default setting), or on CPU. Please not that running the
@@ -359,7 +359,7 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-        model: (detecto.core.Model object)
+        model: detecto.core.Model object
             The final trained mounting configuration object detection
             model.
         """
@@ -430,10 +430,10 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        results: (tf.keras.fit_generator History object)
+        results: tf.keras.fit_generator History object
             This is the output of the trained classifier. It contains
             training history.
-        mode: (int)
+        mode: int
             If mode = 1, it assumes we want plots for the semantic
             segmentation and also plots the dice coefficient results.
             For any other value of mode, it does not show plots of dice
@@ -441,7 +441,7 @@ class TrainPanelSegmentationModel():
 
         Returns
         -----------
-            (figs)
+            figures
             Figures based on the model training statistics
         """
         train_accuracy = results.history['accuracy']

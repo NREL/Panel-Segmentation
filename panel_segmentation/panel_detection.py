@@ -64,20 +64,20 @@ class PanelDetection:
 
         Parameters
         -----------
-        latitude: (float)
+        latitude: float
             Latitude coordinate of the site.
-        longitude: (float)
+        longitude: float
             Longitude coordinate of the site.
-        file_name_save: (string)
+        file_name_save: string
             File path that we want to save
             the image to, where the image is saved as a PNG file.
-        google_maps_api_key: (string)
-        Google Maps API Key for
+        google_maps_api_key: string
+            Google Maps API Key for
             automatically pulling satellite images.
 
         Returns
         -----------
-            (fig)
+            Figure
             Figure of the satellite image
         """
         # Check input variable for types
@@ -128,9 +128,9 @@ class PanelDetection:
 
         Parameters
         -----------
-        image_file_path: (string)
+        image_file_path: string
             File path of the image. PNG file.
-        acc_cutoff: (float)
+        acc_cutoff: float
             Default set to 0.65. Confidence cutoff for whether or not to
             count a object detection classification as real. All returned
             classications greater than or equal to the accuracy cutoff are
@@ -139,7 +139,7 @@ class PanelDetection:
         Returns
         -----------
         Returns
-            (tuple)
+            tuple
             Tuple consisting of (scores, labels, boxes), where 'scores' is
             the list of object detection confidence scores, 'labels' is a
             list of all corresponding labels, and 'boxes' is a tensor object
@@ -198,11 +198,11 @@ class PanelDetection:
 
         Parameters
         -----------
-        y_true: (numpy array of floats)
+        y_true: numpy array of floats
             The true mask of the image
-        y_pred: (numpy array  of floats)
+        y_pred: numpy array  of floats
             the predicted mask of the data
-        smooth: (int)
+        smooth: int
             A parameter to ensure we are not dividing by zero and also
             a smoothing parameter for back -ropagation. If the prediction
             is hard threshold to 0 and 1, it is difficult to back-propagate
@@ -211,7 +211,7 @@ class PanelDetection:
 
         Returns
         -----------
-        dice: (float)
+        dice: float
             Retuns the metric of similarity between prediction
             and ground truth
         """
@@ -237,14 +237,14 @@ class PanelDetection:
 
         Parameters
         -----------
-        y_true: (numpy array of floats)
+        y_true: numpy array of floats
             The true mask of the image
-        y_pred: (numpy array of floats)
+        y_pred: numpy array of floats
             The predicted mask of the data
 
         Returns
         -----------
-            (float)
+            float
             The loss metric between prediction and ground truth
         """
         # Ensure that the inputs are of the correct type
@@ -264,21 +264,21 @@ class PanelDetection:
 
         Parameters
         -----------
-        test_data: (nparray float)
+        test_data: nparray float
             The satellite images
-        test_mask: (nparray int/float)
+        test_mask: nparray int or float
             The mask ground truth corresponding to the test_data
-        batch_size: (int)
+        batch_size: int
             The batch size of the test_data.
-        model: (tf.keras.model.object)
+        model: tf.keras.model.object
             A custom model can be provided as input or we can
             use the initialized model
 
         Returns
         -----------
-        test_res: (nparray float)
+        test_res: nparray float
             The predicted masks
-        accuracy: (float)
+        accuracy: float
             The accuarcy of prediction as compared with the ground
             truth if provided
         """
@@ -314,32 +314,32 @@ class PanelDetection:
 
         Parameters
         -----------
-        test_data: (nparray int or float)
+        test_data: nparray int or float
             The satellite image. dimension is (640,640,3) or
             (a,640,640,3)
-        test_mask: (nparray int/float)
+        test_mask: nparray int or float
             The ground truth of what the mask should be.
-        model: (tf.keras model object)
+        model: tf.keras model object
             A custom model can be provided as input or
             we can use the initialized model
 
         Returns
         -----------
-        test_res: (nparray float)
+        test_res: nparray float
             The predicted mask of the single image.
             The dimension is (640,640 or (a,640,640))
-        accuracy: (float)
+        accuracy: float
             The accuracy of prediction as compared
             with the ground truth if provided
         """
         # Check that the inputs are correct
         if type(test_data) != np.ndarray:
             raise TypeError(
-                "Variable test_data must be of type Numpy ndarray.")
+                "Variable test_data must be of type numpy ndarray.")
         # Test that the input array has 2 to 3 channels
         if (len(test_data.shape) > 3) | (len(test_data.shape) < 2):
             raise ValueError(
-                "Numpy array test_data shape should be 2 or 3 dimensions.")
+                "numpy array test_data shape should be 2 or 3 dimensions.")
         # Once the array passes checks, run the sequence
         test_data = test_data/255
         test_data = test_data[np.newaxis, :]
@@ -363,24 +363,24 @@ class PanelDetection:
 
         Parameters
         -----------
-        test_data: (nparray float or int)
+        test_data: nparray float or int
             The satellite image. The shape should be [a,640,640,3] where
             'a' is the number of data or (640,640,3) if it is a single image
 
         Returns
         -----------
-            (boolean)
+            boolean
             True if solar array is detected in an image,
             and False otherwise.
         """
         # Check that the input is correct
         if type(test_data) != np.ndarray:
             raise TypeError(
-                "Variable test_data must be of type Numpy ndarray.")
+                "Variable test_data must be of type numpy ndarray.")
         # Test that the input array has 3 to 4 channels
         if (len(test_data.shape) > 4) | (len(test_data.shape) < 3):
             raise ValueError(
-                "Numpy array test_data shape should be 3 dimensions "
+                "numpy array test_data shape should be 3 dimensions "
                 "if a single image, or 4 dimensions if a batch of images.")
         test_data = test_data/255
         # This ensures the first dimension is the number of test data to be
@@ -409,21 +409,21 @@ class PanelDetection:
 
         Parameters
         -----------
-        in_img: (nparray uint8)
+        in_img: nparray uint8
             The image containing the extracted solar panels with other pixels
             zeroed off. Dimension is [1,640,640,3]
-        number_lines: (int)
+        number_lines: int
             This variable tells the function the number of dominant lines it
             should examine. We currently inspect the top 5 lines.
 
         Returns
         -----------
-        azimuth: (int)
+        azimuth: int
             The azimuth of the panel in the image.
         """
         # Check that the input variables are of the correct type
         if type(in_img) != np.ndarray:
-            raise TypeError("Variable in_img must be of type Numpy ndarray.")
+            raise TypeError("Variable in_img must be of type numpy ndarray.")
         if type(number_lines) != int:
             raise TypeError("Variable number_lines must be of type int.")
         # Run through the function
@@ -471,18 +471,18 @@ class PanelDetection:
 
         Parameters
         ----------
-        test_data:  (nparray float)
+        test_data:  nparray float
             This is the input test data. This can be a single image
             or multiple image. Hence the dimension can be (640,640,3)
             or (a,640,640,3)
-        test_res:   (nparray float)
+        test_res:   nparray float
             This is the predicted mask of the test images passed
             as an input and used to crop out the solar panels.
             Dimension is (640,640)
 
         Returns
         ----------
-        new_test_res: (nparray uint8)
+        new_test_res: nparray uint8
             This returns images here the solar panels have been cropped
             out and the background zeroed. It has the same shape as test
             data.  The dimension is [a,640,640,3] where a is the number of
@@ -491,9 +491,9 @@ class PanelDetection:
         # Check that the input variables are of the correct type
         if type(test_data) != np.ndarray:
             raise TypeError(
-                "Variable test_data must be of type Numpy ndarray.")
+                "Variable test_data must be of type numpy ndarray.")
         if type(test_res) != np.ndarray:
-            raise TypeError("Variable test_res must be of type Numpy ndarray.")
+            raise TypeError("Variable test_res must be of type numpy ndarray.")
         # Convert the test_data array from 3D to 4D
         if test_data.ndim == 3:
             test_data = test_data[np.newaxis, :]
@@ -524,37 +524,37 @@ class PanelDetection:
 
         Parameters
         ----------
-        test_results: (nparray float64 or unit8)
+        test_results: nparray float64 or unit8
             8-bit input image. This variable represents the predicted images
             from the segmentation model. Hence the dimension must be [a,b,c,d]
             where [a] is the number of images, [b,c] are the dimensions
             of the image - 640 x 640 in this case and [d] is 3 - RGB
-        no_lines: (int)
+        no_lines: int
             default is 10. This variable tells the function the number of
             dominant lines it should examine.
-        no_figs: (int)
+        no_figs: int
             1 or 3. If the number of figs is 1, it outputs the mask with
             Hough lines and the predicted azimuth.
             However, if the number of lines is 3, it gives three plots.
                 1. The input image,
                 2. Hough transform search space
                 3. Unput image with houghlines and the predicted azimuth
-        save_img_file_path: (string)
+        save_img_file_path: string
             You can pass as input the location to save the plots
-        plot_show: (boolean)
+        plot_show: boolean
             If False, it will supress the plot as an output
             and just save the  plots in a folder
 
         Returns
         ----------
-            (fig)
+            Figure
             Plot of the masked image, with detected Hough Lines and azimuth
             estimate.
         """
         # Check that the input variables are of the correct type
         if type(test_results) != np.ndarray:
             raise TypeError(
-                "Variable test_results must be of type Numpy ndarray.")
+                "Variable test_results must be of type numpy ndarray.")
         if type(no_lines) != int:
             raise TypeError("Variable no_lines must be of type int.")
         if type(no_figs) != int:
@@ -690,25 +690,25 @@ class PanelDetection:
 
         Parameters
         ----------
-        test_mask : (bool) or (float)
+        test_mask : boolean or float
             The predicted mask. Dimension is (640,640) or can be converted to
             RGB (640,640,3)
-        fig : (bool)
+        fig : boolean
             shows the clustering image if fig = True
 
         Returns
         -------
-            (uint8)
+            uint8
             Masked image containing detected clusters each of
             dimension (640,640,3)
 
-            (uint8)
+            uint8
             The optimal number of clusters
         '''
         # Check that the input variables are of the correct type
         if type(test_mask) != np.ndarray:
             raise TypeError(
-                "Variable test_mask must be of type Numpy ndarray.")
+                "Variable test_mask must be of type numpy ndarray.")
         if type(fig) != bool:
             raise TypeError("Variable fig must be of type bool.")
         # Continue running through the function if all the inputs are correct
@@ -796,26 +796,26 @@ class PanelDetection:
 
         Parameters
         ----------
-        file_name_save_img: (string)
+        file_name_save_img: string
             File path that we want to save the raw satellite image to.
             PNG file.
-        latitude: (float)
+        latitude: float
             Default None. Latitude coordinate of the site. Not required if
             we're using a pre-generated satellite image.
-        longitude: (float)
+        longitude: float
             Default None. Longitude coordinate of the site. Not required if
             we're using a pre-generated satellite image.
-        google_maps_api_key: (string)
+        google_maps_api_key: string
             Default None. Google Maps API Key for automatically pulling
             satellite images. Not required if we're using a pre-generated
             satellite image.
-        file_name_save_mount: (string)
+        file_name_save_mount: string
             File path that we want to save the
             labeled mounting configuration image to. PNG file.
-        file_name_save_azimuth: (string)
+        file_name_save_azimuth: string
             File path that we want to save the
             predicted azimuth image to. PNG file.
-        generate_image: (bool)
+        generate_image: bool
             Whether or not we should generate the image via the Google
             Maps API. If set to True, satellite image is generated and
             saved. Otherwise, no image is generated and the image
@@ -823,7 +823,7 @@ class PanelDetection:
 
         Returns
         -------
-        (Python dictionary)
+        Python dictionary
             Dictionary containing the latitude, longitude, classified mounting
             configuration, and the estimated azimuth of a site.
         """
