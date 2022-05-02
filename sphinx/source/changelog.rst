@@ -17,9 +17,10 @@ Documentation
 
 Scripts
 ~~~~~~~~~~~~~
-- Add the function trainMountingConfigClassifier() to the TrainPanelSegmentationModel() class.
-- Add the functions runSiteAnalysisPipeline() and classifyMountingConfiguration() to the PanelDetection() class.
-- Add unit testing for the trainMountingConfigClassifier(), runSiteAnalysisPipeline(), and trainMountingConfigClassifier() functions.
+- Add the function :py:func:`panel_segmentation.panel_train.trainMountingConfigClassifier`.
+- Add the functions :py:func:`panel_segmentation.panel_detection.runSiteAnalysisPipeline` and :py:func:`panel_segmentation.panel_detection.classifyMountingConfiguration`.
+- Add unit testing for the :py:func:`panel_segmentation.panel_train.trainMountingConfigClassifier`, :py:func:`panel_segmentation.panel_detection.runSiteAnalysisPipeline`, 
+  and :py:func:`panel_segmentation.panel_detection.classifyMountingConfiguration` functions.
 
 Other Changes
 ~~~~~~~~~~~~~
