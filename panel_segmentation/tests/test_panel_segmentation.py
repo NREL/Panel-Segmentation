@@ -74,7 +74,8 @@ def testTestSingle(panelDetectionClass, satelliteImg):
                                          test_mask=None,
                                          model=None)
     # Assert that the 'res' variable is a numpy array and the dimensions.
-    assert (type(res) == np.ndarray) & (res.shape == (640, 640))
+    assert_isinstance(res, np.ndarray)
+    assert (res.shape == (640, 640))
 
 
 def testCropPanels(panelDetectionClass, satelliteImg):
@@ -85,7 +86,8 @@ def testCropPanels(panelDetectionClass, satelliteImg):
     # Crop the panels
     new_res = panelDetectionClass.cropPanels(satelliteImg, res)
     # Assert that the 'new_res' variable is a numpy array and the dimensions.
-    assert (type(new_res) == np.ndarray) & (new_res.shape == (1, 640, 640, 3))
+    assert_isinstance(new_res, np.ndarray)
+    assert (new_res.shape == (1, 640, 640, 3))
 
 
 def testDetectAzimuth(panelDetectionClass, satelliteImg):
@@ -96,7 +98,7 @@ def testDetectAzimuth(panelDetectionClass, satelliteImg):
     # Crop the panels
     new_res = pc.cropPanels(satelliteImg, res)
     az = pc.detectAzimuth(new_res)
-    # Assert that the azimut returned is an int instance
+    # Assert that the azimuth returned is a float instance
     assert_isinstance(az, float)
 
 
@@ -128,7 +130,7 @@ def testPlotEdgeAz(panelDetectionClass, satelliteImg):
                                    plot_show=True)
     # Open the image and assert that it exists
     im = PIL.Image.open("./panel_segmentation/tests/crop_mask_az_0.png")
-    assert (type(im) == PIL.PngImagePlugin.PngImageFile)
+    assert_isinstance(im, PIL.PngImagePlugin.PngImageFile)
 
 
 def testClusterPanels(panelDetectionClass, satelliteImg):
@@ -153,8 +155,8 @@ def testRunSiteAnalysisPipeline(panelDetectionClass):
         generate_image=False)
     # Assert that a dictionary is returned with specific
     # attributes
-    assert (type(site_analysis_dict) == dict) & \
-        (all([label == 'carport-fixed' for label in
-              site_analysis_dict["mounting_type"]])) & \
-        (sorted(site_analysis_dict['associated_azimuths']) ==
-         [90.0, 91.0, 161.0, 179.0])
+    assert (type(site_analysis_dict) == dict)
+    assert (all([label == 'carport-fixed' for label in
+              site_analysis_dict["mounting_type"]]))
+    assert (sorted(site_analysis_dict['associated_azimuths']) ==
+            [90.0, 91.0, 161.0, 179.0])

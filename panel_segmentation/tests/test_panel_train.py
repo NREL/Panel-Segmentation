@@ -37,16 +37,14 @@ def testTrainPanelClassifier():
                                                       learning_rate)
     # Train the classifier model
     [mod, results] = train_classifier.trainPanelClassifier(
-        train_path="./panel_segmentation/examples/Train_Classifier/",
-        val_path="./panel_segmentation/examples/Validate_Classifier/",
-        model_file_path='./panel_segmentation/tests/classifier.h5')
+        "./panel_segmentation/examples/Train_Classifier/",
+        "./panel_segmentation/examples/Validate_Classifier/",
+        './panel_segmentation/tests/classifier.h5')
     # Delete the model
     os.remove('./panel_segmentation/tests/classifier.h5')
     # Assert the mod and results types.
-    assert (str(type(mod)) ==
-            "<class 'tensorflow.python.keras.engine.training.Model'>") & \
-        (str(type(results)) ==
-         "<class 'tensorflow.python.keras.callbacks.History'>")
+    assert_isinstance(mod, tensorflow.python.keras.engine.training.Model)
+    assert_isinstance(results, tensorflow.python.keras.callbacks.History)
 
 
 def testTrainSegmentation():
@@ -79,14 +77,12 @@ def testTrainSegmentation():
     # Delete the model
     os.remove('./panel_segmentation/tests/semantic_segmentation.h5')
     # Make assertions about model mod and the results
-    assert (str(type(mod)) ==
-            "<class 'tensorflow.python.keras.engine.training.Model'>") & \
-        (str(type(results)) ==
-         "<class 'tensorflow.python.keras.callbacks.History'>") & \
-        (list(results.history.keys()) ==
+    assert_isinstance(mod, tensorflow.python.keras.engine.training.Model)
+    assert_isinstance(results, tensorflow.python.keras.callbacks.History)
+    assert (list(results.history.keys()) ==
          ['loss', 'accuracy', 'diceCoeff', 'val_loss',
-          'val_accuracy', 'val_diceCoeff']) & \
-        (len(results.history['loss']) == 1)
+          'val_accuracy', 'val_diceCoeff'])
+    assert (len(results.history['loss']) == 1)
 
 
 def testTrainMountingConfigClassifier():
@@ -103,4 +99,4 @@ def testTrainMountingConfigClassifier():
     model = train_seg.trainMountingConfigClassifier(train_path=train_mask_path,
                                                     val_path=val_data_path,
                                                     device=torch.device('cpu'))
-    assert (str(type(model)) == "<class 'detecto.core.Model'>")
+    assert_isinstance(model, detecto.core.Model)
