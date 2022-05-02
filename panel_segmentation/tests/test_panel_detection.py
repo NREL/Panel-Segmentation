@@ -66,6 +66,7 @@ def testHasPanels(panelDetectionClass, satelliteImg):
     # Assert that the returned value is a boolean
     panel_loc = panelDetectionClass.hasPanels(satelliteImg)
     assert_isinstance(panel_loc, bool)
+    assert panel_loc
 
 
 def testTestSingle(panelDetectionClass, satelliteImg):
@@ -144,7 +145,7 @@ def testClusterPanels(panelDetectionClass, satelliteImg):
     for ii in np.arange(clusters.shape[0]):
         az = panelDetectionClass.detectAzimuth(clusters[ii][np.newaxis, :])
         azimuth_list.append(az)
-    assert all(isinstance(float(x), float) for x in azimuth_list)
+    assert (sorted(azimuth_list) == [90.0, 91.0, 161.0, 179.0])
 
 
 def testRunSiteAnalysisPipeline(panelDetectionClass):
