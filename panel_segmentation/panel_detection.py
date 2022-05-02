@@ -124,7 +124,7 @@ class PanelDetection:
         of solar installations in satellite imagery. It leverages the Detecto
         package's functionality
         (https://detecto.readthedocs.io/en/latest/api/index.html),
-        to perform object detection on a satelllite image.
+        to perform object detection on a satellite image.
 
         Parameters
         -----------
