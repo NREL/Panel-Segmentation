@@ -6,6 +6,11 @@ from panel_segmentation import panel_train as pt
 import tensorflow.keras.backend as K
 import torch
 
+
+def assert_isinstance(obj, klass):
+    assert isinstance(obj, klass), f'got {type(obj)}, expected {klass}'
+
+
 def testLoadImagesToNumpyArray():
     # Clear the tensorflow.keras session (just in case)
     K.clear_session()
