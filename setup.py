@@ -27,7 +27,9 @@ INSTALL_REQUIRES = [
     'Pillow>=8.0.1',
     'scikit_learn>=0.23.2',
     'h5py>=2.10.0',
-    'detecto>=1.2.1'
+    'detecto>=1.2.1',
+    'torch>=1.9.0',
+    'torchvision>=0.10.0'
 ]
 
 TESTS_REQUIRE = [
