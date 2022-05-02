@@ -7,15 +7,7 @@ import tensorflow.keras.backend as K
 import torch
 
 
-def test_load_images_to_numpy_array():
-    """
-    Test the loadImagesToNumpyArray() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testLoadImagesToNumpyArray():
     # Clear the tensorflow.keras session (just in case)
     K.clear_session()
     # Variables
@@ -30,15 +22,7 @@ def test_load_images_to_numpy_array():
     assert img_np_array.shape == (2, 640, 640, 3)
 
 
-def test_train_panel_classifier():
-    """
-    Test the trainPanelClassifier() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testTrainPanelClassifier():
     # Clear the tensorflow.keras session (just in case)
     K.clear_session()
     # Variables
@@ -49,8 +33,8 @@ def test_train_panel_classifier():
                                                       learning_rate)
     # Train the classifier model
     [mod, results] = train_classifier.trainPanelClassifier(
-        TRAIN_PATH="./panel_segmentation/examples/Train_Classifier/",
-        VAL_PATH="./panel_segmentation/examples/Validate_Classifier/",
+        train_path="./panel_segmentation/examples/Train_Classifier/",
+        val_path="./panel_segmentation/examples/Validate_Classifier/",
         model_file_path='./panel_segmentation/tests/classifier.h5')
     # Delete the model
     os.remove('./panel_segmentation/tests/classifier.h5')
@@ -61,15 +45,7 @@ def test_train_panel_classifier():
          "<class 'tensorflow.python.keras.callbacks.History'>")
 
 
-def test_train_segmentation():
-    """
-    Test the trainSegmentation() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testTrainSegmentation():
     # Clear the tensorflow.keras session (just in case)
     K.clear_session()
     # Variables
@@ -109,15 +85,7 @@ def test_train_segmentation():
         (len(results.history['loss']) == 1)
 
 
-def test_train_mounting_config_classifier():
-    """
-    Test the trainMountingConfigClassifier() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testTrainMountingConfigClassifier():
     # Variables
     batch_size = 20
     no_epochs = 1
@@ -128,7 +96,7 @@ def test_train_mounting_config_classifier():
         "./panel_segmentation/examples/Validate_Mount_Object_Detection"
     train_seg = pt.TrainPanelSegmentationModel(batch_size, no_epochs,
                                                learning_rate)
-    model = train_seg.trainMountingConfigClassifier(TRAIN_PATH=train_mask_path,
-                                                    VAL_PATH=val_data_path,
+    model = train_seg.trainMountingConfigClassifier(train_path=train_mask_path,
+                                                    val_path=val_data_path,
                                                     device=torch.device('cpu'))
     assert (str(type(model)) == "<class 'detecto.core.Model'>")

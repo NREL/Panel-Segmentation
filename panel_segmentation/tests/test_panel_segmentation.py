@@ -13,15 +13,7 @@ def assert_isinstance(obj, klass):
     assert isinstance(obj, klass), f'got {type(obj)}, expected {klass}'
 
 
-def test_generate_satellite_image():
-    """
-    Test the generateSatelliteImage() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testGenerateSatelliteImage():
     with pytest.raises(ValueError):
         # Variables
         latitude = 39.7407
@@ -46,14 +38,7 @@ def test_generate_satellite_image():
                                   file_name_save, google_maps_api_key)
 
 
-def test_has_panels():
-    """
-    Test the hasPanels() function.
-
-    Returns
-    -------
-    Assert that the value returned is a boolean
-    """
+def testHasPanels():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
@@ -72,15 +57,7 @@ def test_has_panels():
     assert_isinstance(panel_loc, bool)
 
 
-def test_mask_generator():
-    """
-    Test the testSingle() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testTestSingle():
     # Pick the file name to read
     img_file =\
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
@@ -101,15 +78,7 @@ def test_mask_generator():
     assert (type(res) == np.ndarray) & (res.shape == (640, 640))
 
 
-def test_crop_panels():
-    """
-    Test the cropPanels() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testCropPanels():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
@@ -131,15 +100,7 @@ def test_crop_panels():
     assert (type(new_res) == np.ndarray) & (new_res.shape == (1, 640, 640, 3))
 
 
-def test_estimate_az():
-    """
-    Test the detectAzimuth() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testDetectAzimuth():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
@@ -162,15 +123,7 @@ def test_estimate_az():
     assert_isinstance(az, float)
 
 
-def test_classify_mounting_config():
-    """
-    Test the classifyMountingConfiguration() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testClassifyMountingConfiguration():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
@@ -191,15 +144,7 @@ def test_classify_mounting_config():
     assert(all([score > 0.65 for score in scores]))
 
 
-def test_plot_az():
-    """
-    Test the detectAzimuth() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testPlotEdgeAz():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
@@ -225,15 +170,7 @@ def test_plot_az():
     assert (type(im) == PIL.PngImagePlugin.PngImageFile)
 
 
-def test_cluster_panels():
-    """
-    Test the clusterPanels() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testClusterPanels():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
@@ -259,15 +196,7 @@ def test_cluster_panels():
     assert all(isinstance(float(x), float) for x in azimuth_list)
 
 
-def test_run_site_analysis_pipeline():
-    """
-    Test the runSiteAnalysisPipeline() function.
-
-    Returns
-    -------
-    None.
-
-    """
+def testRunSiteAnalysisPipeline():
     # Pick the file name to read
     img_file = \
         "./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png"
