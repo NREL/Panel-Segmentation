@@ -105,13 +105,11 @@ class PanelDetection:
                              str(r.status_code) +
                              ": Image not pulled successfully from API.")
         # wb mode is stand for write binary mode
-        f = open(file_name_save, 'wb')
-        # r.content gives content,
-        # in this case gives image
-        f.write(r.content)
-        # close method of file object
-        # save and close the file
-        f.close()
+        with open(file_name_save, 'wb') as f:
+            f.write(r.content)
+            # close method of file object
+            # save and close the file
+            f.close()
         # Read in the image and return it via the console
         return Image.open(file_name_save)
 
