@@ -35,8 +35,8 @@ class TrainPanelSegmentationModel():
     '''
 
     def __init__(self, batch_size, no_epochs, learning_rate):
-        self.NO_OF_EPOCHS = no_epochs
-        self.BATCH_SIZE = batch_size
+        self.no_of_epochs = no_epochs
+        self.batch_size = batch_size
         self.learning_rate = learning_rate
         # Base VGG16 network
         self.model = tf.keras.applications.VGG16(
@@ -168,10 +168,10 @@ class TrainPanelSegmentationModel():
             dtype='float32')
         train_image_generator = train_datagen.flow(
             train_data, train_mask,
-            batch_size=self.BATCH_SIZE)
+            batch_size=self.batch_size)
         val_image_generator = val_datagen.flow(
             val_data, val_mask,
-            batch_size=self.BATCH_SIZE)
+            batch_size=self.batch_size)
         x = self.layer_dict['block5_conv3'].output
         u5 = Conv2DTranspose(512, (2, 2), strides=(2, 2), padding='same')(x)
         u5 = concatenate([u5, self.layer_dict['block4_conv3'].output])
@@ -212,8 +212,8 @@ class TrainPanelSegmentationModel():
                                  lr=self.learning_rate, epsilon=1e-08),
                              metrics=['accuracy', self.diceCoeff]
                              )
-        NO_OF_TRAINING_IMAGES = np.shape(train_data)[0]
-        NO_OF_VAL_IMAGES = np.shape(val_data)[0]
+        no_of_training_images = np.shape(train_data)[0]
+        no_of_val_images = np.shape(val_data)[0]
         checkpoint = tf.keras.callbacks.ModelCheckpoint(model_file_path,
                                                         monitor='val_loss',
                                                         verbose=1,
@@ -221,18 +221,18 @@ class TrainPanelSegmentationModel():
                                                         mode='max')
         # Training the network
         results = custom_model.fit(train_image_generator,
-                                   epochs=self.NO_OF_EPOCHS,
+                                   epochs=self.no_of_epochs,
                                    workers=0,
                                    steps_per_epoch=(
-                                       NO_OF_TRAINING_IMAGES//self.BATCH_SIZE),
+                                       no_of_training_images//self.batch_size),
                                    validation_data=val_image_generator,
                                    validation_steps=(
-                                       NO_OF_VAL_IMAGES//self.BATCH_SIZE),
+                                       no_of_val_images//self.batch_size),
                                    callbacks=[checkpoint]
                                    )
         return custom_model, results
 
-    def trainPanelClassifier(self, TRAIN_PATH, VAL_PATH,
+    def trainPanelClassifier(self, train_path, val_path,
                              model_file_path=panel_classification_model_path):
         """
         This function uses VGG16 as the base network and as a transfer learning
@@ -245,20 +245,20 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        TRAIN_PATH: (string)
+        train_path: (string)
             This is the path to the folder that contains the training images
             Note that the directory must be structured in this format:
-                    TRAIN_PATH/
+                    train_path/
                         ...has panel/
                             ......a_image_1.jpg
                             ......a_image_2.jpg
                         ...no panels/
                             ......b_image_1.jpg
                             ......b_image_2.jpg
-        VAL_PATH: (string)
+        val_path: (string)
             This is the path to the folder that contains the validation images
             Note that the directory must be structured in this format:
-                    VAL_PATH/
+                    val_path/
                         ...has panel/
                             ......a_image_1.jpg
                             ......a_image_2.jpg
@@ -287,15 +287,15 @@ class TrainPanelSegmentationModel():
         final_class_model.summary()
         tr_gen = image.ImageDataGenerator(rescale=1./255,
                                           dtype='float32')
-        train_data = tr_gen.flow_from_directory(directory=TRAIN_PATH,
+        train_data = tr_gen.flow_from_directory(directory=train_path,
                                                 target_size=(640, 640),
-                                                batch_size=self.BATCH_SIZE)
-        val_data = tr_gen.flow_from_directory(directory=VAL_PATH,
+                                                batch_size=self.batch_size)
+        val_data = tr_gen.flow_from_directory(directory=val_path,
                                               target_size=(640, 640),
-                                              batch_size=self.BATCH_SIZE)
+                                              batch_size=self.batch_size)
         # Get the number of images in the training and validation sets
-        NO_OF_TRAINING_IMAGES = len(train_data.labels)
-        NO_OF_VAL_IMAGES = len(val_data.labels)
+        no_of_training_images = len(train_data.labels)
+        no_of_val_images = len(val_data.labels)
         final_class_model.compile(loss='categorical_crossentropy',
                                   optimizer=tf.keras.optimizers.Adam(
                                       lr=1e-4, epsilon=1e-08),
@@ -310,16 +310,16 @@ class TrainPanelSegmentationModel():
         results =\
             final_class_model.fit(x=train_data,
                                   workers=0,
-                                  epochs=self.NO_OF_EPOCHS,
-                                  steps_per_epoch=(NO_OF_TRAINING_IMAGES //
-                                                   self.BATCH_SIZE),
+                                  epochs=self.no_of_epochs,
+                                  steps_per_epoch=(no_of_training_images //
+                                                   self.batch_size),
                                   validation_data=val_data,
-                                  validation_steps=(NO_OF_VAL_IMAGES //
-                                                    self.BATCH_SIZE),
+                                  validation_steps=(no_of_val_images //
+                                                    self.batch_size),
                                   callbacks=[checkpoint])
         return final_class_model, results
 
-    def trainMountingConfigClassifier(self, TRAIN_PATH, VAL_PATH,
+    def trainMountingConfigClassifier(self, train_path, val_path,
                                       device=torch.device('cuda')):
         """
         This function uses Faster R-CNN ResNet50 FPN as the base network
@@ -331,20 +331,20 @@ class TrainPanelSegmentationModel():
 
         Parameters
         -----------
-        TRAIN_PATH: (string)
+        train_path: (string)
             This is the path to the folder that contains the training images
             Note that the directory must be structured in this format:
-                    TRAIN_PATH/
+                    train_path/
                         ...images/
                             ......a_image_1.png
                             ......a_image_2.png
                         ...annotations/
                             ......b_image_1.xml
                             ......b_image_2.xml
-        VAL_PATH: (string)
+        val_path: (string)
             This is the path to the folder that contains the validation images
             Note that the directory must be structured in this format:
-                    VAL_PATH/
+                    val_path/
                         ...images/
                             ......a_image_1.png
                             ......a_image_2.png
@@ -364,11 +364,11 @@ class TrainPanelSegmentationModel():
             model.
         """
         # Convert the data set combinations (png + xml) to a CSV record.
-        val_labels_path = (VAL_PATH + '/annotations.csv')
-        train_labels_path = (TRAIN_PATH + '/annotations.csv')
-        utils.xml_to_csv(TRAIN_PATH + '/annotations/',
+        val_labels_path = (val_path + '/annotations.csv')
+        train_labels_path = (train_path + '/annotations.csv')
+        utils.xml_to_csv(train_path + '/annotations/',
                          train_labels_path)
-        utils.xml_to_csv(VAL_PATH + '/annotations/',
+        utils.xml_to_csv(val_path + '/annotations/',
                          val_labels_path)
         # Custom oversampling to balance out our classes
         train_data = pd.read_csv(train_labels_path)
@@ -399,13 +399,13 @@ class TrainPanelSegmentationModel():
         ])
         # Load in the training and validation data sets
         dataset = core.Dataset(train_labels_path,
-                               TRAIN_PATH + '/images',
+                               train_path + '/images',
                                transform=custom_transforms)
         val_dataset = core.Dataset(val_labels_path,
-                                   VAL_PATH + '/images')
+                                   val_path + '/images')
         # Customize training options
         loader = core.DataLoader(dataset,
-                                 batch_size=self.BATCH_SIZE,
+                                 batch_size=self.batch_size,
                                  shuffle=True)
         model = core.Model(["ground-fixed",
                             "carport-fixed",
@@ -413,7 +413,7 @@ class TrainPanelSegmentationModel():
                             "ground-single_axis_tracker"],
                            device=device)
         losses = model.fit(loader, val_dataset,
-                           epochs=self.NO_OF_EPOCHS,
+                           epochs=self.no_of_epochs,
                            learning_rate=self.learning_rate,
                            verbose=True)
         plt.plot(losses)

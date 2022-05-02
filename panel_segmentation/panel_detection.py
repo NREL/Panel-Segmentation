@@ -256,7 +256,7 @@ class PanelDetection:
 
     def testBatch(self, test_data,
                   test_mask=None,
-                  BATCH_SIZE=16,
+                  batch_size=16,
                   model=None):
         """
         This function is used to predict the mask of a batch of test
@@ -285,13 +285,13 @@ class PanelDetection:
         # Ensure that the inputs are of the correct type
         if type(test_data) != np.ndarray:
             raise TypeError("Variable test_data should be of type np.ndarray.")
-        if type(BATCH_SIZE) != int:
-            raise TypeError("Variable BATCH_SIZE should be of type int.")
+        if type(batch_size) != int:
+            raise TypeError("Variable batch_size should be of type int.")
         test_datagen = image.ImageDataGenerator(rescale=1./255,
                                                 dtype='float32')
         test_image_generator = test_datagen.flow(
             test_data,
-            batch_size=BATCH_SIZE, shuffle=False)
+            batch_size=batch_size, shuffle=False)
         if model is not None:
             test_res = model.predict(test_image_generator)
         else:
@@ -853,8 +853,6 @@ class PanelDetection:
         # Use the mask to isolate the panels
         new_res = self.cropPanels(x, res)
         plt.imshow(new_res.reshape(640, 640, 3))
-        # # Check azimuth
-        # az = self.detectAzimuth(new_res)
         # Cluster the solar arrays in the image using connected
         # components clustering.
         n, clusters = self.clusterPanels(new_res,
@@ -885,9 +883,7 @@ class PanelDetection:
                     mounting_config = labels[mounting_config]
                 mounting_config_list.append(mounting_config)
             if len(labels) == 0:
-
                 mounting_config_list.append(["Unknown"]*clusters.shape[0])
-
         # Update azimuth value if the site is a single-axis tracker
         # system. This logic handles single axis tracker cases that are
         # labeled at 90 or 270 (perpendicular to row direction)
