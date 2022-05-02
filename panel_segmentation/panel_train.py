@@ -354,7 +354,7 @@ class TrainPanelSegmentationModel():
         device: (string)
             This argument is passed to the Model() class in Detecto.
             It determines how to run the model: either on GPU via Cuda
-            (default setting), or on CPU. Please not that running the
+            (default setting), or on CPU. Please note that running the
             model on GPU results in significantly faster training times.
 
         Returns
