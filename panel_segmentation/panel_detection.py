@@ -23,6 +23,7 @@ import torch
 from tensorflow.keras.preprocessing import image as imagex
 from torchvision import transforms
 from torchvision.ops import nms
+from matplotlib.patches import Rectangle
 
 panel_seg_model_path = path.join(path.dirname(__file__),
                                  'VGG16Net_ConvTranpose_complete.h5')
@@ -425,7 +426,7 @@ class PanelDetection:
         if type(number_lines) != int:
             raise TypeError("Variable number_lines must be of type int.")
         # Run through the function
-        edges = cv2.Canny(in_img[0], 50, 150, apertureSize=3)
+        edges = cv2.Canny(in_img, 255, 255, apertureSize=3)
         tested_angles = np.linspace(-np.pi / 2, np.pi / 2, 360)
         h, theta, d = hough_line(edges, theta=tested_angles)
         origin = np.array((0, edges.shape[1]))
@@ -570,7 +571,7 @@ class PanelDetection:
 
             in_img = test_results[ii]
             # Edge detection
-            edges = cv2.Canny(in_img, 50, 150, apertureSize=3)
+            edges = cv2.Canny(in_img, 255, 255, apertureSize=3)
             tested_angles = np.linspace(-np.pi / 2, np.pi / 2, 360)
             h, theta, d = hough_line(edges, theta=tested_angles)
             az = np.zeros((no_lines))
@@ -682,7 +683,7 @@ class PanelDetection:
             else:
                 print("Enter valid parameters")
 
-    def clusterPanels(self, test_mask, fig=False):
+    def connectedComponentClusterPanels(self, test_mask, fig=False):
         '''
         This function uses connected component algorithm to cluster the panels
 
@@ -713,8 +714,8 @@ class PanelDetection:
         if (len(test_mask.shape) < 3):
             test_mask = cv2.cvtColor(test_mask, cv2.COLOR_GRAY2RGB)
         test_mask = test_mask.reshape(640, 640, 3)
-        # Converting those pixels with values 0-0.5 to 0 and others to 1
-        img = cv2.threshold(test_mask, 0.5, 1, cv2.THRESH_BINARY)[1]
+        # Converting those pixels with values 0-0.99 to 0 and others to 1
+        img = cv2.threshold(test_mask, .99, 1, cv2.THRESH_BINARY)[1]
         # Applying cv2.connectedComponents()
         num_labels, labels = cv2.connectedComponents(
             img[:, :, 2].reshape(640, 640))
@@ -745,8 +746,6 @@ class PanelDetection:
             pixel_count = len(cluster[cluster > 0])
             total_pixels = cluster.shape[0] * \
                 cluster.shape[1] * cluster.shape[2]
-            # Must greater than 3% non-zero pixels or we omit the cluster
-            print(pixel_count / total_pixels)
             if (pixel_count / total_pixels) >= 0.0025:
                 clusters_list_keep.append(cluster_number)
         # Filter clusters
@@ -759,6 +758,36 @@ class PanelDetection:
             plt.title("Image after Component Labeling")
             plt.show()
         return len(clusters), clusters
+    
+    def clusterPanels(self, test_mask, fig=False):
+        '''
+        This function uses the object detection outputs to cluster the solar
+        array semantic segmentation mask.
+
+        Parameters
+        ----------
+        test_mask : boolean or float
+            The predicted mask. Dimension is (640,640) or can be converted to
+            RGB (640,640,3)
+        fig : boolean
+            shows the clustering image if fig = True
+
+        Returns
+        -------
+            uint8
+            Masked image containing detected clusters each of
+            dimension (640,640,3)
+
+            uint8
+            The optimal number of clusters
+        '''
+        # Check that the input variables are of the correct type
+        if type(test_mask) != np.ndarray:
+            raise TypeError(
+                "Variable test_mask must be of type numpy ndarray.")
+        if type(fig) != bool:
+            raise TypeError("Variable fig must be of type bool.")
+
 
     def runSiteAnalysisPipeline(self,
                                 file_name_save_img,
@@ -850,45 +879,29 @@ class PanelDetection:
         res = self.testSingle(x.astype(float), test_mask=None,  model=None)
         # Use the mask to isolate the panels
         new_res = self.cropPanels(x, res)
-        plt.imshow(new_res.reshape(640, 640, 3))
-        # Cluster the solar arrays in the image using connected
-        # components clustering.
-        n, clusters = self.clusterPanels(new_res,
-                                         fig=True)
-        # Calculate the azimuth for each cluster
+        # Cluster components based on the object detection boxes
         az_list = list()
-        mounting_config_list = list()
-        for ii in np.arange(clusters.shape[0]):
-            az = self.detectAzimuth(clusters[ii][np.newaxis, :])
-            print(az)
+        new_res = new_res[0]
+        clusters = list()
+        for box in boxes:
+            cluster = new_res[int(box[1]):int(box[3]),int(box[0]):int(box[2]), :]
+            result = np.full(new_res.shape, (0,0,0), dtype=np.uint8)
+            result[int(box[1]):int(box[3]),int(box[0]):int(box[2]), :] = cluster
+            az = self.detectAzimuth(cluster)    
             az_list.append(az)
-            # Overlay the mounting configuration results on top of the
-            # cluster results to classify each cluster's mounting configuration
-            rgb_weights = [0.2989, 0.5870, 0.1140]
-            grayscale_image = np.dot(clusters[ii][np.newaxis, :].reshape(
-                640, 640, 3)[..., :3], rgb_weights)
-            # Loop through all of the mounting configurations and see which one
-            # matches the cluster.
-            pixel_sum = 0
-            mounting_config = None
-            for mounting_config in range(len(labels)):
-                box = boxes[mounting_config]
-                pixel_sum_new = np.sum(
-                    grayscale_image[int(box[1]):int(box[3]),
-                                    int(box[0]):int(box[2])])
-                if pixel_sum_new >= pixel_sum:
-                    pixel_sum = pixel_sum_new
-                    mounting_config = labels[mounting_config]
-                mounting_config_list.append(mounting_config)
-            if len(labels) == 0:
-                mounting_config_list.append(["Unknown"]*clusters.shape[0])
+            clusters.append(result)
+        if len(clusters) > 0:
+            clusters = np.stack(clusters, axis=0 )
+            # Plot edges + azimuth
+            self.plotEdgeAz(clusters, 5, 1,
+                        save_img_file_path=file_path_save_azimuth)
         # Update azimuth value if the site is a single-axis tracker
         # system. This logic handles single axis tracker cases that are
         # labeled at 90 or 270 (perpendicular to row direction)
         az_list_updated = list()
         mounting_config_list_updated = list()
         for array_number in range(len(az_list)):
-            mount_classification = mounting_config_list[array_number]
+            mount_classification = labels[array_number]
             az = az_list[array_number]
             if mount_classification == 'ground-single_axis_tracker':
                 if az <= 120:
@@ -899,9 +912,6 @@ class PanelDetection:
                     pass
             az_list_updated.append(az)
             mounting_config_list_updated.append(mount_classification)
-        # Plot edges + azimuth
-        self.plotEdgeAz(clusters, 5, 1,
-                        save_img_file_path=file_path_save_azimuth)
         site_analysis_dict = {"associated_azimuths": az_list_updated,
                               "mounting_type": mounting_config_list_updated
                               }
