@@ -41,8 +41,7 @@ EXTRAS_REQUIRE = {
         'sphinx==3.2',
         'jinja2<3.1',
         'sphinx_rtd_theme==0.5.2',
-        'ipython',
-        'sphinx-gallery==0.8.1'
+        'ipython'
     ],
     'test': TESTS_REQUIRE
 }

@@ -44,6 +44,6 @@ The following deep learning models are included in the Panel-Segmentation packag
 .. autosummary::
    :toctree: generated/
 
-   VGG16_classification_model.h5
-   VGG16Net_ConvTranpose_complete.h5
-   object_detection_model.pth
+   VGG16_classification_model.h5: This is the DL classifier model, which identifies if a solar array is detected in an image.
+   VGG16Net_ConvTranpose_complete.h5: This is the DL instance segmentation model, which identifies solar arrays in the image on a pixel-by-pixel basis.
+   object_detection_model.pth: This is the DL object detection model, which detects and classifies solar array mounting configuration.

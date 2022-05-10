@@ -17,10 +17,10 @@ Documentation
 
 Scripts
 ~~~~~~~~~~~~~
-- Add the function :py:func:`panel_segmentation.panel_train.trainMountingConfigClassifier`.
-- Add the functions :py:func:`panel_segmentation.panel_detection.runSiteAnalysisPipeline` and :py:func:`panel_segmentation.panel_detection.classifyMountingConfiguration`.
-- Add unit testing for the :py:func:`panel_segmentation.panel_train.trainMountingConfigClassifier`, :py:func:`panel_segmentation.panel_detection.runSiteAnalysisPipeline`, 
-  and :py:func:`panel_segmentation.panel_detection.classifyMountingConfiguration` functions.
+- Add the function :py:func:`panel_segmentation.panel_train.TrainPanelSegmentationModel.trainMountingConfigClassifier`.
+- Add the functions :py:func:`panel_segmentation.panel_detection.PanelDetection.runSiteAnalysisPipeline` and :py:func:`panel_segmentation.panel_detection.classifyMountingConfiguration`.
+- Add unit testing for the :py:func:`panel_segmentation.panel_train.TrainPanelSegmentationModel.trainMountingConfigClassifier`, :py:func:`panel_segmentation.panel_detection.runSiteAnalysisPipeline`, 
+  and :py:func:`panel_segmentation.panel_detection.PanelDetection.classifyMountingConfiguration` functions.
 
 Other Changes
 ~~~~~~~~~~~~~
