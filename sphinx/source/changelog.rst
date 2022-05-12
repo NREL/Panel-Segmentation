@@ -3,7 +3,7 @@
 
 Change Log
 ==========
-Version 0.0.2 (April 29, 2022)
+Version 0.0.2 (May 12, 2022)
 --------------------------------
 
 Added the mounting object detection algorithm to detect and classify the mounting
