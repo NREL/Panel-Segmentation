@@ -850,45 +850,31 @@ class PanelDetection:
         res = self.testSingle(x.astype(float), test_mask=None,  model=None)
         # Use the mask to isolate the panels
         new_res = self.cropPanels(x, res)
-        plt.imshow(new_res.reshape(640, 640, 3))
-        # Cluster the solar arrays in the image using connected
-        # components clustering.
-        n, clusters = self.clusterPanels(new_res,
-                                         fig=True)
-        # Calculate the azimuth for each cluster
+        # Cluster components based on the object detection boxes
         az_list = list()
-        mounting_config_list = list()
-        for ii in np.arange(clusters.shape[0]):
-            az = self.detectAzimuth(clusters[ii][np.newaxis, :])
-            print(az)
+        new_res = new_res[0]
+        clusters = list()
+        for box in boxes:
+            cluster = new_res[int(box[1]):int(box[3]),
+                              int(box[0]):int(box[2]), :]
+            result = np.full(new_res.shape, (0, 0, 0), dtype=np.uint8)
+            result[int(box[1]):int(box[3]),
+                   int(box[0]):int(box[2]), :] = cluster
+            az = self.detectAzimuth(cluster)
             az_list.append(az)
-            # Overlay the mounting configuration results on top of the
-            # cluster results to classify each cluster's mounting configuration
-            rgb_weights = [0.2989, 0.5870, 0.1140]
-            grayscale_image = np.dot(clusters[ii][np.newaxis, :].reshape(
-                640, 640, 3)[..., :3], rgb_weights)
-            # Loop through all of the mounting configurations and see which one
-            # matches the cluster.
-            pixel_sum = 0
-            mounting_config = None
-            for mounting_config in range(len(labels)):
-                box = boxes[mounting_config]
-                pixel_sum_new = np.sum(
-                    grayscale_image[int(box[1]):int(box[3]),
-                                    int(box[0]):int(box[2])])
-                if pixel_sum_new >= pixel_sum:
-                    pixel_sum = pixel_sum_new
-                    mounting_config = labels[mounting_config]
-                mounting_config_list.append(mounting_config)
-            if len(labels) == 0:
-                mounting_config_list.append(["Unknown"]*clusters.shape[0])
+            clusters.append(result)
+        if len(clusters) > 0:
+            clusters = np.stack(clusters, axis=0)
+            # Plot edges + azimuth
+            self.plotEdgeAz(clusters, 5, 1,
+                            save_img_file_path=file_path_save_azimuth)
         # Update azimuth value if the site is a single-axis tracker
         # system. This logic handles single axis tracker cases that are
         # labeled at 90 or 270 (perpendicular to row direction)
         az_list_updated = list()
         mounting_config_list_updated = list()
         for array_number in range(len(az_list)):
-            mount_classification = mounting_config_list[array_number]
+            mount_classification = labels[array_number]
             az = az_list[array_number]
             if mount_classification == 'ground-single_axis_tracker':
                 if az <= 120:
@@ -899,9 +885,6 @@ class PanelDetection:
                     pass
             az_list_updated.append(az)
             mounting_config_list_updated.append(mount_classification)
-        # Plot edges + azimuth
-        self.plotEdgeAz(clusters, 5, 1,
-                        save_img_file_path=file_path_save_azimuth)
         site_analysis_dict = {"associated_azimuths": az_list_updated,
                               "mounting_type": mounting_config_list_updated
                               }
