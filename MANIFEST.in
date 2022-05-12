@@ -2,5 +2,6 @@ include versioneer.py
 include panel_segmentation/_version.py
 include panel_segmentation/VGG16_classification_model.h5
 include panel_segmentation/VGG16Net_ConvTranpose_complete.h5
+include panel_segmentation/object_detection_model.pth
 include panel_segmentation/examples/*
 include panel_segmentation/tests/*

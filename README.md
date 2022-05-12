@@ -12,6 +12,10 @@ classification model (VGG16_classification_model.h5).
 image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_ConvTranpose_complete.h5).
 - Using connected components clustering, isolate individual solar arrays in the masked image.
 - Perform azimuth estimation on each solar array cluster in the masked image.
+- Using an object detection model (Faster R-CNN Resnet 50 trained via transfer learning), detect
+and classify mounting type and configuration of solar installations in satellite imagery. This includes
+classification of fixed tilt, single-axis trackers, and double-axis trackers, as well as the rooftop, 
+ground, and carport mounting configurations.
 
 To install Panel-Segmentation, perform the following steps:
 

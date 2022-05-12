@@ -118,6 +118,12 @@ image, and estimate the azimuth of each detected solar array.
     #Then we can find azimuth for each cluster
     panelseg.plotEdgeAz(clusters, 10, 1,
                          save_img_file_path = './')
+    # Get the mounting configuration classification
+    panelseg.classifyMountingConfiguration(image_file_path = file_name_save)
+
+    # Run the site analysis pipeline on the image
+    panelseg.runSiteAnalysisPipeline("./panel_segmentation/examples/Panel_Detection_Examples/sat_img.png")
+
     
     
 
