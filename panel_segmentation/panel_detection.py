@@ -847,7 +847,7 @@ class PanelDetection:
                             target_size=(640, 640))
         x = np.array(x)
         # Mask the satellite image
-        res = self.testSingle(x.astype(float), test_mask=None,  model=None)
+        res = self.testSingle(x, test_mask=None,  model=None)
         # Use the mask to isolate the panels
         new_res = self.cropPanels(x, res)
         # Cluster components based on the object detection boxes
@@ -860,11 +860,12 @@ class PanelDetection:
             result = np.full(new_res.shape, (0, 0, 0), dtype=np.uint8)
             result[int(box[1]):int(box[3]),
                    int(box[0]):int(box[2]), :] = cluster
-            az = self.detectAzimuth(cluster)
+            result = result.reshape(((1,) + result.shape))
+            az = self.detectAzimuth(result)
             az_list.append(az)
             clusters.append(result)
         if len(clusters) > 0:
-            clusters = np.stack(clusters, axis=0)
+            clusters = np.concatenate(clusters)
             # Plot edges + azimuth
             self.plotEdgeAz(clusters, 5, 1,
                             save_img_file_path=file_path_save_azimuth)
