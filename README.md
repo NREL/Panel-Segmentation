@@ -14,7 +14,7 @@ image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_Con
 - Perform azimuth estimation on each solar array cluster in the masked image.
 - Using an object detection model (Faster R-CNN Resnet 50 trained via transfer learning), detect
 and classify mounting type and configuration of solar installations in satellite imagery. This includes
-classification of fixed tilt, single-axis trackers, and double-axis trackers, as well as the rooftop, 
+classification of fixed tilt and single-axis trackers, as well as the rooftop, 
 ground, and carport mounting configurations.
 
 To install Panel-Segmentation, perform the following steps:
@@ -27,9 +27,7 @@ https://git-lfs.github.com/
 
 pip install git+https://github.com/NREL/Panel-Segmentation.git@master#egg=panel-segmentation
 
-
-
-
+3. When initiating the PanelDetection() class, be sure to point your file paths to the model paths in your local Panel-Segmentation folder!
 
 
 
