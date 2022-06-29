@@ -20,10 +20,7 @@ def panelDetectionClass():
     '''Generate an instance of the PanelDetection() class to run unit
     tests on.'''
     # Create an instance of the PanelDetection() class.
-    pc = pan_det.PanelDetection(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-        './panel_segmentation/VGG16_classification_model.h5',
-        './panel_segmentation/object_detection_model.pth')
+    pc = pan_det.PanelDetection()
     return pc
 
 
