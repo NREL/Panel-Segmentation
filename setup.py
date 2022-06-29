@@ -64,7 +64,9 @@ setup(
         'panel_segmentation': [
             'panel_segmentation/examples/*',
             'panel_segmentation/tests/*',
-            'panel_segmentation/models/*'
+            'panel_segmentation/models/VGG16Net_ConvTranpose_complete.h5',
+            'panel_segmentation/models/VGG16_classification_model.h5',
+            'panel_segmentation/models/object_detection_model.pth'
         ],
     },
     include_package_data=True,
