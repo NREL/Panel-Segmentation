@@ -25,7 +25,7 @@ from torchvision import transforms
 from torchvision.ops import nms
 
 panel_seg_model_path = path.join(path.dirname(__file__),
-                                 'models'
+                                 'models',
                                  'VGG16Net_ConvTranpose_complete.h5')
 panel_classification_model_path = path.join(path.dirname(__file__),
                                             'models',
