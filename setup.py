@@ -62,11 +62,9 @@ setup(
                 'kevin.anderson@nrel.gov; chris.acampos@yahoo.com',
     package_data={
         'panel_segmentation': [
-            'panel_segmentation/VGG16_classification_model.h5',
-            'panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-            'panel_segmentation/object_detection_model.pth',
             'panel_segmentation/examples/*',
             'panel_segmentation/tests/*',
+            'panel_segmentation/models/*'
         ],
     },
     include_package_data=True,
