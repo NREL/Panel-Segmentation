@@ -41,13 +41,13 @@ def testGenerateSatelliteImage():
     google_maps_api_key = "Wrong_API_key"
     file_name_save = "./examples/Panel_Detection_Examples/sat_img.png"
     model_file_path = os.path.abspath(
-        './panel_segmentation/VGG16Net_ConvTranpose_complete.h5')
+        './panel_segmentation/models/VGG16Net_ConvTranpose_complete.h5')
     assert os.path.exists(model_file_path)
     classifier_file_path = os.path.abspath(
-        './panel_segmentation/VGG16_classification_model.h5')
+        './panel_segmentation/models/VGG16_classification_model.h5')
     assert os.path.exists(classifier_file_path)
     mounting_classifier_model_path = os.path.abspath(
-        './panel_segmentation/object_detection_model.pth')
+        './panel_segmentation/models/object_detection_model.pth')
     assert os.path.exists(mounting_classifier_model_path)
     # Create an instance of the PanelDetection() class.
     pc = pan_det.PanelDetection(
