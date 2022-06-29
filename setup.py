@@ -17,7 +17,7 @@ KEYWORDS = [
 
 
 INSTALL_REQUIRES = [
-    'opencv-python-headless==4.5.4.60',
+    'opencv-python-headless==4.6.0.66',
     'numpy>=1.18.1',
     'scikit_image>=0.16.2',
     'matplotlib>=3.1.3',
@@ -62,11 +62,11 @@ setup(
                 'kevin.anderson@nrel.gov; chris.acampos@yahoo.com',
     package_data={
         'panel_segmentation': [
-            'panel_segmentation/VGG16_classification_model.h5',
-            'panel_segmentation/VGG16Net_ConvTranpose_complete.h5',
-            'panel_segmentation/object_detection_model.pth',
             'panel_segmentation/examples/*',
             'panel_segmentation/tests/*',
+            'panel_segmentation/models/VGG16Net_ConvTranpose_complete.h5',
+            'panel_segmentation/models/VGG16_classification_model.h5',
+            'panel_segmentation/models/object_detection_model.pth'
         ],
     },
     include_package_data=True,

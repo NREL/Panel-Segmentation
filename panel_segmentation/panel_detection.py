@@ -25,11 +25,14 @@ from torchvision import transforms
 from torchvision.ops import nms
 
 panel_seg_model_path = path.join(path.dirname(__file__),
+                                 'models',
                                  'VGG16Net_ConvTranpose_complete.h5')
 panel_classification_model_path = path.join(path.dirname(__file__),
+                                            'models',
                                             'VGG16_classification_model.h5')
-mounting_classification_model_path = path.join(path.dirname(__file__),
-                                               'object_detection_model.pth')
+mounting_classification_path = path.join(path.dirname(__file__),
+                                         'models',
+                                         'object_detection_model.pth')
 
 
 class PanelDetection:
@@ -40,9 +43,9 @@ class PanelDetection:
     configuration.
     '''
 
-    def __init__(self, model_file_path='./VGG16Net_ConvTranpose_complete.h5',
-                 classifier_file_path='./VGG16_classification_model.h5',
-                 mounting_classifier_file_path='./object_detection_model.pth'):
+    def __init__(self, model_file_path=panel_seg_model_path,
+                 classifier_file_path=panel_classification_model_path,
+                 mounting_classifier_file_path=mounting_classification_path):
         # This is the model used for detecting if there is a panel or not
         self.classifier = load_model(classifier_file_path,
                                      custom_objects=None,
