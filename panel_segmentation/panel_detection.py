@@ -831,12 +831,12 @@ class PanelDetection:
         # Use the mask to isolate the panels
         new_res = self.cropPanels(x, res)
         # Cluster components based on the object detection boxes
-        clusters = self.clusterPanels(new_res,
-                                      boxes,
-                                      fig=True)
+        no_clusters, clusters = self.clusterPanels(new_res,
+                                                   boxes,
+                                                   fig=True)
         # Generate a list of all of the azimuths
         az_list = list()
-        for idx in range(clusters.shape[0]):
+        for idx in range(no_clusters):
             az = self.detectAzimuth(np.expand_dims(clusters[idx], axis=0),
                                     number_lines=5)
             az_list.append(az)
