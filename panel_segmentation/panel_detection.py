@@ -190,6 +190,7 @@ class PanelDetection:
             ax.add_patch(rect)
         if file_name_save is not None:
             plt.savefig(file_name_save)
+        plt.show()
         return (scores, labels, boxes)
 
     def diceCoeff(self, y_true, y_pred, smooth=1):
