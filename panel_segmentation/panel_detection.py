@@ -190,6 +190,7 @@ class PanelDetection:
             ax.add_patch(rect)
         if file_name_save is not None:
             plt.savefig(file_name_save)
+        plt.show()
         return (scores, labels, boxes)
 
     def diceCoeff(self, y_true, y_pred, smooth=1):
@@ -685,26 +686,31 @@ class PanelDetection:
             else:
                 print("Enter valid parameters")
 
-    def clusterPanels(self, test_mask, fig=False):
+    def clusterPanels(self, test_mask, boxes, fig=False):
         '''
-        This function uses connected component algorithm to cluster the panels
+        This function uses object detection outputs to cluster the panels
 
         Parameters
         ----------
-        test_mask : boolean or float
-            The predicted mask. Dimension is (640,640) or can be converted to
-            RGB (640,640,3)
+        test_mask : Array of booleans
+            Size (640, 640, 3). This is the boolean mask output of the
+            testSingle() function, where solar array pixels are masked.
+        boxes: Pytorch tensor
+            Contains the detected boxes found by the object detection model.
+            This is the 'boxes' output of the classifyMountingConfiguration()
+            function.
         fig : boolean
             shows the clustering image if fig = True
 
         Returns
         -------
+            integer
+            Total number of clusters detected in the image
             uint8
             Masked image containing detected clusters each of
-            dimension (640,640,3)
-
-            uint8
-            The optimal number of clusters
+            dimension (640,640,3). The masked image is 4D, with the first
+            dimension representing the total number of clusters, as follows:
+            (number clusters, 640, 640, 3)
         '''
         # Check that the input variables are of the correct type
         if type(test_mask) != np.ndarray:
@@ -716,52 +722,24 @@ class PanelDetection:
         if (len(test_mask.shape) < 3):
             test_mask = cv2.cvtColor(test_mask, cv2.COLOR_GRAY2RGB)
         test_mask = test_mask.reshape(640, 640, 3)
-        # Converting those pixels with values 0-0.5 to 0 and others to 1
-        img = cv2.threshold(test_mask, 0.5, 1, cv2.THRESH_BINARY)[1]
-        # Applying cv2.connectedComponents()
-        num_labels, labels = cv2.connectedComponents(
-            img[:, :, 2].reshape(640, 640))
-        # Map component labels to hue val, 0-179 is the hue range in OpenCV
-        label_hue = np.uint8(179*labels/np.max(labels))
-        blank_ch = 255*np.ones_like(label_hue)
-        labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
-        # Converting cvt to BGR
-        labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
-        # set background label to black
-        labeled_img[label_hue == 0] = 0
-        # Initialize each clusters
-        clusters = np.uint8(np.zeros((num_labels-1, 640, 640, 3)))
-        # starting from 1 to ignore background
-        for i in np.arange(1, num_labels):
-            clus = np.copy(test_mask)
-            c_mask = labels == i
-            clus[(1-c_mask).astype(bool), 0] = 0
-            clus[(1-c_mask).astype(bool), 1] = 0
-            clus[(1-c_mask).astype(bool), 2] = 0
-            clusters[i-1] = clus
-        # Loop through each cluster, and detect number of non-zero values
-        # in each cluster.
-        clusters_list_keep = []
-        for cluster_number in range(clusters.shape[0]):
-            cluster = clusters[cluster_number]
-            # Get the number of non-zero values as a ratio of total pixels
-            pixel_count = len(cluster[cluster > 0])
-            total_pixels = cluster.shape[0] * \
-                cluster.shape[1] * cluster.shape[2]
-            # Must greater than 3% non-zero pixels or we omit the cluster
-            print(pixel_count / total_pixels)
-            if (pixel_count / total_pixels) >= 0.0025:
-                clusters_list_keep.append(cluster_number)
-        # Filter clusters
-        clusters = clusters[clusters_list_keep]
+        clusters = list()
+        for box in boxes:
+            cluster = test_mask[int(box[1]):int(box[3]),
+                                int(box[0]):int(box[2]), :]
+            result = np.full(test_mask.shape, (0, 0, 0), dtype=np.uint8)
+            result[int(box[1]):int(box[3]),
+                   int(box[0]):int(box[2]), :] = cluster
+            result = result.reshape(((1,) + result.shape))
+            clusters.append(result)
+        if len(clusters) > 0:
+            clusters = np.concatenate(clusters)
+        # Plot the individual clusters in the image if fig is True
         if fig is True:
-            # Showing Image after Component Labeling
-            plt.figure()
-            plt.imshow(cv2.cvtColor(labeled_img, cv2.COLOR_BGR2RGB))
-            plt.axis('off')
-            plt.title("Image after Component Labeling")
-            plt.show()
-        return len(clusters), clusters
+            for idx in range(clusters.shape[0]):
+                plt.imshow(clusters[idx], interpolation='nearest')
+                plt.title("Cluster #" + str(idx + 1))
+                plt.show()
+        return clusters.shape[0], clusters
 
     def runSiteAnalysisPipeline(self,
                                 file_name_save_img,
@@ -854,22 +832,17 @@ class PanelDetection:
         # Use the mask to isolate the panels
         new_res = self.cropPanels(x, res)
         # Cluster components based on the object detection boxes
+        no_clusters, clusters = self.clusterPanels(new_res,
+                                                   boxes,
+                                                   fig=True)
+        # Generate a list of all of the azimuths
         az_list = list()
-        new_res = new_res[0]
-        clusters = list()
-        for box in boxes:
-            cluster = new_res[int(box[1]):int(box[3]),
-                              int(box[0]):int(box[2]), :]
-            result = np.full(new_res.shape, (0, 0, 0), dtype=np.uint8)
-            result[int(box[1]):int(box[3]),
-                   int(box[0]):int(box[2]), :] = cluster
-            result = result.reshape(((1,) + result.shape))
-            az = self.detectAzimuth(result)
+        for idx in range(no_clusters):
+            az = self.detectAzimuth(np.expand_dims(clusters[idx], axis=0),
+                                    number_lines=5)
             az_list.append(az)
-            clusters.append(result)
+        # Plot edges + azimuth for each cluster
         if len(clusters) > 0:
-            clusters = np.concatenate(clusters)
-            # Plot edges + azimuth
             self.plotEdgeAz(clusters, 5, 1,
                             save_img_file_path=file_path_save_azimuth)
         # Update azimuth value if the site is a single-axis tracker

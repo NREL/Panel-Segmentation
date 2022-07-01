@@ -137,7 +137,13 @@ def testClusterPanels(panelDetectionClass, satelliteImg):
                                          test_mask=None,  model=None)
     # Use the mask to isolate the panels
     new_res = panelDetectionClass.cropPanels(satelliteImg, res)
-    n, clusters = panelDetectionClass.clusterPanels(new_res)
+    # Generate the object detection boxes
+    (scores, labels, boxes) = \
+        panelDetectionClass.classifyMountingConfiguration(
+            img_file,
+            acc_cutoff=.65,
+            file_name_save=None)
+    n, clusters = panelDetectionClass.clusterPanels(new_res, boxes)
     azimuth_list = []
     for ii in np.arange(clusters.shape[0]):
         az = panelDetectionClass.detectAzimuth(clusters[ii][np.newaxis, :])
