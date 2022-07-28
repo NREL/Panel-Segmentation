@@ -15,7 +15,6 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 10551,2,2,324.48,mono-Si,sw320 xl mono
 4669,2,2,76.8,mono-Si,sw320 xl mono
 10358,2,2,276.8,mono-Si,sw320 xl mono
-10358,2,2,276.8,mono-Si,sw320 xl mono
 54164,1,2,750.93,mono-Si,sw245
 14602,1,2,439.488,mono-Si,spr-e20-327-com
 15329,1,2,439.488,mono-Si,spr-e20-327-com
@@ -66,7 +65,6 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 2485,2,2,86.94,mono-Si,sw345 xl mono
 1569,2,2,49.68,mono-Si,sw345 xl mono
 43384,1,2,500.08,mono-Si,sw235
-8226,2,2,201.84,mono-Si,Yingli  290W
 8226,2,2,201.84,mono-Si,Yingli  290W
 4459,2,2,323.64,mono-Si,Yingli  290W
 6323,2,2,211.83,mono-Si,tsm-345de14a(ii)
@@ -185,20 +183,13 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 9827,1,2,272.06,mono-Si,spr-327ne-wht-d
 6557,1,1,106.925,multi-Si,tsm-235pa05
 36684,2,1,1274.7,multi-Si,stp280-24/vd
-36684,2,1,1274.7,multi-Si,stp275-24/vd
 14077,2,1,410.4,multi-Si,mpe-235-ps09
 55883,2,1,1816.92,multi-Si,mpe-240-ps12
-55883,2,1,1816.92,multi-Si,mpe-240-ps14
-55883,2,1,1816.92,multi-Si,mpe-240-ps13
-55883,2,1,1816.92,multi-Si,mpe-235-ps09
-55883,2,1,1816.92,multi-Si,mpe-240-ps15
-55883,2,1,1816.92,multi-Si,mpe-240-ps16
 2177,2,1,172.8,multi-Si,yl300p-35b
 6082,2,1,170.8,multi-Si,yl305p-35b
 6663,2,1,190.8,multi-Si,yl300p-35b
 5905,2,1,201.3,multi-Si,yl305p-35b
 2664,2,1,134.2,multi-Si,yl305p-35b
-63668,3,1,971,multi-Si,HSL72P6-PC-3-310Q
 63668,3,1,971,multi-Si,HSL72P6-PC-3-310Q
 23103,2,1,925.2,multi-Si,yl300p-35b
 4060,2,1,468,multi-Si,yl300p-35b
@@ -206,7 +197,6 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 5956,2,1,514.8,multi-Si,yl300p-35b
 5928,2,1,615.6,multi-Si,yl300p-35b
 13725,2,1,481.44,multi-Si,yl300p-35b
-13725,2,1,481.44,multi-Si,yl295p-35b
 18653,2,1,548.7,multi-Si,yl295p-35b
 5071,2,1,548.41,multi-Si,yl295p-35b
 53540,3,1,995.41,multi-Si,hsl72p6-pc-1-310
@@ -259,10 +249,8 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 9814,2,1,302.4,multi-Si,hsl72p6-0-pa-300t
 5168,2,1,180,multi-Si,hsl72p6-pb-4-300t
 8824,2,1,290.4,multi-Si,hsl72p6-pb-4-300t
-8824,2,1,290.4,multi-Si,hsl72p6-pb-4-305t
 7194,2,1,226.8,multi-Si,hsl72p6-pb-4-300t
 11548,2,1,319.05,multi-Si,hsl72p6-pb-4-305t
-11548,2,1,319.05,multi-Si,hsl72p6-pb-4-300t
 5456,2,1,173.85,multi-Si,hsl72p6-pb-4-305t
 14212,2,1,173.85,multi-Si,hsl72p6-pc-1-305
 2110,2,1,63,multi-Si,hsl72p6-0-pa-300t
@@ -292,7 +280,6 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 11326,2,1,343.8,multi-Si,hsl72p6-pb-4-300t
 4654,2,1,137.25,multi-Si,hsl72p6-pb-4-305t
 9103,2,1,292.8,multi-Si,hsl72p6-pb-4-305t
-9103,2,1,292.8,multi-Si,hsl72p6-pc-1-310
 45211,3,1,796.05,multi-Si,yl305p-35b
 21292,3,1,395.28,multi-Si,yl305p-35b
 11509,2,1,394.8,multi-Si,yl235p-29b
@@ -313,7 +300,6 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 18382,1,1,255.84,multi-Si,tsm-240pa05
 6028,1,1,47.84,multi-Si,tsm-230 pa05
 91519,1,1,2499.42,multi-Si,cs6x-280p
-91519,1,1,2499.42,multi-Si,jc300m-24-ab
 11721,1,1,233.7,multi-Si,ne-165u1
 28374,1,4,239.4,ribbon polycrystalline si,es-190-rl
 28154,1,4,383.04,ribbon polycrystalline si,es-180-sl
@@ -384,3 +370,6 @@ BMC"
 3248,1,7,51.84,Unknown,Unknown
 1599,1,7,1834.56,Unknown,TSM-PA05
 3632,1,7,247.8,Unknown,HIP190CA2
+90049,3,7,1295.64,Unknown,Unknown
+56985,3,7,988.2,Unknown,Unknown
+37113,3,7,724.68,Unknown,Unknown
