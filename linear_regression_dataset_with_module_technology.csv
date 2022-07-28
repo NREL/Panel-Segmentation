@@ -1,0 +1,386 @@
+pixel_count,mounting_configuration,technology_type,power,module_technology,module_model
+308326,3,6,21902,CdTe,fs series 3
+5825,2,2,218.62,mono-Si,sw340 xl mono
+4945,2,2,183.6,mono-Si,sw340 xl mono
+3916,2,2,128.52,mono-Si,sw340 xl mono
+3788,2,2,136,mono-Si,sw340 xl mono
+5344,2,2,193.46,mono-Si,sw340 xl mono
+3585,2,2,138.72,mono-Si,sw340 xl mono
+20000,2,2,618.24,mono-Si,sw320 xl mono
+2226,2,2,476.16,mono-Si,sw320 xl mono
+4729,2,2,253.44,mono-Si,sw320 xl mono
+8469,2,2,263.04,mono-Si,sw320 xl mono
+11756,2,2,284.16,mono-Si,sw320 xl mono
+6023,2,2,17.28,mono-Si,sw320 xl mono
+10551,2,2,324.48,mono-Si,sw320 xl mono
+4669,2,2,76.8,mono-Si,sw320 xl mono
+10358,2,2,276.8,mono-Si,sw320 xl mono
+10358,2,2,276.8,mono-Si,sw320 xl mono
+54164,1,2,750.93,mono-Si,sw245
+14602,1,2,439.488,mono-Si,spr-e20-327-com
+15329,1,2,439.488,mono-Si,spr-e20-327-com
+17884,1,2,502.272,mono-Si,spr-e20-327-com
+4543,2,2,156.6,mono-Si,spr-e20-435-com
+2970,2,2,104.4,mono-Si,spr-e20-435-com
+3385,2,2,108.75,mono-Si,spr-e20-435-com
+6977,2,2,261,mono-Si,spr-e20-435-com
+2973,2,2,117.45,mono-Si,spr-e20-435-com
+2374,2,2,104.4,mono-Si,spr-e20-435-com
+2327,2,2,104.4,mono-Si,spr-e20-435-com
+3668,2,2,130.5,mono-Si,spr-e20-435-com
+2481,2,2,91.35,mono-Si,spr-e20-435-com
+3240,2,2,113.1,mono-Si,spr-e20-435-com
+4399,2,2,152.25,mono-Si,spr-e20-435-com
+2812,2,2,117.45,mono-Si,spr-e20-435-com
+3269,2,2,365.4,mono-Si,spr-e20-435-com
+2627,2,2,104.4,mono-Si,spr-e20-435-com
+2966,2,2,104.4,mono-Si,spr-e20-435-com
+2839,2,2,95.7,mono-Si,spr-e20-435-com
+2090,2,2,91.35,mono-Si,spr-e20-435-com
+5036,2,2,182.7,mono-Si,spr-e20-435-com
+3374,2,2,130.5,mono-Si,spr-e20-435-com
+2720,2,2,104.4,mono-Si,spr-e20-435-com
+1391,2,2,52.2,mono-Si,spr-e20-435-com
+4094,2,2,156.6,mono-Si,spr-e20-435-com
+4136,2,2,165.3,mono-Si,spr-e20-435-com
+4955,2,2,204.45,mono-Si,spr-e20-435-com
+3675,2,2,143.55,mono-Si,spr-e20-435-com
+3097,2,2,117.45,mono-Si,spr-e20-435-com
+3253,2,2,130.5,mono-Si,spr-e20-435-com
+4085,2,2,156.6,mono-Si,spr-e20-435-com
+3569,2,2,182.7,mono-Si,spr-e20-435-com
+3358,2,2,130.5,mono-Si,spr-e20-435-com
+4053,2,2,156.6,mono-Si,spr-e20-435-com
+18679,2,2,730.8,mono-Si,spr-e20-435-com
+10803,2,2,1017.9,mono-Si,spr-e20-435-com
+186253,2,2,3758.4,mono-Si,spr-e20-435-com
+4109,1,2,152.25,mono-Si,spr-e20-435-com
+5493,2,2,208.8,mono-Si,spr-e20-435-com
+2765,2,2,182.7,mono-Si,spr-e20-435-com
+3568,2,2,141,mono-Si,spr-x21-470-com
+7387,2,2,282,mono-Si,spr-x21-470-com
+4731,2,2,169.2,mono-Si,spr-x21-470-com
+4526,2,2,183.3,mono-Si,spr-x21-470-com
+4921,2,2,192.7,mono-Si,spr-x21-470-com
+9688,2,2,221.68,mono-Si,
+2485,2,2,86.94,mono-Si,sw345 xl mono
+1569,2,2,49.68,mono-Si,sw345 xl mono
+43384,1,2,500.08,mono-Si,sw235
+8226,2,2,201.84,mono-Si,Yingli  290W
+8226,2,2,201.84,mono-Si,Yingli  290W
+4459,2,2,323.64,mono-Si,Yingli  290W
+6323,2,2,211.83,mono-Si,tsm-345de14a(ii)
+3548,2,2,186.3,mono-Si,sw345 xl mono
+7270,2,2,235.98,mono-Si,sw345 xl mono
+5965,2,2,215.28,mono-Si,sw345 xl mono
+9714,2,2,409.86,mono-Si,sw345 xl mono
+2890,2,2,151.11,mono-Si,sw345 xl mono
+7319,2,2,248.4,mono-Si,sw345 xl mono
+7910,2,2,263.58,mono-Si,sw345 xl mono
+1794,2,2,186.3,mono-Si,sw345 xl mono
+5149,2,2,173.88,mono-Si,sw345 xl mono
+3994,2,2,132.48,mono-Si,sw345 xl mono
+10817,2,2,366.39,mono-Si,sw345 xl mono
+5144,2,2,165.6,mono-Si,sw345 xl mono
+3825,2,2,413.31,mono-Si,sw345 xl mono
+6993,2,2,259.44,mono-Si,sw345 xl mono
+3612,2,2,130.41,mono-Si,sw345 xl mono
+2333,2,2,82.8,mono-Si,sw345 xl mono
+1266,2,2,54.51,mono-Si,sw345 xl mono
+5582,2,2,177.68,mono-Si,tsm-345de14a(ii)
+8554,2,2,107.3,mono-Si,tsm-345de14a(ii)
+8058,2,2,216.32,mono-Si,tsm-345de14a(ii)
+8611,2,2,277.38,mono-Si,tsm-345de14a(ii)
+4939,2,2,151.8,mono-Si,tsm-345de14a(ii)
+8360,2,2,160.77,mono-Si,tsm-345de14a(ii)
+2127,2,2,78.66,mono-Si,tsm-345de14a(ii)
+4682,2,2,161.46,mono-Si,tsm-345de14a(ii)
+3771,1,2,40.56,mono-Si,Yingli 260W
+2522,1,2,165.62,mono-Si,Yingli 260W
+3259,2,2,161.88,mono-Si,tsm-355dd14a(ii)
+3904,2,2,32.31,mono-Si,tsm-355dd14a(ii)
+3904,2,2,123.54,mono-Si,tsm-355dd14a(ii)
+7193,2,2,242.5,mono-Si,NU-U235F2
+16972,3,2,270.7,mono-Si,NU-U235F2
+4074,1,2,73.7,mono-Si,NU-U235F2
+47709,1,2,1209.6,mono-Si,sw320 xl mono
+15187,1,2,404.63,mono-Si,
+22305,2,2,733.2,mono-Si,sw325 xl mono
+6837,2,2,214.32,mono-Si,Yingli 235W
+7654,2,2,216.92,mono-Si,sw340 xl mono
+937,2,2,195.84,mono-Si,sw340 xl mono
+4178,2,2,149.6,mono-Si,sw340 xl mono
+4654,2,2,161.16,mono-Si,sw340 xl mono
+2958,2,2,134.3,mono-Si,
+4004,2,2,170,mono-Si,sw340 xl mono
+4594,2,2,212.84,mono-Si,sw340 xl mono
+7200,1,2,95.2,mono-Si,yl175(156)
+7173,2,2,226.8,mono-Si,sw315 xl mono
+6027,2,2,171.99,mono-Si,sw315 xl mono
+4280,2,2,510.3,mono-Si,sw315 xl mono
+6007,2,2,204.12,mono-Si,sw315 xl mono
+2904,1,2,36.75,mono-Si,nt-175u1f
+1930,1,2,38.5,mono-Si,nt-175u1
+3071,1,2,40.425,mono-Si,nt-175u1
+2862,1,2,36.75,mono-Si,nt-175u1
+4622,2,2,665.55,mono-Si,spr-e20-435-com
+999,2,2,39.15,mono-Si,spr-e20-435-com
+5826,2,2,282,mono-Si,spr-x21-470-com
+4496,2,2,211.5,mono-Si,spr-x21-470-com
+12897,1,2,977.76,mono-Si,spr-x22-360-com
+13239,1,2,155.52,mono-Si,spr-x22-360-com
+4615,1,2,156.96,mono-Si,spr-e20-327-com
+2250,1,2,168.732,mono-Si,spr-e20-327-com
+4759,1,2,635.688,mono-Si,spr-e20-327-com
+1627,2,2,846,mono-Si,spr-x21-470-com
+7289,2,2,310.2,mono-Si,spr-x21-470-com
+6565,2,2,277.3,mono-Si,spr-x21-470-com
+5458,2,2,225.6,mono-Si,spr-x21-470-com
+4760,2,2,182.7,mono-Si,spr-e20-435-com
+4651,2,2,169.65,mono-Si,spr-e20-435-com
+4740,1,2,141.3,mono-Si,spr-e20-327-com
+10653,2,2,390.1,mono-Si,spr-x21-470-com
+12983,2,2,548.25,mono-Si,spr-425e-wht-d
+13079,2,2,695.856,mono-Si,spr-e20-327-com
+13111,2,2,5011.2,mono-Si,spr-e20-435-com
+16628,2,2,591.6,mono-Si,spr-e20-435-com
+7704,2,2,1096.2,mono-Si,spr-e20-435-com
+17717,1,2,652.5,mono-Si,spr-e20-435-com
+30174,1,2,1109.25,mono-Si,spr-e20-435-com
+11380,2,2,430.65,mono-Si,spr-e20-435-com
+9097,2,2,326.25,mono-Si,spr-e20-435-com
+6178,2,2,187.05,mono-Si,spr-e20-435-com
+13901,3,2,261,mono-Si,spr-e20-435-com
+7137,2,2,261,mono-Si,spr-e20-435-com
+24667,2,2,457.8,mono-Si,spr-327ne-wht-d
+6541,2,2,274.68,mono-Si,spr-e20-327-com
+6991,2,2,292.992,mono-Si,spr-327ne-wht-d
+5445,2,2,219.744,mono-Si,spr-327ne-wht-d
+4645,2,2,173.964,mono-Si,spr-327ne-wht-d
+12067,2,2,778.26,mono-Si,spr-327ne-wht-d
+3396,2,2,128.184,mono-Si,spr-327ne-wht-d
+15485,1,2,677.544,mono-Si,spr-e20-327-com
+15979,1,2,531.048,mono-Si,spr-e20-327-com
+18475,1,2,714.168,mono-Si,spr-e20-327-com
+17241,1,2,549.36,mono-Si,spr-e20-327-com
+15081,1,2,318.6,mono-Si,tsm-de14a(ii) std mono
+12556,1,2,260.82,mono-Si,tsm-de14a(ii) std mono
+12793,1,2,335.34,mono-Si,tsm-de14a(ii) std mono
+12407,1,2,335.34,mono-Si,tsm-de14a(ii) std mono
+14316,1,2,306.18,mono-Si,tsm-de14a(ii) std mono
+8880,1,2,217.35,mono-Si,tsm-de14a(ii) std mono
+10232,1,2,471.96,mono-Si,tsm-de14a(ii) std mono
+10232,1,2,484.38,mono-Si,tsm-de14a(ii) std mono
+2519,1,2,45.54,mono-Si,tsm-de14a(ii) std mono
+8915,1,2,182.16,mono-Si,tsm-de14a(ii) std mono
+5461,1,2,113.85,mono-Si,tsm-de14a(ii) std mono
+8948,1,2,229.77,mono-Si,tsm-de14a(ii) std mono
+5345,1,2,117.65,mono-Si,tsm-de14a(ii) std mono
+4827,1,2,113.85,mono-Si,tsm-de14a(ii) std mono
+36123,1,2,638.82,mono-Si,sw270 mono
+11941,1,2,304.98,mono-Si,sw255 mono
+11812,1,2,274.64,mono-Si,sw255 mono
+12048,1,2,190.74,mono-Si,225p
+15984,1,2,168.03,mono-Si,235p
+9827,1,2,272.06,mono-Si,spr-327ne-wht-d
+6557,1,1,106.925,multi-Si,tsm-235pa05
+36684,2,1,1274.7,multi-Si,stp280-24/vd
+36684,2,1,1274.7,multi-Si,stp275-24/vd
+14077,2,1,410.4,multi-Si,mpe-235-ps09
+55883,2,1,1816.92,multi-Si,mpe-240-ps12
+55883,2,1,1816.92,multi-Si,mpe-240-ps14
+55883,2,1,1816.92,multi-Si,mpe-240-ps13
+55883,2,1,1816.92,multi-Si,mpe-235-ps09
+55883,2,1,1816.92,multi-Si,mpe-240-ps15
+55883,2,1,1816.92,multi-Si,mpe-240-ps16
+2177,2,1,172.8,multi-Si,yl300p-35b
+6082,2,1,170.8,multi-Si,yl305p-35b
+6663,2,1,190.8,multi-Si,yl300p-35b
+5905,2,1,201.3,multi-Si,yl305p-35b
+2664,2,1,134.2,multi-Si,yl305p-35b
+63668,3,1,971,multi-Si,HSL72P6-PC-3-310Q
+63668,3,1,971,multi-Si,HSL72P6-PC-3-310Q
+23103,2,1,925.2,multi-Si,yl300p-35b
+4060,2,1,468,multi-Si,yl300p-35b
+8150,2,1,536.4,multi-Si,yl300p-35b
+5956,2,1,514.8,multi-Si,yl300p-35b
+5928,2,1,615.6,multi-Si,yl300p-35b
+13725,2,1,481.44,multi-Si,yl300p-35b
+13725,2,1,481.44,multi-Si,yl295p-35b
+18653,2,1,548.7,multi-Si,yl295p-35b
+5071,2,1,548.41,multi-Si,yl295p-35b
+53540,3,1,995.41,multi-Si,hsl72p6-pc-1-310
+4949,2,1,164.7,multi-Si,yl305p-35b
+17462,2,1,402.6,multi-Si,yl305p-35b
+7181,3,1,153.72,multi-Si,yl300p-35b
+5703,2,1,167.75,multi-Si,yl300p-35b
+20257,1,1,299.04,multi-Si,sf220-30-p240
+17778,1,1,269.78,multi-Si,sf220-30-p235
+25857,1,1,443.52,multi-Si,sf240-30-p
+14729,1,1,316.94,multi-Si,sf220-30-p230
+24700,1,1,456.485,multi-Si,sf220-30-p240
+18029,1,1,367.36,multi-Si,kd205gx-lpu
+19340,1,1,401.38,multi-Si,sf220-30-p235
+18400,1,1,286.65,multi-Si,tsm-225 pa05
+19797,1,1,475.19,multi-Si,tsm-305pd14
+4685,2,1,130.98,multi-Si,yl295p-35b
+2704,2,1,113.28,multi-Si,yl295p-35b
+28421,2,1,309.72,multi-Si,yl290p-35b
+6392,2,1,191.16,multi-Si,yl295p-35b
+12832,2,1,588.12,multi-Si,yl290p-35b
+5448,2,1,187.62,multi-Si,yl295p-35b
+7139,2,1,219.48,multi-Si,yl295p-35b
+8194,2,1,139.08,multi-Si,yl305p-35b
+4638,2,1,109.74,multi-Si,yl295p-35b
+12877,2,1,421.26,multi-Si,yl295p-35b
+2145,2,1,95.7,multi-Si,yl300p-35b
+2145,2,1,82.5,multi-Si,yl300p-35b
+2145,2,1,62.7,multi-Si,yl300p-35b
+16005,2,1,464.4,multi-Si,yl300p-35b
+15702,2,1,497.76,multi-Si,yl305p-35b
+14320,2,1,438.48,multi-Si,yl290p-35b
+13684,2,1,378,multi-Si,yl300p-35b
+17919,2,1,514.23,multi-Si,yl305p-35b
+13054,2,1,363.6,multi-Si,yl300p-35b
+15360,2,1,452.4,multi-Si,yl290p-35b
+7205,2,1,204.6,multi-Si,yl300p-35b
+130760,3,1,2377.8,multi-Si,kd205gx-lpu
+7198,2,1,317.2,multi-Si,yl305p-35b
+4320,2,1,109.8,multi-Si,yl305p-35b
+2983,2,1,97.6,multi-Si,yl305p-35b
+2963,2,1,97.6,multi-Si,yl305p-35b
+2148,2,1,61,multi-Si,yl305p-35b
+9611,1,1,247.08,multi-Si,sf220-30-p235
+48349,3,1,993.6,multi-Si,jc300m-24-ab
+3757,1,1,79.95,multi-Si,kd205gx-lpu
+15954,1,1,383.18,multi-Si,mpe-230-ps09
+4699,1,1,67.62,multi-Si,mpe-230-ps09
+7864,2,1,292.8,multi-Si,hsl72p6-pb-4-305t
+9814,2,1,302.4,multi-Si,hsl72p6-0-pa-300t
+5168,2,1,180,multi-Si,hsl72p6-pb-4-300t
+8824,2,1,290.4,multi-Si,hsl72p6-pb-4-300t
+8824,2,1,290.4,multi-Si,hsl72p6-pb-4-305t
+7194,2,1,226.8,multi-Si,hsl72p6-pb-4-300t
+11548,2,1,319.05,multi-Si,hsl72p6-pb-4-305t
+11548,2,1,319.05,multi-Si,hsl72p6-pb-4-300t
+5456,2,1,173.85,multi-Si,hsl72p6-pb-4-305t
+14212,2,1,173.85,multi-Si,hsl72p6-pc-1-305
+2110,2,1,63,multi-Si,hsl72p6-0-pa-300t
+6366,2,1,216,multi-Si,hsl72p6-0-pa-300t
+9920,2,1,288,multi-Si,yl300p-35b
+13531,2,1,378,multi-Si,hsl72p6-pb-4-300t
+5903,2,1,180,multi-Si,hsl72p6-0-pa-300t
+8689,2,1,255.6,multi-Si,hsl72p6-0-pa-300t
+9214,2,1,279,multi-Si,hsl72p6-0-pa-300t
+8126,2,1,264.6,multi-Si,hsl72p6-0-pa-300t
+10984,2,1,315,multi-Si,hsl72p6-pb-4-300t
+8805,2,1,252,multi-Si,hsl72p6-pb-4-300t
+6464,2,1,198,multi-Si,hsl72p6-0-pa-300t
+14216,2,1,226.8,multi-Si,hsl72p6-0-pa-300t
+4928,2,1,140.4,multi-Si,hsl72p6-pb-4-300t
+9274,2,1,302.4,multi-Si,hsl72p6-0-pa-300t
+5913,2,1,183,multi-Si,hsl72p6-pb-4-305t
+10587,2,1,315,multi-Si,hsl72p6-pb-4-300t
+8262,2,1,256.2,multi-Si,hsl72p6-pb-4-305t
+7277,2,1,419.4,multi-Si,hsl72p6-0-pa-300t
+7008,2,1,210.45,multi-Si,hsl72p6-pc-1-305
+6431,2,1,253.8,multi-Si,hsl72p6-0-pa-300t
+7853,2,1,226.8,multi-Si,hsl72p6-pb-4-300t
+10266,2,1,288,multi-Si,hsl72p6-pb-4-300t
+8984,2,1,270,multi-Si,hsl72p6-pb-4-300t
+8204,2,1,264.6,multi-Si,hsl72p6-pb-4-300t
+11326,2,1,343.8,multi-Si,hsl72p6-pb-4-300t
+4654,2,1,137.25,multi-Si,hsl72p6-pb-4-305t
+9103,2,1,292.8,multi-Si,hsl72p6-pb-4-305t
+9103,2,1,292.8,multi-Si,hsl72p6-pc-1-310
+45211,3,1,796.05,multi-Si,yl305p-35b
+21292,3,1,395.28,multi-Si,yl305p-35b
+11509,2,1,394.8,multi-Si,yl235p-29b
+7909,2,1,278.4,multi-Si,yl290p-35b
+3248,1,1,44.064,multi-Si,nd-216u2
+3151,1,1,30.6,multi-Si,ne-170u1
+2703,1,1,47.952,multi-Si,nd-216u1f
+2581,1,1,39.2,multi-Si,stp200-18-ub-1
+69163,1,1,1185.28,multi-Si,kc200gt
+2637,1,1,37.4,multi-Si,ne-170u1
+2675,1,1,38.22,multi-Si,stp200-18-ub-1
+3192,1,1,39.27,multi-Si,ne-170u1
+47576,1,1,928.62,multi-Si,q.plus l-g4.2 335
+18613,1,1,355.77,multi-Si,q.plus l-g4.2 335
+18220,3,1,285.12,multi-Si,cs6u-330p
+7522,1,1,142.56,multi-Si,cs6u-330p
+10692,1,1,344.52,multi-Si,cs6u-330p
+18382,1,1,255.84,multi-Si,tsm-240pa05
+6028,1,1,47.84,multi-Si,tsm-230 pa05
+91519,1,1,2499.42,multi-Si,cs6x-280p
+91519,1,1,2499.42,multi-Si,jc300m-24-ab
+11721,1,1,233.7,multi-Si,ne-165u1
+28374,1,4,239.4,ribbon polycrystalline si,es-190-rl
+28154,1,4,383.04,ribbon polycrystalline si,es-180-sl
+24507,1,4,401.28,ribbon polycrystalline si,es-190-sl
+7549,1,4,138.24,ribbon polycrystalline si,es-180-sl
+59095,1,4,1001.1,ribbon polycrystalline si,es-180-rl
+4590,1,4,69.12,ribbon polycrystalline si,es-180-sl
+1898,1,4,33.44,ribbon polycrystalline si,es-190-rl
+2422,1,4,40.53,ribbon polycrystalline si,es-190-rl
+3590,1,4,37.24,ribbon polycrystalline si,es-190-rl
+2126,1,4,28.5,ribbon polycrystalline si,es-190-rl
+2884,1,4,31.35,ribbon polycrystalline si,es-190-rl
+3336,1,4,45.22,ribbon polycrystalline si,es-190-rl
+2552,1,4,39.52,ribbon polycrystalline si,es-190-rl
+3312,1,4,38.025,ribbon polycrystalline si,es-195-rl
+3244,1,4,37.05,ribbon polycrystalline si,es-190-rl
+2344,1,4,48.45,ribbon polycrystalline si,es-190-rl
+4097,1,4,51.68,ribbon polycrystalline si,es-190-rl
+2620,1,4,39.9,ribbon polycrystalline si,es-190-rl
+3145,1,4,37.05,ribbon polycrystalline si,es-190-rl
+3048,1,4,39.52,ribbon polycrystalline si,es-190-rl
+2820,1,4,37.05,ribbon polycrystalline si,es-190-rl
+2225,1,4,28.5,ribbon polycrystalline si,es-190-rl
+2261,1,4,34.2,ribbon polycrystalline si,es-190-rl
+3744,1,4,45.22,ribbon polycrystalline si,es-190-rl
+2194,1,4,25.65,ribbon polycrystalline si,es-190-sl
+2859,1,4,42.56,ribbon polycrystalline si,es-190-rl
+2877,1,4,37.05,ribbon polycrystalline si,es-190-rl
+5669,1,5,152.88,SJT,hip-195ba19
+3329,1,5,81.9,SJT,hip-195ba19
+11,2,5,633.08,SJT,hip-195ba19
+34416,1,7,785.18,Unknown,Unknown
+9370,1,7,198.66,Unknown,Unknown
+32818,1,7,761.53,Unknown,Unknown
+75730,2,7,743.04,Unknown,Unknown
+34336,1,7,600.27,Unknown,Unknown
+54675,2,7,1173.44,Unknown,Unknown
+49782,2,7,2380.8,Unknown,Unknown
+10519,1,7,1176.48,Unknown,Unknown
+4409,1,7,130.72,Unknown,Unknown
+5700,1,7,161.12,Unknown,Unknown
+22332,1,7,270.56,Unknown,Unknown
+14715,1,7,307.04,Unknown,Unknown
+13847,1,7,355.68,Unknown,Unknown
+22921,1,7,562.4,Unknown,Unknown
+7632,1,7,201.24,Unknown,Unknown
+7711,2,7,309.96,Unknown,MEMC Singapore Pte Ltd.-M315 BMC
+26481,1,7,417.6,Unknown,Unknown
+17177,1,7,330,Unknown,"MEMC Singapore Pte Ltd.-P300
+BMC"
+17323,1,7,412.8,Unknown,Unknown
+15925,1,7,311.6,Unknown,MEMC Singapore Pte Ltd.-P300 BMC; MEMC Singapore Pte Ltd.-P300 AMC
+12622,1,7,277.095,Unknown,Unknown
+6056,1,7,76.95,Unknown,Unknown
+4884,1,7,92.4,Unknown,Unknown
+15796,2,7,506.88,Unknown,"MEMC Singapore Pte Ltd.-F320
+BMC"
+37936,2,7,1149.12,Unknown,MEMC Singapore Pte Ltd.-M315 BMC
+3377,2,7,157.3,Unknown,
+4745,1,7,86.4,Unknown,Unknown
+762,1,7,84.36,Unknown,Unknown
+4425,1,7,76.8,Unknown,Unknown
+4006,1,7,87.36,Unknown,Unknown
+2948,1,7,40.32,Unknown,Unknown
+3689,1,7,48.96,Unknown,Unknown
+3829,1,7,63.36,Unknown,Unknown
+3596,1,7,63,Unknown,Unknown
+3248,1,7,51.84,Unknown,Unknown
+1599,1,7,1834.56,Unknown,TSM-PA05
+3632,1,7,247.8,Unknown,HIP190CA2
