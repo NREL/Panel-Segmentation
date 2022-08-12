@@ -1,5 +1,8 @@
 pixel_count,mounting_configuration,technology_type,power,module_technology,module_model
-308326,3,6,21902,CdTe,fs series 3
+160371,3,6,1184.4,CdTe,fs-4117a-3
+13114,1,6,81.75,CdTe,fs-275
+95881,3,6,1998,CdTe,fs-4112-2
+105719,3,6,231.855,CdTe,fs-272
 5825,2,2,218.62,mono-Si,sw340 xl mono
 4945,2,2,183.6,mono-Si,sw340 xl mono
 3916,2,2,128.52,mono-Si,sw340 xl mono
@@ -140,7 +143,6 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 10653,2,2,390.1,mono-Si,spr-x21-470-com
 12983,2,2,548.25,mono-Si,spr-425e-wht-d
 13079,2,2,695.856,mono-Si,spr-e20-327-com
-13111,2,2,5011.2,mono-Si,spr-e20-435-com
 16628,2,2,591.6,mono-Si,spr-e20-435-com
 7704,2,2,1096.2,mono-Si,spr-e20-435-com
 17717,1,2,652.5,mono-Si,spr-e20-435-com
@@ -331,6 +333,16 @@ pixel_count,mounting_configuration,technology_type,power,module_technology,modul
 5669,1,5,152.88,SJT,hip-195ba19
 3329,1,5,81.9,SJT,hip-195ba19
 11,2,5,633.08,SJT,hip-195ba19
+2512,1,5,57.72,SJT,hip-195ba3
+54032,3,5,720.72,SJT,hip-195ba3
+613,2,5,48.64,SJT,hip-190ba3
+4377,1,5,60.8,SJT,hip-190ba3
+5669,1,5,152.88,SJT,hip-195ba19
+3329,1,5,81.9,SJT,hip-195ba19
+12693,1,5,43.68,SJT,hip-195ba3
+19718,1,5,2.34,SJT,hip-195ba3
+1205,1,5,15.96,SJT,hip-210hkha6
+25238,1,5,43.68,SJT,hip-195ba3
 34416,1,7,785.18,Unknown,Unknown
 9370,1,7,198.66,Unknown,Unknown
 32818,1,7,761.53,Unknown,Unknown

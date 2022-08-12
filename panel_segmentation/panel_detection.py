@@ -23,6 +23,9 @@ import torch
 from tensorflow.keras.preprocessing import image as imagex
 from torchvision import transforms
 from torchvision.ops import nms
+import tensorflow as tf
+import pickle
+from skimage import color
 
 panel_seg_model_path = path.join(path.dirname(__file__),
                                  'models',
@@ -740,6 +743,130 @@ class PanelDetection:
                 plt.title("Cluster #" + str(idx + 1))
                 plt.show()
         return clusters.shape[0], clusters
+
+    def estimateInstallationSize(self,
+                                 module_technology,
+                                 mounting_config,
+                                 file_name_save_img,
+                                 latitude=None,
+                                 longitude=None,
+                                 google_maps_api_key=None,
+                                 file_name_save_mount=None,
+                                 generate_image=False):
+        """
+        This function estimates the size and power output on a site using a 
+        linear regression model, when module technology type and latitude and 
+        longitude coordinates are provided. The model is built for use on 
+        multi-Si and mono-Si modules. It includes the following steps:
+            1. Generating a satellite image of the site, if the generate_image 
+            boolean is set to true. 
+            2. Using the mounting configuration pipeline to determine the 
+            mounting configuration and location of all arrays in the system. 
+            Mounting configuration is provided as input to the linear 
+            regression model as an integer value.
+            3. Cropping the solar mask image around each object detection box, 
+            converting the cropped image to black and white, and summing the 
+            non-black pixels to determine the pixel count/area of each array 
+            in the site.
+            4. Using the pixel count, mounting type, and module technology to 
+            estimate the power output with the model.
+            5. A final list of estimated power values is returned.
+
+        Parameters
+        ----------
+        module_technology: integer
+            An integer value of 1 or 2 representing the module technology type.
+            Use a value of 1 for multi-Si modules and 2 for mono-Si modules.
+        mounting_config: integer
+            An integer value of 1, 2, or 3 representing the mounting 
+            configuration. Use a value of 1 for rooftop, 2 for carport, 
+            3 for ground.
+        file_name_save_img: string
+            File path that we want to save the raw satellite image to.
+            PNG file.
+        latitude: float
+            Default None. Latitude coordinate of the site. Not required if
+            we're using a pre-generated satellite image.
+        longitude: float
+            Default None. Longitude coordinate of the site. Not required if
+            we're using a pre-generated satellite image.
+        google_maps_api_key: string
+            Default None. Google Maps API Key for automatically pulling
+            satellite images. Not required if we're using a pre-generated
+            satellite image.
+        file_name_save_mount: string
+            File path that we want to save the
+            labeled mounting configuration image to. PNG file.
+        generate_image: bool
+            Whether or not we should generate the image via the Google
+            Maps API. If set to True, satellite image is generated and
+            saved. Otherwise, no image is generated and the image
+            saved under the file_name_save_img path is used.
+
+        Returns
+        -------
+        Python list
+            List containing the estimated power for each array.
+        """
+        # Generate satellite image, if generate_image is set to True
+        if generate_image is True:
+            self.generateSatelliteImage(latitude,
+                                        longitude,
+                                        file_name_save_img,
+                                        google_maps_api_key)
+        else:
+            print("Image not generated. Using image " +
+                  str(file_name_save_img) + "...")
+
+        # Open linear regression model
+        with open('./panel_segmentation/models/power_estimation_model', 
+                  'rb') as f:
+            lr = pickle.load(f)
+
+        # Load image, declare as numpy array
+        satellite_image = imagex.load_img(file_name_save_img,
+                                          color_mode='rgb',
+                                          target_size=(640, 640))
+        image_array = np.array(satellite_image)
+
+        # Determine the mounting configuration type  and location
+        (scores, mounting_types, boxes) = self.classifyMountingConfiguration(
+            image_file_path=file_name_save_img,
+            acc_cutoff=.65,
+            file_name_save=file_name_save_mount)
+
+        # Generate solar mask and use mask to isolate panels
+        solar_mask = self.testSingle(
+            image_array.astype(float), test_mask=None, model=None)
+        isolated_panels = self.cropPanels(
+            image_array, solar_mask).reshape(640, 640, 3)
+
+        # List to store power estimations for all arrays in image
+        power_estimates = []
+        pixels = []
+
+        # Calculate the number of pixels associated with each array
+        for array_index in range(len(scores)):
+            # Get box coordinate values
+            x, y, w, h = boxes[array_index].numpy().astype(int) + 2
+
+            # Crop isolated_panels image around box location
+            cropped_image = tf.image.crop_to_bounding_box(isolated_panels, 
+                                                          y, x,
+                                                          h - y, w - x)
+
+            # Convert to black and white image and count non-black pixels
+            bw_image = color.rgb2gray(cropped_image)
+            pixel_count = cv2.countNonZero(bw_image)
+
+            # Estimate power for the array
+            estimated_power = lr.predict(
+                [[pixel_count, mounting_config, module_technology]])[0]
+            power_estimates.append(estimated_power)
+            pixels.append(pixel_count)
+
+        # Return list of power estimates for the system
+        return power_estimates, pixels
 
     def runSiteAnalysisPipeline(self,
                                 file_name_save_img,
