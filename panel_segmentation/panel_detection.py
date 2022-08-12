@@ -866,10 +866,12 @@ class PanelDetection:
             pixels.append(pixel_count)
 
         # Return list of power estimates for the system
-        return power_estimates, pixels
+        return power_estimates
 
     def runSiteAnalysisPipeline(self,
                                 file_name_save_img,
+                                module_technology,
+                                mounting_config,
                                 latitude=None,
                                 longitude=None,
                                 google_maps_api_key=None,
@@ -897,14 +899,21 @@ class PanelDetection:
                azimuth runs parallel to the installation, as opposed to
                perpendicular.
            5. A final dictionary of analysed site metadata is returned,
-               including latitude, longitude, detected azimuth, and mounting
-               configuration.
+               including latitude, longitude, detected azimuth, estimated
+               power, and mounting configuration.
 
         Parameters
         ----------
         file_name_save_img: string
             File path that we want to save the raw satellite image to.
             PNG file.
+        module_technology: integer
+            An integer value of 1 or 2 representing the module technology type.
+            Use a value of 1 for multi-Si modules and 2 for mono-Si modules.
+        mounting_config: integer
+            An integer value of 1, 2, or 3 representing the mounting 
+            configuration. Use a value of 1 for rooftop, 2 for carport, 
+            3 for ground.
         latitude: float
             Default None. Latitude coordinate of the site. Not required if
             we're using a pre-generated satellite image.
@@ -931,7 +940,8 @@ class PanelDetection:
         -------
         Python dictionary
             Dictionary containing the latitude, longitude, classified mounting
-            configuration, and the estimated azimuth of a site.
+            configuration, estimated power values, and the estimated azimuth 
+            of a site.
         """
         # Generate the associated satellite image, if generate_image
         # is set to True
@@ -992,4 +1002,12 @@ class PanelDetection:
         site_analysis_dict = {"associated_azimuths": az_list_updated,
                               "mounting_type": mounting_config_list_updated
                               }
+        
+        # Estimate power outputs for the site, provided tech type is
+        # multi-Si (1) or mono-Si (2)
+        if (module_technology==1 | module_technology==2):
+            power_estimations = self.estimateInstallationSize(
+                module_technology, mounting_config, file_name_save_img)
+            site_analysis_dict["power_estimates"] = power_estimations
+            
         return site_analysis_dict

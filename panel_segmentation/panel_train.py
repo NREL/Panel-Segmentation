@@ -515,7 +515,7 @@ class TrainPanelSegmentationModel():
             plt.show()
         return
 
-    def generatePowerPredictions(self, power_df, technology_type):
+    def generatePowerPredictions(self, power_df, technology_type_column):
         """
         This function generates the cross validation predictions for the
         sites with multi-Si and mono-Si installations.
@@ -525,13 +525,13 @@ class TrainPanelSegmentationModel():
         power_dataframe: Pandas dataframe
             The pandas dataframe containing the pixel count, mounting 
             configuration, technology type, and power output for each array. 
-        technology_type: string
+        technology_type_column: string
             The name of the column that contains the categorical column type.
 
         """
         # Create dataframe for each tech type
-        multi_si_df = power_df[(power_df[technology_type]==1)]
-        mono_si_df = power_df[(power_df[technology_type]==2)]
+        multi_si_df = power_df[(power_df[technology_type_column]==1)]
+        mono_si_df = power_df[(power_df[technology_type_column]==2)]
 
         # Define input and output values
         multi_input_values = multi_si_df.values[:, 0:3]
@@ -555,9 +555,11 @@ class TrainPanelSegmentationModel():
         with open('./panel_segmentation/models/mono_si_prediction_model', 
                   'wb') as mono_si_files:
             pickle.dump(mono_predicted, mono_si_files)
+        
+        return
 
 
-    def plotPredictionGraphs(self, predicted, output_values, file_name_save):
+    def plotPredictionGraphs(self, predicted, measured_values, file_name_save):
         """
         This function plots a graph of predicted versus measured values
         for the cross validation predictions.
@@ -566,22 +568,23 @@ class TrainPanelSegmentationModel():
         ----------
         predicted: Numpy ndarray
             An array of cross-validated estimates for all sites in the dataset.
-        output_values: Numpy ndarray
+        measured_values: Numpy ndarray
         file_name_save: string
             The file path that we want to save the predicted versus actual
             graphs to. PNG file.
         """
          # Plot and save graph of predicted vs actual values
         fig, ax = plt.subplots()
-        ax.scatter(output_values, predicted, edgecolors=(0, 0, 0))
-        ax.plot([output_values.min(), output_values.max()], 
-                [output_values.min(), output_values.max()], 'k--', lw=4)
+        ax.scatter(measured_values, predicted, edgecolors=(0, 0, 0))
+        ax.plot([measured_values.min(), measured_values.max()], 
+                [measured_values.min(), measured_values.max()], 'k--', lw=4)
         ax.set_xlabel('Measured')
         ax.set_ylabel('Predicted')
         plt.savefig(file_name_save)
 
-    def preprocessPowerDataframe(self, power_df, module_technology, 
-                                 mounting_configuration, csv_file_name=None, 
+    def preprocessPowerDataframe(self, power_df, module_technology_column, 
+                                 mounting_configuration_column, 
+                                 csv_file_name=None, 
                                  generate_csv=False):
         """
         This function turns the module technology type and mounting 
@@ -592,10 +595,10 @@ class TrainPanelSegmentationModel():
         power_dataframe: Pandas dataframe
             The pandas dataframe containing the pixel count, mounting 
             configuration, technology type, and power output for each array.
-        module_technology: string
+        module_technology_column: string
             The name of the column containing the technology type 
             for the array.
-        mounting_configuration: string
+        mounting_configuration_column: string
             The name of the column containing the mounting configuration 
             for the array.
         csv_file_name: string
@@ -611,7 +614,7 @@ class TrainPanelSegmentationModel():
         """
 
         # Change tech type to categorical
-        categorical_power_df = power_df.replace({module_technology:
+        categorical_power_df = power_df.replace({module_technology_column:
                                                 {'multi-Si':1, 'mono-Si':2, 
                                                  'amorphous si':3,
                                                  'ribbon polycrystalline si':4, 
@@ -623,7 +626,7 @@ class TrainPanelSegmentationModel():
 
         # Change the mounting configuration to categorical
         categorical_power_df = categorical_power_df.replace({
-                                            mounting_configuration:
+                                            mounting_configuration_column:
                                             {'Canopy/Ground':3, 'carport':2,
                                              'carport-fixed':2, 'Ground':3, 
                                              'Parking':2, 'Roof':1, 

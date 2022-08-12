@@ -1,0 +1,376 @@
+system_id,name,latitude,longitude,power,type,tracking,pixelCount,mounting,module_technology,module_model
+5284,Alta Loma Banyan ES,34.1417758,-117.5656728,218.62,Parking,FALSE,5825,2,mono-Si,sw340 xl mono
+5285,Alta Loma Carnelian ES,34.1249849,-117.6154356,183.6,Parking,FALSE,4945,2,mono-Si,sw340 xl mono
+5286,Alta Loma Deer Canyon,34.1308872,-117.5815684,128.52,Parking,FALSE,3916,2,mono-Si,sw340 xl mono
+5288,Alta Loma Hermosa,34.1498984,-117.5831876,136,Parking,FALSE,3788,2,mono-Si,sw340 xl mono
+5289,Alta Loma Jasper ES,34.129808,-117.619506,193.46,Parking,FALSE,5344,2,mono-Si,sw340 xl mono
+5291,Alta Loma Victoria Groves,34.1286731,-117.5660026,138.72,Parking,FALSE,3585,2,mono-Si,sw340 xl mono
+5263,Amphitheater - Coronado K-8,32.4757016,-110.9205687,618.24,Parking,FALSE,20000,2,mono-Si,sw320 xl mono
+5269,Amphitheater - Ironwood Ridge HS,32.407918,-111.020425,476.16,Parking,FALSE,2226,2,mono-Si,sw320 xl mono
+5270,Amphitheater - Painted Sky,32.435504,-110.97015,253.44,Parking,FALSE,4729,2,mono-Si,sw320 xl mono
+5251,Amphitheater Donaldson,32.333323,-111.0118027,263.04,Parking,FALSE,8469,2,mono-Si,sw320 xl mono
+5248,Amphitheater Holoway,32.2707114,-110.9476387,284.16,Parking,FALSE,11756,2,mono-Si,sw320 xl mono
+5253,Amphitheater Preschool,32.270802,-110.948879,17.28,Parking,FALSE,6023,2,mono-Si,sw320 xl mono
+5255,Amphitheater PS - Keeling,32.2587806,-110.96408,324.48,Parking,FALSE,10551,2,mono-Si,sw320 xl mono
+5262,Amphitheater Transportation Food Services,32.278159,-110.96863,76.8,Parking,FALSE,4669,2,mono-Si,sw320 xl mono
+5250,Amphitheater Walker ES,32.3017754,-111.0031279,276.8,Parking,FALSE,10358,2,mono-Si,sw320 xl mono
+5000,Anne Arundel Shared Services,39.108345,-76.633947,750.93,Roof,FALSE,54164,1,mono-Si,sw245
+5998,"AT&T - Freehold, NJ (Roof) Site #1",40.249787,-74.290107,106.925,rooftop-fixed,FALSE,6557,1,multi-Si,tsm-235pa05
+5002,Buckeye Union High School   BUHS,33.3749516,-112.5772315,1274.7,Parking,FALSE,36684,2,multi-Si,stp280-24/vd
+6413,CA-07-033 - Target Corona,33.826636,-117.5162562,439.488,Roof,FALSE,14602,1,mono-Si,spr-e20-327-com
+6414,CA-07-034 - Target Dublin,37.702983,-121.853,439.488,Roof,FALSE,15329,1,mono-Si,spr-e20-327-com
+6415,CA-07-035 - Target Roseville,38.791,-121.29,502.272,Roof,FALSE,17884,1,mono-Si,spr-e20-327-com
+6416,CA-07-036 - WCCUSD - Crespi MS,37.9857338,-122.3076513,156.6,Canopy,FALSE,4543,2,mono-Si,spr-e20-435-com
+6417,CA-07-037 - WCCUSD - Stewart ES,37.9901091,-122.29,104.4,Canopy,FALSE,2970,2,mono-Si,spr-e20-435-com
+6419,CA-07-039 - WCCUSD - Hannah Ranch ES,37.9927474,-122.2345451,108.75,Canopy,FALSE,3385,2,mono-Si,spr-e20-435-com
+6420,CA-07-040 - WCCUSD - Lovonya DeJean MS,37.932557,-122.336882,261,Canopy,FALSE,6977,2,mono-Si,spr-e20-435-com
+6421,CA-07-041 - WCCUSD - Ellerhorst ES,37.9819286,-122.2727814,117.45,Canopy,FALSE,2973,2,mono-Si,spr-e20-435-com
+6422,CA-07-042 - WCCUSD - Kensington ES,37.914162,-122.278657,104.4,Canopy,FALSE,2374,2,mono-Si,spr-e20-435-com
+6424,CA-07-044 - WCCUSD - Murphy ES,37.975,-122.292,104.4,Canopy,FALSE,2327,2,mono-Si,spr-e20-435-com
+6425,CA-07-045 - WCCUSD - Peres ES,37.9427312,-122.3645096,130.5,Canopy,FALSE,3668,2,mono-Si,spr-e20-435-com
+6427,CA-07-047 - WCCUSD - Tara Hills ES,37.994,-122.313,91.35,Canopy,FALSE,2481,2,mono-Si,spr-e20-435-com
+6428,CA-07-048 - WCCUSD - Bayview ES,37.974797,-122.346887,113.1,Canopy,FALSE,3240,2,mono-Si,spr-e20-435-com
+6431,CA-07-051 - WCCUSD - Ford ES,37.9513177,-122.3418389,152.25,Canopy,FALSE,4399,2,mono-Si,spr-e20-435-com
+6433,CA-07-053 - WCCUSD - Harding ES,37.9027813,-122.294,117.45,Canopy,FALSE,2812,2,mono-Si,spr-e20-435-com
+6434,CA-07-054 - WCCUSD - Helms MS,37.9631226,-122.3381148,365.4,Canopy,FALSE,3269,2,mono-Si,spr-e20-435-com
+6437,CA-07-057 - WCCUSD - Lupine Hills ES,38.0071291,-122.2530479,104.4,Canopy,FALSE,2627,2,mono-Si,spr-e20-435-com
+6438,CA-07-058 - WCCUSD - Mira Vista ES,37.94,-122.3138076,104.4,Canopy,FALSE,2966,2,mono-Si,spr-e20-435-com
+6441,CA-07-061 - WCCUSD - Sheldon ES,37.9670371,-122.297508,95.7,Canopy,FALSE,2839,2,mono-Si,spr-e20-435-com
+6442,CA-07-062 - WCCUSD - Vista Hills HS,37.9685455,-122.3248308,91.35,Canopy,FALSE,2090,2,mono-Si,spr-e20-435-com
+6443,CA-07-063 - CJUSD - Crestmore ES,34.049,-117.394,182.7,Canopy,FALSE,5036,2,mono-Si,spr-e20-435-com
+6444,CA-07-064 - CJUSD - Grimes ES,34.073,-117.386,130.5,Canopy,FALSE,3374,2,mono-Si,spr-e20-435-com
+6445,CA-07-065 - CJUSD - Jurupa Vista ES,34.0436904,-117.457,104.4,Canopy,FALSE,2720,2,mono-Si,spr-e20-435-com
+6447,CA-07-067 - CJUSD - San Salvador ES,34.0551712,-117.333,52.2,Canopy,FALSE,1391,2,mono-Si,spr-e20-435-com
+6448,CA-07-068 - CJUSD - Zimmerman ES,34.054,-117.4013495,156.6,Canopy,FALSE,4094,2,mono-Si,spr-e20-435-com
+6449,CA-07-069 - CJUSD - Cooley Ranch ES,34.0519315,-117.292,165.3,Canopy,FALSE,4136,2,mono-Si,spr-e20-435-com
+6450,CA-07-070 - CJUSD - DArcy ES,34.043,-117.4662375,204.45,Canopy,FALSE,4955,2,mono-Si,spr-e20-435-com
+6452,CA-07-072 - CJUSD - Lincoln ES,34.0773237,-117.3170265,143.55,Canopy,FALSE,3675,2,mono-Si,spr-e20-435-com
+6453,CA-07-073 - CJUSD - McKinley ES,34.087,-117.3309816,117.45,Canopy,FALSE,3097,2,mono-Si,spr-e20-435-com
+6454,CA-07-074 - CJUSD - Reche Canyon ES,34.04,-117.273,130.5,Canopy,FALSE,3253,2,mono-Si,spr-e20-435-com
+6455,CA-07-075 - CJUSD - Rogers ES,34.083,-117.3396326,156.6,Canopy,FALSE,4085,2,mono-Si,spr-e20-435-com
+6456,CA-07-076 - CJUSD - Smith ES,34.0803733,-117.401,182.7,Canopy,FALSE,3569,2,mono-Si,spr-e20-435-com
+6458,CA-07-078 - CJUSD - Terrace View ES,34.0420337,-117.3088956,130.5,Canopy,FALSE,3358,2,mono-Si,spr-e20-435-com
+6459,CA-07-079 - CJUSD - Terrace Hills ES,34.0296858,-117.313,156.6,Canopy,FALSE,4053,2,mono-Si,spr-e20-435-com
+6464,CA-07-084 - Grossmont - Santana HS,32.8573262,-116.9700857,730.8,Canopy,FALSE,18679,2,mono-Si,spr-e20-435-com
+6465,CA-07-085 - Grossmont - El Cajon Valley HS,32.7986589,-116.9483938,1017.9,Canopy,FALSE,10803,2,mono-Si,spr-e20-435-com
+6468,CA-07-168 - RPUWD - Scheuer,34.112,-117.273,3758.4,Canopy,TRUE,186253,2,mono-Si,spr-e20-435-com
+6471,CA-07-171 - WCCUSD - Coronado ES,37.9277599,-122.349,152.25,Roof,FALSE,4109,1,mono-Si,spr-e20-435-com
+6475,CA-07-175 - LVJUSD - Altamont Creek ES,37.722706,-121.7188387,208.8,Canopy,FALSE,5493,2,mono-Si,spr-e20-435-com
+6476,CA-07-176 - LVJUSD - Arroyo Seco ES,37.684,-121.728,182.7,Canopy,FALSE,2765,2,mono-Si,spr-e20-435-com
+6477,CA-07-178 - LVJUSD - Lawerence ES,37.6900763,-121.7706111,141,Canopy,FALSE,3568,2,mono-Si,spr-x21-470-com
+6478,CA-07-179 - LVJUSD - Mendenhall MS,37.6629103,-121.7932084,282,Canopy,FALSE,7387,2,mono-Si,spr-x21-470-com
+6479,CA-07-180 - LVJUSD - Rancho ES,37.6881736,-121.7966776,169.2,Canopy,FALSE,4731,2,mono-Si,spr-x21-470-com
+6481,CA-07-182 - LVJUSD - Sunset ES,37.6626467,-121.775,183.3,Canopy,FALSE,4526,2,mono-Si,spr-x21-470-com
+6482,CA-07-183 - LVJUSD - Vineyard HS,37.6771018,-121.7408556,192.7,Canopy,FALSE,4921,2,mono-Si,spr-x21-470-com
+5006,Casa Grande School District  Casa Verde,32.886514,-111.7486893,410.4,Parking,FALSE,14077,2,multi-Si,mpe-235-ps09
+5008,Casa Grande School District  Vista Grande,32.8922,-111.712,1816.92,Parking,FALSE,55883,2,multi-Si,mpe-240-ps12
+5117,Castaic USD - Castaic Elementary School,34.4715288,-118.6301431,172.8,Parking,FALSE,2177,2,multi-Si,yl300p-35b
+5224,Central - Bear Gulch ES,34.1018622,-117.6074987,170.8,Parking,FALSE,6082,2,multi-Si,yl305p-35b
+5228,Central - Central ES,34.1095229,-117.5934515,190.8,Parking,FALSE,6663,2,multi-Si,yl300p-35b
+5229,Central - Dona Merced ES North + South,34.1175295,-117.5801534,201.3,Parking,FALSE,5905,2,multi-Si,yl305p-35b
+5231,Central - Valle Vista ES,34.1148548,-117.6197738,134.2,Parking,FALSE,2664,2,multi-Si,yl305p-35b
+5315,Chaffey - Valley View HS,34.0854441,-117.6144913,221.68,Parking,FALSE,9688,2,mono-Si,
+5846,"City and County of Broomfield, CO - Paul Derda Recreation Center",39.9348,-105.037,152.88,rooftop-fixed,FALSE,5669,1,SJT,hip-195ba19
+5847,"City and County of Broomfield, CO - Police And Court Building",39.920734,-105.068167,81.9,rooftop-fixed,FALSE,3329,1,SJT,hip-195ba19
+5843,"City of Arvada, CO - Ralston Treatment Plant",39.816267,-105.21405,633.08,single-axis-tracker,TRUE,11,2,SJT,hip-195ba19
+5346,Claremont - Mountain View ES,34.1053119,-117.7304729,86.94,Parking,FALSE,2485,2,mono-Si,sw345 xl mono
+5350,Claremont - Sycamore ES,34.1019877,-117.7174204,49.68,Parking,FALSE,1569,2,mono-Si,sw345 xl mono
+5520,CO-19-S135 Fort Collins,40.591541,-105.112472,971,ground,FALSE,63668,3,multi-Si,HSL72P6-PC-3-310Q
+5009,Coppin State University,39.3158483,-76.6571317,500.08,Roof,FALSE,43384,1,mono-Si,sw235
+5012,Crane Schools  Mesquite Elementary,32.6759373,-114.6746278,201.84,Parking,FALSE,8226,2,mono-Si,Yingli  290W
+5018,Crane Schools  Valley Horizon Elementary,32.6910435,-114.6760094,323.64,Unknown,FALSE,4459,2,mono-Si,Yingli  290W
+5333,Cucamonga - Ontario Center School,34.0732103,-117.5816916,211.83,Parking,FALSE,6323,2,mono-Si,tsm-345de14a(ii)
+5083,Dysart Unified  Dysart High School (SES A + SES B + SEB C),33.590635,-112.33999,925.2,Parking,FALSE,23103,2,multi-Si,yl300p-35b
+5074,Dysart Unified  Kingswood Elementary,33.6411136,-112.3863594,468,Parking,FALSE,4060,2,multi-Si,yl300p-35b
+5075,Dysart Unified  Luke Elementary,33.541063,-112.342029,536.4,Parking,FALSE,8150,2,multi-Si,yl300p-35b
+5072,Dysart Unified  Parkview Elementary,33.6273907,-112.3828081,514.8,Parking,FALSE,5956,2,multi-Si,yl300p-35b
+5085,Dysart Unified  Valley Vista High School (SES A + SES B),33.629139,-112.382727,615.6,Parking,FALSE,5928,2,multi-Si,yl300p-35b
+5077,Dysart Unified  West Point Elementary,33.6237065,-112.3549608,481.44,Parking,FALSE,13725,2,multi-Si,yl300p-35b
+5141,Dysart Unified  Western Peaks ES,33.629236,-112.4485625,548.7,Parking,FALSE,18653,2,multi-Si,yl295p-35b
+5142,Dysart Unified Willow Canyon HS,33.6352327,-112.4431975,548.41,Parking,FALSE,5071,2,multi-Si,yl295p-35b
+5365,Etiwanda - East Heritage ES,34.1125418,-117.4936811,186.3,Parking,FALSE,3548,2,mono-Si,sw345 xl mono
+5368,Etiwanda - Golden ES,34.1441536,-117.5336188,235.98,Parking,FALSE,7270,2,mono-Si,sw345 xl mono
+5369,Etiwanda - Grapeland ES,34.123234,-117.5234458,215.28,Parking,FALSE,5965,2,mono-Si,sw345 xl mono
+5370,Etiwanda - Heritage IS,34.1197274,-117.5004103,409.86,Parking,FALSE,9714,2,mono-Si,sw345 xl mono
+5371,Etiwanda - Lightfoot ES,34.1264355,-117.5507565,151.11,Parking,FALSE,2890,2,mono-Si,sw345 xl mono
+5373,Etiwanda - Perdew ES,34.112408,-117.520166,248.4,Parking,FALSE,7319,2,mono-Si,sw345 xl mono
+5374,Etiwanda - Solorio ES,34.1291695,-117.4737515,263.58,Parking,FALSE,7910,2,mono-Si,sw345 xl mono
+5377,Etiwanda - Terra Vista ES,34.1181837,-117.5516621,186.3,Parking,FALSE,1794,2,mono-Si,sw345 xl mono
+5378,Etiwanda - West Heritage ES,34.1125584,-117.5055078,173.88,Parking,FALSE,5149,2,mono-Si,sw345 xl mono
+5308,Evergreen Academy Ave,32.51648,-82.936657,995.41,Ground,FALSE,53540,3,multi-Si,hsl72p6-pc-1-310
+5742,FRV - Belmar - 2G Site #1,39.709921,-105.079207,785.18,rooftop-fixed,FALSE,34416,1,Unknown,Unknown
+5743,FRV - Belmar - 5G Site #1,39.708022,-105.080158,198.66,rooftop-fixed,FALSE,9370,1,Unknown,Unknown
+5744,FRV - Belmar - 7G Site #1,39.708446,-105.075587,761.53,rooftop-fixed,FALSE,32818,1,Unknown,Unknown
+5709,FRV - Bolthouse Farms Rowen Site #1,34.5574,-117.6849,743.04,single-axis-tracker,TRUE,75730,2,Unknown,Unknown
+5752,FRV - Brook Warehouse Site #1,40.5584,-74.5868,600.27,rooftop-fixed,FALSE,34336,1,Unknown,Unknown
+5711,FRV - California State University Fresno site #1,36.809841,-119.741665,1173.44,carport-fixed,FALSE,54675,2,Unknown,Unknown
+5713,FRV - East LA Community College Site #1 + Site #2,34.0435,-118.154094,2380.8,carport-fixed,FALSE,49782,2,Unknown,Unknown
+5751,FRV - Lowes Kona Site #1 + Site #2 + Site #3,19.6456,-155.9862,1176.48,rooftop-fixed,FALSE,10519,1,Unknown,Unknown
+5718,FRV - Macys Phase 1 Puente Hills 211A Site #1,33.992222,-117.928333,130.72,rooftop-fixed,FALSE,4409,1,Unknown,Unknown
+5720,FRV - Macys Phase 2 Fresno 30A Site #1,36.806389,-119.779722,161.12,rooftop-fixed,FALSE,5700,1,Unknown,Unknown
+5721,FRV - Macys Phase 2 Fresno 30B Site #1,36.808056,-119.775556,270.56,rooftop-fixed,FALSE,22332,1,Unknown,Unknown
+5722,FRV - Macys Phase 2 Oakridge 22A Site #1,37.253333,-121.862778,307.04,rooftop-fixed,FALSE,14715,1,Unknown,Unknown
+5723,FRV - Macys Phase 2 Santa Maria 201A Site #1,34.951389,-120.433889,355.68,rooftop-fixed,FALSE,13847,1,Unknown,Unknown
+5725,FRV - Macys Phase 2 Stockton 16A Site #1,37.997778,-121.313056,562.4,rooftop-fixed,FALSE,22921,1,Unknown,Unknown
+5733,FRV - Roche - CA Pleasanton Site #1,37.6925,-121.896667,201.24,rooftop-fixed,FALSE,7632,1,Unknown,Unknown
+5352,Glendora - Cullen ES,34.1423546,-117.8540394,132.48,Parking,FALSE,3994,2,mono-Si,sw345 xl mono
+5354,Glendora - Goddard MS,34.1481396,-117.8493741,366.39,Parking,FALSE,10817,2,mono-Si,sw345 xl mono
+5355,Glendora - La Fetra ES,34.1400489,-117.8737488,165.6,Parking,FALSE,5144,2,mono-Si,sw345 xl mono
+5356,Glendora - Sandburg MS,34.1416274,-117.878312,413.31,Parking,FALSE,3825,2,mono-Si,sw345 xl mono
+5357,Glendora - Sellers ES,34.1444185,-117.8455387,259.44,Parking,FALSE,6993,2,mono-Si,sw345 xl mono
+5358,Glendora - Stanton ES,34.1264444,-117.8774031,130.41,Parking,FALSE,3612,2,mono-Si,sw345 xl mono
+5360,Glendora - Whitcomb Continuation HS,34.1244805,-117.8696099,82.8,Parking,FALSE,2333,2,mono-Si,sw345 xl mono
+5361,Glendora - Williams ES,34.132433,-117.847515,54.51,Parking,FALSE,1266,2,mono-Si,sw345 xl mono
+5323,Hawthorne - Eucalyptus ES,33.922435,-118.3585951,177.68,Parking,FALSE,5582,2,mono-Si,tsm-345de14a(ii)
+5324,Hawthorne - Hawthorne MS,33.9148276,-118.3504147,107.3,Parking,FALSE,8554,2,mono-Si,tsm-345de14a(ii)
+5325,Hawthorne - Kornblum ES,33.9164297,-118.3370829,216.32,Parking,FALSE,8058,2,mono-Si,tsm-345de14a(ii)
+5326,Hawthorne - Prairie Vista MS,33.9074063,-118.3432625,277.38,Parking,FALSE,8611,2,mono-Si,tsm-345de14a(ii)
+5327,Hawthorne - Ramona ES,33.9093949,-118.3582191,151.8,Parking,FALSE,4939,2,mono-Si,tsm-345de14a(ii)
+5322,Hawthorne - Washington ES,33.9158697,-118.3514607,160.77,Parking,FALSE,8360,2,mono-Si,tsm-345de14a(ii)
+5328,Hawthorne - York ES,33.9263342,-118.3444883,78.66,Parking,FALSE,2127,2,mono-Si,tsm-345de14a(ii)
+5329,Hawthorne - Zela Davis ES,33.9107563,-118.3358501,161.46,Parking,FALSE,4682,2,mono-Si,tsm-345de14a(ii)
+5146,Isaac  Sutton Elementary,33.4603409,-112.1248976,164.7,Parking,FALSE,4949,2,multi-Si,yl305p-35b
+5147,Isaac  Udall Elementary,33.4576324,-112.1395346,402.6,Parking,FALSE,17462,2,multi-Si,yl305p-35b
+5961,IUSD Woodbridge High School,33.678,-117.8066,309.96,carport-fixed,FALSE,7711,2,Unknown,MEMC Singapore Pte Ltd.-M315 BMC
+5930,"JBY Facility - Rooftops - Multnomah, OR",45.51102,-122.465467,239.4,rooftop-fixed,FALSE,28374,1,ribbon polycrystalline si,es-190-rl
+5129,Keppel  Keppel Academy,34.5284066,-117.9637384,153.72,Ground,FALSE,7181,3,multi-Si,yl300p-35b
+5131,Keppel  Lake LA,34.5872019,-117.8397908,167.75,Parking,FALSE,5703,2,multi-Si,yl300p-35b
+5770,"Kohls - Bakersfield NW, CA (#702)",35.384593,-119.106893,383.04,rooftop-fixed,FALSE,28154,1,ribbon polycrystalline si,es-180-sl
+6004,"Kohls - Beaverton, OR (#1002)",45.493204,-122.790303,299.04,rooftop-fixed,FALSE,20257,1,multi-Si,sf220-30-p240
+5774,"Kohls - Chula Vista South, CA (#958)",32.592513,-117.034878,417.6,rooftop-fixed,FALSE,26481,1,Unknown,Unknown
+5965,"Kohls - Elk Grove, CA (#695)",38.407575,-121.419532,269.78,rooftop-fixed,FALSE,17778,1,multi-Si,sf220-30-p235
+5966,"Kohls - Folsom, CA (#663)",38.672067,-121.167642,443.52,rooftop-fixed,FALSE,25857,1,multi-Si,sf240-30-p
+6001,"Kohls - Jericho, NY (#411)",40.778575,-73.56661,330,rooftop-fixed,FALSE,17177,1,Unknown,"MEMC Singapore Pte Ltd.-P300
+BMC"
+5785,"Kohls - La Verne, CA (#599)",34.112663,-117.762923,412.8,rooftop-fixed,FALSE,17323,1,Unknown,Unknown
+5967,"Kohls - Marina, CA (#1122)",36.666603,-121.813106,311.6,rooftop-fixed,FALSE,15925,1,Unknown,MEMC Singapore Pte Ltd.-P300 BMC; MEMC Singapore Pte Ltd.-P300 AMC
+6006,"Kohls - N. Huntingdon,  PA (#459) Site #1",40.318148,-79.682953,316.94,rooftop-fixed,FALSE,14729,1,multi-Si,sf220-30-p230
+5999,"Kohls - Ocean, NJ (1143) Site #1",40.248115,-74.040425,456.485,rooftop-fixed,FALSE,24700,1,multi-Si,sf220-30-p240
+5797,"Kohls - San Marcos, CA (#707)",33.134284,-117.12334,367.36,rooftop-fixed,FALSE,18029,1,multi-Si,kd205gx-lpu
+5971,"Kohls - Santa Clarita, CA (#752) Site #1",34.392154,-118.467753,401.38,rooftop-fixed,FALSE,19340,1,multi-Si,sf220-30-p235
+6008,"Kohls - Springfield, PA (#275) Site #1",39.917337,-75.329879,286.65,rooftop-fixed,FALSE,18400,1,multi-Si,tsm-225 pa05
+5802,"Kohls - Stockton, CA (#708)",38.055534,-121.37326,401.28,rooftop-fixed,FALSE,24507,1,ribbon polycrystalline si,es-190-sl
+5804,"Kohls - Torrance, CA (#632)",33.793207,-118.331461,138.24,rooftop-fixed,FALSE,7549,1,ribbon polycrystalline si,es-180-sl
+5027,Kollmorgen,42.310872,-72.647914,208,Roof,FALSE,0,1,amorphous si,pvl-144
+5189,Macys Marlborough Solomon Pond,42.354614,-71.6147911,475.19,Roof,FALSE,19797,1,multi-Si,tsm-305pd14
+5086,Marana  Butterfield Elementary,32.345809,-111.039228,130.98,Parking,FALSE,4685,2,multi-Si,yl295p-35b
+5087,Marana  Coyote Trail Elementary,32.3537055,-111.107912,113.28,Parking,FALSE,2704,2,multi-Si,yl295p-35b
+5088,Marana  Estes Elementary,32.4533823,-111.2062363,309.72,Parking,FALSE,28421,2,multi-Si,yl290p-35b
+5089,Marana  Ironwood Elementary,32.378135,-111.037287,191.16,Parking,FALSE,6392,2,multi-Si,yl295p-35b
+5091,Marana  Marana Middle School (Meter 1 + Meter 2),32.451248,-111.205123,588.12,Parking,FALSE,12832,2,multi-Si,yl290p-35b
+5093,Marana  Quail Run Elementary,32.360264,-111.064301,187.62,Parking,FALSE,5448,2,multi-Si,yl295p-35b
+5094,Marana  Twin Peaks,32.374389,-111.134117,219.48,Parking,FALSE,7139,2,multi-Si,yl295p-35b
+5861,MCPS - Clarksburg HS,39.225833,-77.265837,277.095,rooftop-fixed,FALSE,12622,1,Unknown,Unknown
+5862,MCPS - College Gardens ES,39.102982,-77.162814,76.95,rooftop-fixed,FALSE,6056,1,Unknown,Unknown
+5863,MCPS - Francis Scott Key MS Site #1,39.027587,-76.991977,92.4,rooftop-fixed,FALSE,4884,1,Unknown,Unknown
+5148,Miami  Lee Kornegy Jr. High School,33.4123126,-110.8344831,139.08,Parking,FALSE,8194,2,multi-Si,yl305p-35b
+5095,Miami Charles Bejarano,33.4130477,-110.8344821,109.74,Parking,FALSE,4638,2,multi-Si,yl295p-35b
+5096,Miami High School,33.411093,-110.8338957,421.26,Parking,FALSE,12877,2,multi-Si,yl295p-35b
+5034,Middle Twp   Admin,39.0786409,-74.8256958,40.56,Roof,FALSE,3771,1,mono-Si,Yingli 260W
+5035,Middle Twp   Elem 1,39.0792789,-74.8234578,165.62,Roof,FALSE,2522,1,mono-Si,Yingli 260W
+5335,Mountain View - Creek View ES,34.0247557,-117.5681449,161.88,Parking,FALSE,3259,2,mono-Si,tsm-355dd14a(ii)
+5337,Mountain View - District Office,34.0269331,-117.5911043,32.31,Parking,FALSE,3904,2,mono-Si,tsm-355dd14a(ii)
+5338,Mountain View - Mountain View ES,34.0269331,-117.5911043,123.54,Parking,FALSE,3904,2,mono-Si,tsm-355dd14a(ii)
+4901,NIST_Canopy_1,39.1385,-77.2155,242.5,Canopy,FALSE,7193,2,mono-Si,NU-U235F2
+4902,NIST_Ground_1,39.1319,-77.2141,270.7,Ground,FALSE,16972,3,mono-Si,NU-U235F2
+4903,NIST_Roof_1,39.1354,-77.2156,73.7,Roof,FALSE,4074,1,mono-Si,NU-U235F2
+5139,Palmdale  Marie Kerr Gym,34.603666,-118.182041,95.7,Parking,FALSE,2145,2,multi-Si,yl300p-35b
+5138,Palmdale  Marie Kerr Pool,34.603666,-118.182041,82.5,Parking,FALSE,2145,2,multi-Si,yl300p-35b
+5140,Palmdale  Marie Kerr Skate Park,34.6036659,-118.182041,62.7,Parking,FALSE,2145,2,multi-Si,yl300p-35b
+5097,Peoria  Cheyenne Elementary,33.591484,-112.247694,464.4,Parking,FALSE,16005,2,multi-Si,yl300p-35b
+5149,Peoria  Country Meadows,33.557474,-112.29631,497.76,Parking,FALSE,15702,2,multi-Si,yl305p-35b
+5098,Peoria  Coyote Hills Elementary,33.675508,-112.247824,438.48,Parking,FALSE,14320,2,multi-Si,yl290p-35b
+5099,Peoria  Desert Harbor,33.625383,-112.252494,378,Parking,FALSE,13684,2,multi-Si,yl300p-35b
+5151,Peoria  Parkridge Elementary,33.6677298,-112.2741949,514.23,Parking,FALSE,17919,2,multi-Si,yl305p-35b
+5105,Peoria  Santa Fe Elementary School,33.574974,-112.226577,363.6,Parking,FALSE,13054,2,multi-Si,yl300p-35b
+5106,Peoria  Zuni Hills Elementary School,33.687522,-112.293159,452.4,Parking,FALSE,15360,2,multi-Si,yl290p-35b
+5307,Permacity,33.727972,-118.2800411,1209.6,Roof,FALSE,47709,1,mono-Si,sw320 xl mono
+5233,Pomona - Cortez ES,34.0705443,-117.7786745,204.6,Parking,FALSE,7205,2,multi-Si,yl300p-35b
+5873,Progress Energy Carolina - Meter 1 + Meter 2,34.287135,-77.980606,2377.8,ground-single_axis_tracker,TRUE,130760,3,multi-Si,kd205gx-lpu
+5975,PSUSD Painted Hills MS,33.98123,-116.517359,506.88,carport-fixed,FALSE,15796,2,Unknown,"MEMC Singapore Pte Ltd.-F320
+BMC"
+5978,PSUSD Rancho Mirage High School,33.823755,-116.433243,1149.12,carport-fixed,FALSE,37936,2,Unknown,MEMC Singapore Pte Ltd.-M315 BMC
+5305,Ravens Training Facility,39.39652,-76.8358776,404.63,Roof,FALSE,15187,1,mono-Si,
+5242,Saddleback Laguna Hills HS,33.5933833,-117.7019839,733.2,Parking,FALSE,22305,2,mono-Si,sw325 xl mono
+5244,Saddleback Nutrition Center,33.6545977,-117.6515257,157.3,Unknown,FALSE,3377,2,Unknown,
+5219,San Gabriel Jefferson MS,34.1032626,-118.0780835,317.2,Parking,FALSE,7198,2,multi-Si,yl305p-35b
+5220,San Gabriel McKinley ES,34.0825072,-118.10119,109.8,Parking,FALSE,4320,2,multi-Si,yl305p-35b
+5221,San Gabriel Roosevelt ES,34.097254,-118.085147,97.6,Parking,FALSE,2983,2,multi-Si,yl305p-35b
+5222,San Gabriel Washington ES,34.1069508,-118.1036145,97.6,Parking,FALSE,2963,2,multi-Si,yl305p-35b
+5223,San Gabriel Wilson ES,34.1176126,-118.0886079,61,Parking,FALSE,2148,2,multi-Si,yl305p-35b
+5959,Site #1,36.995688,-122.058986,247.08,rooftop-fixed-open-rack,FALSE,9611,1,multi-Si,sf220-30-p235
+5045,SMUD - Bruceville,38.3475,-121.4125,21902,Ground,FALSE,308326,3,CdTe,fs series 3
+5048,Somerton School District  Orange Grove,32.5893515,-114.6603177,214.32,Parking,FALSE,6837,2,mono-Si,Yingli 235W
+5125,Sparta Fresh Air Energy,33.285725,-82.982339,993.6,Ground,FALSE,48349,3,multi-Si,jc300m-24-ab
+5872,"Staples - Corporate Express DC - Hanover, MD Site #1",39.17104,-76.7252,1001.1,rooftop-fixed,FALSE,59095,1,ribbon polycrystalline si,es-180-rl
+5818,"Staples - Costa Mesa, CA (#1078)",33.633907,-117.917793,69.12,rooftop-fixed,FALSE,4590,1,ribbon polycrystalline si,es-180-sl
+5880,"Staples - Manahawkin, NJ (#1229)",39.704576,-74.277852,79.95,rooftop-fixed,FALSE,3757,1,multi-Si,kd205gx-lpu
+5823,"Staples - Napa, CA (#422)",38.321463,-122.299616,86.4,rooftop-fixed,FALSE,4745,1,Unknown,Unknown
+5825,"Staples - Ontario, CA (#1352)",34.073444,-117.557819,84.36,rooftop-fixed-open-rack,FALSE,762,1,Unknown,Unknown
+5829,"Staples - Vacaville, CA (#409)",38.365716,-121.961652,76.8,rooftop-fixed,FALSE,4425,1,Unknown,Unknown
+5272,Sulphur Springs Canyon Springs CS,34.419845,-118.4690584,216.92,Parking,FALSE,7654,2,mono-Si,sw340 xl mono
+5280,Sulphur Springs CS,34.4200533,-118.4260466,195.84,Parking,FALSE,937,2,mono-Si,sw340 xl mono
+5274,Sulphur Springs Fair Oaks Ranch CS,34.4033477,-118.4487176,149.6,Parking,FALSE,4178,2,mono-Si,sw340 xl mono
+5275,Sulphur Springs Golden Oaks CS,34.393047,-118.4557208,161.16,Parking,FALSE,4654,2,mono-Si,sw340 xl mono
+5276,Sulphur Springs Leona H. Cox CS,34.4270112,-118.4627526,134.3,Parking,FALSE,2958,2,mono-Si,
+5277,Sulphur Springs Mint Canyon CS,34.4508924,-118.4201743,170,Parking,FALSE,4004,2,mono-Si,sw340 xl mono
+5281,Sulphur Springs Valley View CS,34.3974642,-118.4751921,212.84,Parking,FALSE,4594,2,mono-Si,sw340 xl mono
+5053,Swampscott Mass High School,42.479102,-70.920445,383.18,Roof,FALSE,15954,1,multi-Si,mpe-230-ps09
+5054,Swampscott Mass Middle School,42.4735738,-70.9032455,67.62,Roof,FALSE,4699,1,multi-Si,mpe-230-ps09
+5852,"Town of Mansfield, CT - Community Center",41.800377,-72.242167,87.36,rooftop-fixed,FALSE,4006,1,Unknown,Unknown
+5855,Town of West Hartford - Bristow Middle School,41.768657,-72.717433,95.2,rooftop-fixed,FALSE,7200,1,mono-Si,yl175(156)
+5235,TUSD Banks ES,32.1851556,-111.1410478,226.8,Parking,FALSE,7173,2,mono-Si,sw315 xl mono
+5198,TUSD Blenman ES,32.2424731,-110.9273611,292.8,Parking,FALSE,7864,2,multi-Si,hsl72p6-pb-4-305t
+5152,TUSD Bonillas ES,32.213931,-110.891342,302.4,Parking,FALSE,9814,2,multi-Si,hsl72p6-0-pa-300t
+5166,TUSD Carrillo ES,32.2149112,-110.9748578,180,Parking,FALSE,5168,2,multi-Si,hsl72p6-pb-4-300t
+5199,TUSD Collier ES,32.276471,-110.7990365,290.4,Parking,FALSE,8824,2,multi-Si,hsl72p6-pb-4-300t
+5200,TUSD Cragin ES,32.2604233,-110.936276,226.8,Parking,FALSE,7194,2,multi-Si,hsl72p6-pb-4-300t
+5201,TUSD Davidson ES,32.269635,-110.908085,319.05,Parking,FALSE,11548,2,multi-Si,hsl72p6-pb-4-305t
+5168,TUSD Drachman ES,32.2078971,-110.9734704,173.85,Parking,FALSE,5456,2,multi-Si,hsl72p6-pb-4-305t
+5160,TUSD Duffy ES,32.229948,-110.882942,173.85,Parking,FALSE,14212,2,multi-Si,hsl72p6-pc-1-305
+5123,TUSD East Transit,32.2205791,-110.7930645,63,Parking,FALSE,2110,2,multi-Si,hsl72p6-0-pa-300t
+5153,TUSD Erickson ES,32.183732,-110.848393,216,Parking,FALSE,6366,2,multi-Si,hsl72p6-0-pa-300t
+5124,TUSD Gale ES,32.212718,-110.799431,288,Parking,FALSE,9920,2,multi-Si,yl300p-35b
+5190,TUSD Grijalva ES,32.1473579,-111.004318,378,Parking,FALSE,13531,2,multi-Si,hsl72p6-pb-4-300t
+5122,TUSD Henry ES,32.229079,-110.79717,180,Parking,FALSE,5903,2,multi-Si,hsl72p6-0-pa-300t
+5154,TUSD Howell ES,32.2277667,-110.9062482,255.6,Parking,FALSE,8689,2,multi-Si,hsl72p6-0-pa-300t
+5155,TUSD Kellond ES,32.214855,-110.8505668,279,Parking,FALSE,9214,2,multi-Si,hsl72p6-0-pa-300t
+5234,TUSD Lawrence ES,32.1269133,-111.0688071,171.99,Parking,FALSE,6027,2,mono-Si,sw315 xl mono
+5158,TUSD Lineweaver ES,32.213964,-110.901984,264.6,Parking,FALSE,8126,2,multi-Si,hsl72p6-0-pa-300t
+5191,TUSD Maldonado ES,32.1166213,-111.0414045,315,Parking,FALSE,10984,2,multi-Si,hsl72p6-pb-4-300t
+5204,TUSD Manzo ES,32.233106,-110.99355,252,Parking,FALSE,8805,2,multi-Si,hsl72p6-pb-4-300t
+5121,TUSD Marshall ES,32.1986623,-110.7991952,198,Parking,FALSE,6464,2,multi-Si,hsl72p6-0-pa-300t
+5159,TUSD Mary Meredith ES,32.2312025,-110.8823651,226.8,Parking,FALSE,14216,2,multi-Si,hsl72p6-0-pa-300t
+5205,TUSD Miles ELC K-8,32.2210007,-110.9502224,140.4,Parking,FALSE,4928,2,multi-Si,hsl72p6-pb-4-300t
+5157,TUSD Myers Ganoung ES,32.2027311,-110.8846572,302.4,Parking,FALSE,9274,2,multi-Si,hsl72p6-0-pa-300t
+5171,TUSD Ochoa ES,32.203172,-110.9705111,183,Parking,FALSE,5913,2,multi-Si,hsl72p6-pb-4-305t
+5194,TUSD Oyama ES,32.1909558,-111.0127715,315,Parking,FALSE,10587,2,multi-Si,hsl72p6-pb-4-300t
+5172,TUSD Robison ES,32.2127772,-110.9314583,256.2,Parking,FALSE,8262,2,multi-Si,hsl72p6-pb-4-305t
+5119,TUSD Secrist ES,32.1821957,-110.7739275,419.4,Parking,FALSE,7277,2,multi-Si,hsl72p6-0-pa-300t
+5156,TUSD Sewell ES,32.227283,-110.867257,210.45,Parking,FALSE,7008,2,multi-Si,hsl72p6-pc-1-305
+5118,TUSD Soleng Tom ES,32.2126872,-110.767451,253.8,Parking,FALSE,6431,2,multi-Si,hsl72p6-0-pa-300t
+5208,TUSD Tolson ES,32.210102,-111.02155,226.8,Parking,FALSE,7853,2,multi-Si,hsl72p6-pb-4-300t
+5209,TUSD Tully Magnet ES,32.2423567,-111.0014889,288,Parking,FALSE,10266,2,multi-Si,hsl72p6-pb-4-300t
+5236,TUSD Valencia MS,32.1641387,-111.0580919,510.3,Parking,FALSE,4280,2,mono-Si,sw315 xl mono
+5173,TUSD Van Buskirk ES,32.171749,-110.959586,270,Parking,FALSE,8984,2,multi-Si,hsl72p6-pb-4-300t
+5237,TUSD Vesey ES,32.159768,-111.074979,204.12,Parking,FALSE,6007,2,mono-Si,sw315 xl mono
+5195,TUSD Warren ES,32.1464987,-111.0407572,264.6,Parking,FALSE,8204,2,multi-Si,hsl72p6-pb-4-300t
+5196,TUSD White ES 1 + ES 2,32.1516678,-111.0168228,343.8,Parking,FALSE,11326,2,multi-Si,hsl72p6-pb-4-300t
+5210,TUSD Whitmore ES,32.2575286,-110.8790235,137.25,Parking,FALSE,4654,2,multi-Si,hsl72p6-pb-4-305t
+5211,TUSD Wright ES,32.2455238,-110.9008118,292.8,Parking,FALSE,9103,2,multi-Si,hsl72p6-pb-4-305t
+5180,URE Coleman I + II,32.883558,-82.409968,1295.64,ground,FALSE,90049,3,,
+5318,URE Georgia Stephens Co. HS,34.553116,-83.29978,796.05,Ground,FALSE,45211,3,multi-Si,yl305p-35b
+5184,URE Prescott,33.222111,-82.378167,395.28,Ground,FALSE,21292,3,multi-Si,yl305p-35b
+5185,URE SCDA,34.519774,-83.271411,988.2,ground,FALSE,56985,3,,
+5186,URE Williford,33.251506,-82.65615,724.68,ground,FALSE,37113,3,,
+5108,Vail Unified  Andrada Polytechnic High School,32.0185504,-110.776023,394.8,Parking,FALSE,11509,2,multi-Si,yl235p-29b
+5110,Vail Unified  Mesquite Elementary,32.115522,-110.7911,278.4,Parking,FALSE,7909,2,multi-Si,yl290p-35b
+5883,"Walgreens - Bergenfield, NJ (#7311)",40.913974,-73.997429,40.32,rooftop-fixed,FALSE,2948,1,Unknown,Unknown
+5884,"Walgreens - Blackwood, NJ (#1531)",39.810144,-75.06755,33.44,rooftop-fixed,FALSE,1898,1,ribbon polycrystalline si,es-190-rl
+5885,"Walgreens - Bridgeton, NJ (#7528)",39.461264,-75.206525,36.75,rooftop-fixed,FALSE,2904,1,mono-Si,nt-175u1f
+5889,"Walgreens - Clifton2, NJ (#6382)",40.875159,-74.139431,48.96,rooftop-fixed,FALSE,3689,1,Unknown,Unknown
+5891,"Walgreens - Deptford, NJ  #5836",39.828375,-75.125717,44.064,rooftop-fixed,FALSE,3248,1,multi-Si,nd-216u2
+5892,"Walgreens - Dover, NJ (#10379)",40.888187,-74.553309,30.6,rooftop-fixed,FALSE,3151,1,multi-Si,ne-170u1
+5893,"Walgreens - East Orange, NJ (#6162)",40.766228,-74.216056,40.53,rooftop-fixed,FALSE,2422,1,ribbon polycrystalline si,es-190-rl
+5894,"Walgreens - East Windsor, NJ (#7477)",40.274044,-74.538833,47.952,rooftop-fixed,FALSE,2703,1,multi-Si,nd-216u1f
+5899,"Walgreens - Flemington, NJ (#9933)",40.504757,-74.852603,37.24,rooftop-fixed,FALSE,3590,1,ribbon polycrystalline si,es-190-rl
+5835,"Walgreens - Fresno, CA (#6386)",36.73587,-119.735813,63.36,rooftop-fixed,FALSE,3829,1,Unknown,Unknown
+5935,"Walgreens - Gresham, OR (#3817)",45.49,-122.4747,28.5,rooftop-fixed,FALSE,2126,1,ribbon polycrystalline si,es-190-rl
+5904,"Walgreens - Jackson, NJ (#3908)",40.141122,-74.301033,39.2,rooftop-fixed,FALSE,2581,1,multi-Si,stp200-18-ub-1
+5937,"Walgreens - Keizer, OR (#4230)",44.997469,-123.026026,31.35,rooftop-fixed,FALSE,2884,1,ribbon polycrystalline si,es-190-rl
+5905,"Walgreens - Linden, NJ (#4109)",40.637669,-74.263492,45.22,rooftop-fixed,FALSE,3336,1,ribbon polycrystalline si,es-190-rl
+5907,"Walgreens - Mantua, NJ (#6741)",39.792931,-75.17408,38.5,rooftop-fixed,FALSE,1930,1,mono-Si,nt-175u1
+5836,"Walgreens - Moreno Valley, CA (DC)",33.866155,-117.221981,1185.28,rooftop-fixed,FALSE,69163,1,multi-Si,kc200gt
+5910,"Walgreens - Mount Ephraim, NJ (#10156)",39.881019,-75.08675,39.52,rooftop-fixed,FALSE,2552,1,ribbon polycrystalline si,es-190-rl
+5911,"Walgreens - Neptune, NJ (#7915)",40.222189,-74.085692,38.025,rooftop-fixed,FALSE,3312,1,ribbon polycrystalline si,es-195-rl
+5940,"Walgreens - Newberg, OR (#6664)",45.300962,-122.961532,37.05,rooftop-fixed,FALSE,3244,1,ribbon polycrystalline si,es-190-rl
+5914,"Walgreens - Pennsville, NJ (#11027)",39.643142,-75.516741,40.425,rooftop-fixed,FALSE,3071,1,mono-Si,nt-175u1
+5944,"Walgreens - Portland, OR (#1100)",45.490631,-122.474903,48.45,rooftop-fixed,FALSE,2344,1,ribbon polycrystalline si,es-190-rl
+5942,"Walgreens - Portland, OR (#6426)",45.526616,-122.536178,51.68,rooftop-fixed,FALSE,4097,1,ribbon polycrystalline si,es-190-rl
+5916,"Walgreens - Rahway, NJ (#4287)",40.604976,-74.289558,37.4,rooftop-fixed,FALSE,2637,1,multi-Si,ne-170u1
+5919,"Walgreens - Roseland, NJ (#2470)",40.820911,-74.328056,39.9,rooftop-fixed,FALSE,2620,1,ribbon polycrystalline si,es-190-rl
+5946,"Walgreens - Salem, OR (#9287)",44.92761,-122.982593,37.05,rooftop-fixed,FALSE,3145,1,ribbon polycrystalline si,es-190-rl
+5839,"Walgreens - San Diego, CA (#6094)",32.749736,-117.206249,63,rooftop-fixed,FALSE,3596,1,Unknown,Unknown
+5921,"Walgreens - Sewell, NJ (#10324)",39.742583,-75.069262,39.52,rooftop-fixed,FALSE,3048,1,ribbon polycrystalline si,es-190-rl
+5948,"Walgreens - Sherwood, OR (#7665)",45.367321,-122.848496,37.05,rooftop-fixed,FALSE,2820,1,ribbon polycrystalline si,es-190-rl
+5949,"Walgreens - Tigard, OR (#5780)",45.419231,-122.787385,28.5,rooftop-fixed,FALSE,2225,1,ribbon polycrystalline si,es-190-rl
+5923,"Walgreens - Toms River, NJ (#10695)",39.982058,-74.254494,38.22,rooftop-fixed,FALSE,2675,1,multi-Si,stp200-18-ub-1
+5950,"Walgreens - Troutdale, OR (#5910)",45.519409,-122.399028,34.2,rooftop-fixed,FALSE,2261,1,ribbon polycrystalline si,es-190-rl
+5924,"Walgreens - Union, NJ (#3431)",40.697424,-74.276542,39.27,rooftop-fixed,FALSE,3192,1,multi-Si,ne-170u1
+5925,"Walgreens - Waldwick, NJ (#2883)",41.012803,-74.140167,45.22,rooftop-fixed,FALSE,3744,1,ribbon polycrystalline si,es-190-rl
+5951,"Walgreens - Warrenton, OR (#9671)",46.163481,-123.89632,25.65,rooftop-fixed,FALSE,2194,1,ribbon polycrystalline si,es-190-sl
+5927,"Walgreens - West Caldwell, NJ (#7794)",40.852467,-74.294753,42.56,rooftop-fixed,FALSE,2859,1,ribbon polycrystalline si,es-190-rl
+5840,"Walgreens - West Sacramento, CA (#4198)",38.580874,-121.52603,51.84,rooftop-fixed,FALSE,3248,1,Unknown,Unknown
+5926,"Walgreens - Westampton, NJ (#7825)",40.024627,-74.855369,36.75,rooftop-fixed,FALSE,2862,1,mono-Si,nt-175u1
+5952,"Walgreens - Wilsonville, OR (#7688)",45.302407,-122.773638,37.05,rooftop-fixed,FALSE,2877,1,ribbon polycrystalline si,es-190-rl
+6485,CA-07-186 - CJUSD - Colton HS / Trans Ctr,34.071,-117.3317885,665.55,Canopy,FALSE,4622,2,mono-Si,spr-e20-435-com
+6487,CA-07-188 - CJUSD - Washington AltEd,34.0714938,-117.3109211,39.15,Canopy,FALSE,999,2,mono-Si,spr-e20-435-com
+6493,CA-07-194 - Grossmont - Foothills Adult,32.797078,-116.9244349,282,Roof,FALSE,5826,2,mono-Si,spr-x21-470-com
+6494,CA-07-195 - Grossmont - Chaparral HS,32.8179063,-116.9808248,211.5,Roof,FALSE,4496,2,mono-Si,spr-x21-470-com
+6495,CA-07-196 - UCSB - Arts Bldg + Athletics Bldg + Cheadle + Davidson Library + Kerr Hall,34.4142405,-119.8464491,977.76,Roof,FALSE,12897,1,mono-Si,spr-x22-360-com
+6501,CA-07-202 - UCSB - Theater & Dance,34.414,-119.846,155.52,Roof,FALSE,13239,1,mono-Si,spr-x22-360-com
+6508,CA-07-006 - Stanford - Bing Concert Hall,37.4320436,-122.1661352,156.96,Roof,FALSE,4615,1,mono-Si,spr-e20-327-com
+6509,CA-07-007 - Stanford - Bonair Siding,37.4293073,-122.158364,168.732,Roof,FALSE,2250,1,mono-Si,spr-e20-327-com
+6515,CA-07-013 - Stanford - Stanford Auxiliary Library (SAL I/II/III),37.4301874,-122.1548942,635.688,Roof,FALSE,4759,1,mono-Si,spr-e20-327-com
+6528,CA-07-026 - LVJUSD - Granada HS,37.674993,-121.7878354,846,Canopy,FALSE,1627,2,mono-Si,spr-x21-470-com
+6529,CA-07-027 - LVJUSD - Livermore HS,37.6808158,-121.761,310.2,Canopy,FALSE,7289,2,mono-Si,spr-x21-470-com
+6530,CA-07-028 - LVJUSD - Junction Ave K-8,37.687,-121.766303,277.3,Canopy,FALSE,6565,2,mono-Si,spr-x21-470-com
+6531,CA-07-029 - LVJUSD - Leo R Croce ES,37.718,-121.728,225.6,Canopy,FALSE,5458,2,mono-Si,spr-x21-470-com
+6532,CA-07-030 - LVJUSD - Jackson Ave ES,37.6850539,-121.7414719,182.7,Canopy,FALSE,4760,2,mono-Si,spr-e20-435-com
+6533,CA-07-031 - LVJUSD - Marylin Ave ES,37.684,-121.7860807,169.65,Canopy,FALSE,4651,2,mono-Si,spr-e20-435-com
+6535,CA-07-205 - UCSF - Dental Clinics,37.7616482,-122.4610073,141.3,Roof,FALSE,4740,1,mono-Si,spr-e20-327-com
+6536,CA-07-206 - UCSF - Fresno,36.7436852,-119.782252,390.1,Canopy,FALSE,10653,2,mono-Si,spr-x21-470-com
+6542,CA-07-096 - Santa Clara Valley Transportation Authority - Chaboya,37.307,-121.8551293,548.25,Canopy,FALSE,12983,2,mono-Si,spr-425e-wht-d
+6546,AZ-07-107 - Phoenix Garages - Adams Street,33.45,-112.0781307,695.856,Garage Canopy,FALSE,13079,2,mono-Si,spr-e20-327-com
+6548,CA-07-109 - Rancho Water District,33.513,-117.174,5011.2,Ground,TRUE,13111,2,mono-Si,spr-e20-435-com
+6551,CA-07-112 - UCSB Elings Hall (Lot 10),34.415,-119.841,591.6,Garage Canopy,FALSE,16628,2,mono-Si,spr-e20-435-com
+6558,CA-07-119 - Grossmont - Valhalla HS,32.7611367,-116.9210772,1096.2,Canopy,FALSE,7704,2,mono-Si,spr-e20-435-com
+6559,CA-07-120 - CSUF College Park (Aux),33.8809884,-117.8900673,652.5,Canopy,FALSE,17717,1,mono-Si,spr-e20-435-com
+6561,CA-07-122 - CSUF State College,33.883,-117.889,1109.25,Garage Canopy,FALSE,30174,1,mono-Si,spr-e20-435-com
+6564,CA-07-125 - CJUSD - Joe Baca MS,34.0713926,-117.38,430.65,Canopy,FALSE,11380,2,mono-Si,spr-e20-435-com
+6565,CA-07-126 - CJUSD - Ruth Harris MS,34.0508117,-117.4191583,326.25,Canopy,FALSE,9097,2,mono-Si,spr-e20-435-com
+6566,CA-07-127 - Napa Valley USD - American Canyon MS,38.1700259,-122.2676779,187.05,Canopy,FALSE,6178,2,mono-Si,spr-e20-435-com
+6568,CA-07-129 - Napa Valley USD - Redwood MS,38.3228649,-122.3151508,261,Ground,TRUE,13901,3,mono-Si,spr-e20-435-com
+6569,CA-07-130 - Napa Valley USD - Silverado MS,38.2952878,-122.2619264,261,Canopy,FALSE,7137,2,mono-Si,spr-e20-435-com
+6573,CA-07-139 - Otay Ranch II High School,32.621,-116.989,457.8,Canopy,FALSE,24667,2,mono-Si,spr-327ne-wht-d
+6579,CA-07-145 - Bonita Vista Middle School,32.648,-117.008,274.68,Canopy,FALSE,6541,2,mono-Si,spr-e20-327-com
+6581,CA-07-147 - EastLake Middle School,32.6546493,-116.95,292.992,Canopy,FALSE,6991,2,mono-Si,spr-327ne-wht-d
+6582,CA-07-148 - Rancho Del Rey Middle School,32.629,-117.007,219.744,Canopy,FALSE,5445,2,mono-Si,spr-327ne-wht-d
+6584,CA-07-150 - Hilltop Middle School,32.631,-117.060606,173.964,Canopy,FALSE,4645,2,mono-Si,spr-327ne-wht-d
+6586,CA-07-152 - EastLake High School,32.642,-116.9676282,778.26,Canopy,FALSE,12067,2,mono-Si,spr-327ne-wht-d
+6587,CA-07-153 - Granger Jr. High School,32.672,-117.073,128.184,Canopy,FALSE,3396,2,mono-Si,spr-327ne-wht-d
+6594,CA-07-160 - Macys Santa Ana,33.7762393,-117.8690744,677.544,Roof,FALSE,15485,1,mono-Si,spr-e20-327-com
+6597,CA-07-163 - Macys Victorville,34.4743075,-117.3455773,531.048,Roof,FALSE,15979,1,mono-Si,spr-e20-327-com
+6598,CA-07-164 - Macys Palm Desert,33.7236222,-116.3967034,714.168,Roof,FALSE,18475,1,mono-Si,spr-e20-327-com
+6599,CA-07-165 - Macys West Covina,34.0704445,-117.9293348,549.36,Roof,FALSE,17241,1,mono-Si,spr-e20-327-com
+6601,MA-01-002 - Bulfinch,42.2970619,-71.212987,928.62,Roof - Ballasted,FALSE,47576,1,multi-Si,q.plus l-g4.2 335
+6602,MA-01-003 - Bedford Market Place,42.4913661,-71.2737789,355.77,Roof - Ballasted,FALSE,18613,1,multi-Si,q.plus l-g4.2 335
+6616,NJ-05-011 - Greenbrook Elementary,40.4275361,-74.5500815,285.12,Ground,FALSE,18220,3,multi-Si,cs6u-330p
+6618,NJ-05-013 - Monmouth Junction Elementary,40.3790514,-74.5493491,142.56,Roof,FALSE,7522,1,multi-Si,cs6u-330p
+6620,NJ-05-015 - Brunswick Acres Elementary,40.434359,-74.528566,344.52,Roof,FALSE,10692,1,multi-Si,cs6u-330p
+6625,NJ-05-020 - Aldrich Elementary School,40.1494139,-74.2457191,318.6,Roof,FALSE,15081,1,mono-Si,tsm-de14a(ii) std mono
+6626,NJ-05-021 - Griebling Elementary School,40.2092273,-74.2396616,260.82,Roof,FALSE,12556,1,mono-Si,tsm-de14a(ii) std mono
+6627,NJ-05-022 - Greenville Elementary School,40.1181188,-74.1567508,335.34,Roof,FALSE,12793,1,mono-Si,tsm-de14a(ii) std mono
+6628,NJ-05-023 - Land O Pines Elementary School,40.1698118,-74.2240771,335.34,Roof,FALSE,12407,1,mono-Si,tsm-de14a(ii) std mono
+6629,NJ-05-024 - Newbury Elementary School,40.1553269,-74.2130718,306.18,Roof,FALSE,14316,1,mono-Si,tsm-de14a(ii) std mono
+6631,NJ-05-026 - Taunton Elementary School,40.1495268,-74.2128884,217.35,Roof,FALSE,8880,1,mono-Si,tsm-de14a(ii) std mono
+6632,NJ-05-027 - Middle School North,40.1148266,-74.1581966,471.96,Roof,FALSE,10232,1,mono-Si,tsm-de14a(ii) std mono
+6633,NJ-05-028 - Middle School South,40.1148266,-74.1581966,484.38,Roof,FALSE,10232,1,mono-Si,tsm-de14a(ii) std mono
+6635,NJ-05-030 - Ardena School Site,40.203205,-74.208011,45.54,Roof,FALSE,2519,1,mono-Si,tsm-de14a(ii) std mono
+6638,NJ-05-033 - Paterson School #1 & #26,40.9218665,-74.1422365,182.16,Roof,FALSE,8915,1,mono-Si,tsm-de14a(ii) std mono
+6639,NJ-05-034 - Paterson School #04 Site,40.924631,-74.172787,113.85,Roof,FALSE,5461,1,mono-Si,tsm-de14a(ii) std mono
+6641,NJ-05-036 - Paterson School #09 Site,40.8953805,-74.1578517,229.77,Roof,FALSE,8948,1,mono-Si,tsm-de14a(ii) std mono
+6642,NJ-05-037 - Paterson School #10,40.9273715,-74.1607874,117.65,Roof,FALSE,5345,1,mono-Si,tsm-de14a(ii) std mono
+6643,NJ-05-038 - Paterson School #15 Site,40.9115818,-74.160715,113.85,Roof,FALSE,4827,1,mono-Si,tsm-de14a(ii) std mono
+6662,NJ-03-080 - GCC - Institute of Technology,39.7882239,-75.1234675,638.82,Ground,FALSE,36123,1,mono-Si,sw270 mono
+6699,NJ-03-064 - Evesham BOE - Beeler,39.8900185,-74.9006898,304.98,Roof,FALSE,11941,1,mono-Si,sw255 mono
+6700,NJ-03-065 - Evesham BOE – Van Zant,39.9047,-74.9425,274.64,Roof,FALSE,11812,1,mono-Si,sw255 mono
+6709,NJ-03-136 - Lord Stirling,40.4877816,-74.4409984,255.84,Roof,FALSE,18382,1,multi-Si,tsm-240pa05
+6732,NJ-03-105 - Berkeley BOE - Clara Worth ES,39.890383,-74.1641653,190.74,Roof,FALSE,12048,1,mono-Si,225p
+6737,NJ-03-062 - Lower Cape May HS,38.9600846,-74.9042812,1834.56,Ground,FALSE,1599,1,Unknown,TSM-PA05
+6738,NJ-03-132 - BCLE Solar - Florence HS,40.1017414,-74.7944703,47.84,Ground,FALSE,6028,1,multi-Si,tsm-230 pa05
+6757,MA-03-070 - Falls River,41.7511889,-71.1147079,2499.42,Roof,FALSE,91519,1,multi-Si,cs6x-280p
+6759,NJ-03-037 - WP Properties Ph 2,40.9114824,-74.4941407,168.03,Roof,FALSE,15984,1,mono-Si,235p
+6764,NJ-03-061 - LOreal - Clark 111,40.629472,-74.31586,272.06,Roof,FALSE,9827,1,mono-Si,spr-327ne-wht-d
+7009,SUNPOWER_M0104,37.51352,-122.33281,233.7,Unknown,FALSE,11721,1,multi-Si,ne-165u1
+7023,SUNPOWER_M0225,37.74,-122.2,247.8,Unknown,FALSE,3632,1,Unknown,HIP190CA2
