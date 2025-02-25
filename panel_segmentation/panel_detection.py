@@ -59,63 +59,6 @@ class PanelDetection:
                                             "rooftop-fixed",
                                             "ground-single_axis_tracker"])
 
-    def generateSatelliteImage(self, latitude, longitude,
-                               file_name_save, google_maps_api_key):
-        """
-        Generates satellite image via Google Maps, using a set of lat-long
-        coordinates.
-
-        Parameters
-        -----------
-        latitude: float
-            Latitude coordinate of the site.
-        longitude: float
-            Longitude coordinate of the site.
-        file_name_save: string
-            File path that we want to save
-            the image to, where the image is saved as a PNG file.
-        google_maps_api_key: string
-            Google Maps API Key for
-            automatically pulling satellite images.
-
-        Returns
-        -----------
-            Figure
-            Figure of the satellite image
-        """
-        # Check input variable for types
-        if type(latitude) != float:
-            raise TypeError("latitude variable must be of type float.")
-        if type(longitude) != float:
-            raise TypeError("longitude variable must be of type float.")
-        if type(file_name_save) != str:
-            raise TypeError("file_name_save variable must be of type string.")
-        if type(google_maps_api_key) != str:
-            raise TypeError("google_maps_api_key variable must be "
-                            "of type string.")
-        # Build up the lat_long string from the latitude-longitude coordinates
-        lat_long = str(latitude) + ", " + str(longitude)
-        # get method of requests module
-        # return response object
-        r = requests.get(
-            "https://maps.googleapis.com/maps/api/staticmap?maptype"
-            "=satellite&center=" + lat_long +
-            "&zoom=18&size=35000x35000&key="+google_maps_api_key,
-            verify=False)
-        # Raise an exception if image is not successfully returned
-        if r.status_code != 200:
-            raise ValueError("Response status code " +
-                             str(r.status_code) +
-                             ": Image not pulled successfully from API.")
-        # wb mode is stand for write binary mode
-        with open(file_name_save, 'wb') as f:
-            f.write(r.content)
-            # close method of file object
-            # save and close the file
-            f.close()
-        # Read in the image and return it via the console
-        return Image.open(file_name_save)
-
     def classifyMountingConfiguration(self, image_file_path,
                                       acc_cutoff=.65,
                                       file_name_save=None,
