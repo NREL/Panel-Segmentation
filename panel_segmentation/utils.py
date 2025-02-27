@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Utility functions that are used when dealing with deep learning models.
 """
@@ -350,7 +349,7 @@ def translate_lat_long_coordinates(latitude, longitude,
     return lat_new, long_new
 
 
-def binary_mask_to_polygon_opencv(mask):
+def binary_mask_to_polygon(mask):
     """
     Convert a binary mask output (from a deep learning model) to a list of
     polygon coordinates, which can later be converted to latitude-longitude
