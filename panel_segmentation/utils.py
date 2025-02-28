@@ -443,9 +443,11 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
     cy = int((ymin + ymax) / 2)
     # Get the difference in meters between the main centroid and
     # label centroid, based on the image zoom level
-    zoom_meter_pixel = meter_pixel_zoom_dict[zoom_level]
-    lon_translation_meters = (cx - image_center_pixels_x) * zoom_meter_pixel
-    lat_translation_meters = (image_center_pixels_y - cy) * zoom_meter_pixel
+    meter_pixel_conversion = meter_pixel_zoom_dict[zoom_level]
+    lon_translation_meters = ((cx - image_center_pixels_x) *
+                              meter_pixel_conversion)
+    lat_translation_meters = ((image_center_pixels_y - cy) *
+                              meter_pixel_conversion)
     box_lat, box_lon = translate_lat_long_coordinates(
         latitude = img_center_lat,
         longitude = img_center_lon, 
@@ -480,3 +482,43 @@ def binary_mask_to_polygon(mask):
         contours_new = np.concatenate((contours_new, contours[idx]), axis=0)
     contours_new = [tuple(x[0]) for x in contours_new]
     return contours_new
+
+
+def convert_mask_to_lat_lon_polygon(mask, img_center_lat, img_center_lon,
+                                    image_x_pixels, image_y_pixels,
+                                    zoom_level):
+    """
+    Take an inference mask output from a model, and convert it to a polygon
+    with listed latitude-longitude coordinates.
+    
+    Parameters
+    -----------
+    mask : nparray
+        A binary mask output from a deep learning model, which can be converted
+        to a polygon.
+    img_center_lat, 
+    img_center_lon,
+    image_x_pixels, 
+    image_y_pixels,
+    zoom_level
+        
+
+    Returns
+    -------
+    None.
+    """
+    # First convert the mask to a polygon (in pixel coordinates)
+    polygon_coords = binary_mask_to_polygon(mask)
+    x_center, y_center = image_x_pixels/2, image_y_pixels/2
+    meter_pixel_conversion = meter_pixel_zoom_dict[zoom_level]
+    polygon_coord_list = list()
+    # Convert the polygon coords to lat-long coordinates
+    for coord in polygon_coords:
+        # Get distance changes in x- and y-directions in meters
+        dx = -(x_center - coord[0]) * meter_pixel_conversion
+        dy = (y_center - coord[1]) * meter_pixel_conversion
+        new_coords = translate_lat_long_coordinates(img_center_lat,
+                                                    img_center_lon, 
+                                                    dy, dx)[::-1] 
+        polygon_coord_list.append(new_coords)
+    return polygon_coord_list
