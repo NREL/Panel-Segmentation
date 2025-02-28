@@ -11,7 +11,27 @@ import random
 import rasterio
 import math
 import cv2
+from mpl_toolkits.axes_grid1 import ImageGrid
+import matplotlib.pyplot as plt
 
+# meter/pixel zoom level data taken from the following source:
+# https://support.plexearth.com/hc/en-us/articles/6325794324497-Understanding-Zoom-Level-in-Maps-and-Imagery
+
+meter_pixel_zoom_dict = {9: 305.8,
+                         10: 152.9,
+                         11: 76.4,
+                         12: 38.22,
+                         13: 19.11,
+                         14: 9.56,
+                         15: 4.78,
+                         16: 2.39,
+                         17: 1.2,
+                         18: 0.5972,
+                         19: 0.256,
+                         20: 0.1493,
+                         21: 0.0746,
+                         22: 0.0373,
+                         23: 0.0187}
 
 def generateSatelliteImage(latitude, longitude, zoom_level,
                            file_name_save, google_maps_api_key):
@@ -168,13 +188,23 @@ def generate_satellite_imagery_grid(northwest_lat, northwest_lon,
         lon_list.append(start_lon)
     counter = 0
     coord_list = list()
+    grid_location_list = list()
+    grid_y = 0
     for lon in lon_list:
+        grid_x = 0
         for lat in lat_list:
             coord_list.append((lat, lon))
             # For every coordinate, take a satellite image and save it
+            file_name = (str(round(lat, 7)) + "_" + str(
+                         round(lon, 7)) + ".png")
             file_save = os.path.join(file_save_folder,
-                                     str(round(lat, 7)) + "_" + str(
-                                         round(lon, 7)) + ".png")
+                                     file_name)
+            grid_location_list.append({"file_name": file_name,
+                                       "latitude": lat,
+                                       "lon": lon,
+                                       "grid_x": grid_x,
+                                       "grid_y": grid_y})
+            grid_x += 1
             if not os.path.exists(file_save):
                 generateSatelliteImage(lat, lon, 
                                        zoom_level,
@@ -187,8 +217,47 @@ def generate_satellite_imagery_grid(northwest_lat, northwest_lon,
             time.sleep(random.randint(1, 5))
             if counter >= number_allowed_images_taken:
                 break
-    return
+        grid_y += 1
+    return grid_location_list
 
+def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
+    """
+    Using the grid_location_list output from the 
+    generate_satellite_imagery_grid() function, visualize all of the images
+    taken in a grid.
+    
+    Parameters
+    ----------
+    grid_location_list: List of dictionaries
+        List of dictionaries directly outputed from the
+        generate_satellite_imagery_grid() function.
+    file_save_folder: Str
+        Folder path where all of the outputed satellite images from the
+        generate_satellite_imagery_grid() function are stored.
+        
+
+    Returns
+    -------
+    Plot
+        Plot of gridded satellite images.
+    """
+    # Get the max grid coordinates so we can build the appropriate matplotlib
+    # gridded graphic
+    x_max = max([x['grid_x'] for x in grid_location_list]) + 1
+    y_max = max([x['grid_y'] for x in grid_location_list]) + 1
+    fig = plt.figure(figsize=(x_max*4, y_max*4))
+    grid = ImageGrid(fig, 111,
+                     nrows_ncols=(x_max, y_max), 
+                     axes_pad=0.1,
+                     )
+    # Read in all of the imagery into the grid
+    for file in grid_location_list:
+        file_name = file['file_name']
+        x_loc = file['grid_x']
+        y_loc = file['grid_y']
+        img = Image.open(os.path.join(file_save_folder, file_name))
+        grid[(x_loc * y_max)+ y_loc].imshow(img)
+    return grid
 
 def split_tif_to_pngs(tif_file, meters_per_pixel, 
                       number_meters_png_image, file_save_folder):
@@ -308,7 +377,6 @@ def locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
               the image, no PNG captured...""")
         return None
 
-
 def translate_lat_long_coordinates(latitude, longitude, 
                                    lat_translation_meters,
                                    long_translation_meters):
@@ -348,6 +416,42 @@ def translate_lat_long_coordinates(latitude, longitude,
         math.cos(latitude * (math.pi / 180))
     return lat_new, long_new
 
+
+def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
+                                          image_x_pixels, image_y_pixels,
+                                          zoom_level):
+    """
+    Get the latitude-longitude coordinates of the centroid of a box output
+    from model inference, based on the image center location & zoom level.
+    
+    Parameters
+    -----------
+    box
+    img_center_lat
+    img_center_lon
+    image_x_pixels
+    image_y_pixels
+
+    Returns
+    -------
+    """
+    image_center_pixels_x, image_center_pixels_y = (image_x_pixels/2,
+                                                    image_y_pixels/2)
+    xmin, ymin, xmax, ymax = (float(box[0]), float(box[1]),
+                              float(box[2]), float(box[3]))
+    cx = int((xmin + xmax) / 2)                                                                                                                                                                     
+    cy = int((ymin + ymax) / 2)
+    # Get the difference in meters between the main centroid and
+    # label centroid, based on the image zoom level
+    zoom_meter_pixel = meter_pixel_zoom_dict[zoom_level]
+    lon_translation_meters = (cx - image_center_pixels_x) * zoom_meter_pixel
+    lat_translation_meters = (image_center_pixels_y - cy) * zoom_meter_pixel
+    box_lat, box_lon = translate_lat_long_coordinates(
+        latitude = img_center_lat,
+        longitude = img_center_lon, 
+        lat_translation_meters = lat_translation_meters,
+        long_translation_meters = lon_translation_meters)
+    return (box_lat, box_lon)
 
 def binary_mask_to_polygon(mask):
     """
