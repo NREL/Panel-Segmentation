@@ -33,8 +33,9 @@ meter_pixel_zoom_dict = {9: 305.8,
                          22: 0.0373,
                          23: 0.0187}
 
-def generateSatelliteImage(latitude, longitude, zoom_level,
-                           file_name_save, google_maps_api_key):
+def generateSatelliteImage(latitude, longitude,
+                           file_name_save, google_maps_api_key,
+                           zoom_level=18):
     """
     Generates satellite image via Google Maps, using a set of lat-long
     coordinates.
@@ -52,7 +53,9 @@ def generateSatelliteImage(latitude, longitude, zoom_level,
         Google Maps API Key for automatically pulling satellite images. For
         more information, see here:
         https://developers.google.com/maps/documentation/maps-static/start
-
+    zoom_level: int, default 18
+        Zoom level of the image. Set to 18 as default, as that's what's used
+        for the original panel-segmentation models.
     Returns
     -------
         Figure of the satellite image
@@ -97,7 +100,8 @@ def generateSatelliteImage(latitude, longitude, zoom_level,
 def generate_address(latitude, longitude, google_maps_api_key):
     """
     Gets the address of a latitude, longitude coordinates using Google
-    Geocoding API.
+    Geocoding API. Please note rates for running geocoding checks here:
+        https://developers.google.com/maps/billing-and-pricing/pricing
     
     Parameters
     -----------
@@ -115,6 +119,14 @@ def generate_address(latitude, longitude, google_maps_api_key):
     address: str
         Address of given latitude, longitude coordinates.
     """
+    # Ensure that the inputs are of the correct type
+    if type(latitude) != float:
+        raise TypeError("latitude variable must be of type float.")
+    if type(longitude) != float:
+        raise TypeError("longitude variable must be of type float.")
+    if type(google_maps_api_key) != str:
+        raise TypeError("google_maps_api_key variable must be "
+                        "of type string.")
     # return response object
     r = requests.get(
         "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
@@ -130,8 +142,8 @@ def generate_address(latitude, longitude, google_maps_api_key):
     return address
 
 
-def generate_satellite_imagery_grid(northwest_lat, northwest_lon,
-                                    southeast_lat, southeast_lon,
+def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
+                                    southeast_latitude, southeast_longitude,
                                     google_maps_api_key,
                                     zoom_level,
                                     file_save_folder,
@@ -141,6 +153,9 @@ def generate_satellite_imagery_grid(northwest_lat, northwest_lon,
     Take satellite images via the Google Maps API in a grid fashion for a large
     area, and save the associated images to a folder. The associated images
     can then be used to feed into different models to assess a larger area.
+    
+    Please note rates for running the Google Maps API here:
+        https://developers.google.com/maps/billing-and-pricing/pricing
 
     Parameters
     ----------
@@ -156,14 +171,16 @@ def generate_satellite_imagery_grid(northwest_lat, northwest_lon,
     southeast_longitude : float
         Longitude coordinate on the southeast corner of the area
         we wish to scan.
+    google_maps_api_key : str
+        API key for Google Maps API
+    zoom_level: int, default 18
+        Zoom level of the image. 
+    file_save_folder : str
+        Folder path for which to save all of the images
     lat_lon_distance : float
         Distance to traverse between images, in terms of lat-long
         degree distance. For example, default distance of 0.00145 degrees
         equates to approx. 161 meters.
-    google_maps_api_key : str
-        API key for Google Maps API
-    file_save_folder : str
-        Folder path for which to save all of the images
     number_allowed_images_taken : int, default 6000
         Number of allowed images for the Google Maps API to take before
         stopping. If we pull too many images in one go, google may flag
@@ -175,15 +192,38 @@ def generate_satellite_imagery_grid(northwest_lat, northwest_lon,
     None.
 
     """
+    # Ensure that the inputs are of the correct type
+    if type(northwest_latitude) != float:
+        raise TypeError("northwest_latitude variable must be of type float.")
+    if type(northwest_longitude) != float:
+        raise TypeError("northwest_longitude variable must be of type float.")
+    if type(southeast_latitude) != float:
+        raise TypeError("southeast_latitude variable must be of type float.")
+    if type(southeast_longitude) != float:
+        raise TypeError("southeast_longitude variable must be of type float.")           
+    if type(google_maps_api_key) != str:
+        raise TypeError("google_maps_api_key variable must be "
+                        "of type string.")
+    if type(zoom_level) != int:
+        raise TypeError("zoom_level variable must be of type int.")
+    if type(file_save_folder) != str:
+        raise TypeError("file_save_folder variable must be "
+                        "of type string.")
+    if type(lat_lon_distance) != float:
+        raise TypeError("lat_lon_distance variable must be "
+                        "of type float.")
+    if type(number_allowed_images_taken) != int:
+        raise TypeError("number_allowed_images_taken variable must be "
+                        "of type int.")
     # Build the grid out
-    start_lat, start_lon = northwest_lat, northwest_lon
+    start_lat, start_lon = northwest_latitude, northwest_longitude
     lat_list, lon_list = [start_lat], [start_lon]
     # Latitude list
-    while (start_lat >= southeast_lat):
+    while (start_lat >= southeast_latitude):
         start_lat = start_lat - lat_lon_distance
         lat_list.append(start_lat)
     # Longitude list
-    while (start_lon <= southeast_lon):
+    while (start_lon <= southeast_longitude):
         start_lon = start_lon + lat_lon_distance
         lon_list.append(start_lon)
     counter = 0
@@ -241,6 +281,13 @@ def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
     Plot
         Plot of gridded satellite images.
     """
+    # Ensure that the inputs are of the correct type
+    if type(grid_location_list) != list:
+        raise TypeError("grid_location_list variable must be of type list.")
+    if type(grid_location_list[0]) != dict:
+        raise TypeError("grid_location_list must be a list of dictionaries.")
+    if type(file_save_folder) != str:
+        raise TypeError("file_save_folder variable must be of type str.")
     # Get the max grid coordinates so we can build the appropriate matplotlib
     # gridded graphic
     x_max = max([x['grid_x'] for x in grid_location_list]) + 1
@@ -259,29 +306,46 @@ def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
         grid[(x_loc * y_max)+ y_loc].imshow(img)
     return grid
 
-def split_tif_to_pngs(tif_file, meters_per_pixel, 
-                      number_meters_png_image, file_save_folder):
+def split_tif_to_pngs(geotiff_file, meters_per_pixel, 
+                      meters_png_image, file_save_folder):
     """
     Take a master GEOTIFF file, grid it, and convert it to a series of PNG
     files.
 
     Parameters
     ----------
-    tif_file: str
+    geotiff_file: str
+        File name of the TIF file we want to grid images from.
     meters_per_pixel: float
-    number_meters_png_image: int
+        TIF file resolution in meters/pixel. This needs to be previously known
+        for the TIF file, so we can grid images based on the number of meters
+        each image represents (ie zoom level)
+    meters_png_image: float
+        Number of meters we want an individual image output to represent, in
+        both the x- and y-direction 
     file_save_folder: str
+        Folder path where we write all of the gridded images from the master
+        TIF file.
 
     Returns
     -------
     None.
     """
+    # Ensure that the inputs are of the correct type
+    if type(geotiff_file) != str:
+        raise TypeError("tif_file variable must be of type str.")
+    if type(meters_per_pixel) != float:
+        raise TypeError("meters_per_pixel variable must be of type float.")
+    if type(meters_png_image) != float:
+        raise TypeError("meters_png_image variable must be of type float.")
+    if type(file_save_folder) != str:
+        raise TypeError("file_save_folder variable must be of type str.")
     # Ignore aux.xml files when creating the png
     os.environ["GDAL_PAM_ENABLED"] = "NO"
-    with rasterio.open(tif_file) as img:
+    with rasterio.open(geotiff_file) as img:
         # All tif measurements were similar so divide the measured meters
         # from ArcGIS by its pixels
-        pixel_meter_conversion = int(number_meters_png_image/meters_per_pixel)
+        pixel_meter_conversion = int(meters_png_image/meters_per_pixel)
         # Get image dimensions
         img_width, img_height = img.width, img.height
         # Loop over dimensions to crop images in a grid
@@ -328,11 +392,18 @@ def locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
     Parameters
     -----------
     geotiff_file: str
+        File name of the TIF file we want to scan for a particular latitude-
+        longitude coordinate.
     latitude: float
+        Target latitude coordinate we want to find in the TIFF file.
     longitude: float
+        Target longitude coordinate we want to find in the TIFF file.
     file_name_save: str
+        Name of the file of the image taken of the target lat-lon
+        coordinate and its surrounding area.
     pixel_resolution : int, default 300
-    
+        Number of pixels in the x- and y-direction o
+        
     Returns
     -------
     image or None
@@ -484,7 +555,8 @@ def binary_mask_to_polygon(mask):
     return contours_new
 
 
-def convert_mask_to_lat_lon_polygon(mask, img_center_lat, img_center_lon,
+def convert_mask_to_lat_lon_polygon(mask, img_center_latitude,
+                                    img_center_longitude,
                                     image_x_pixels, image_y_pixels,
                                     zoom_level):
     """
@@ -502,6 +574,7 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_lat, img_center_lon,
     image_y_pixels,
     zoom_level
         
+    
 
     Returns
     -------
@@ -522,3 +595,11 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_lat, img_center_lon,
                                                     dy, dx)[::-1] 
         polygon_coord_list.append(new_coords)
     return polygon_coord_list
+
+def convert_polygon_to_geojson(polygon_coord_list):
+    """
+    Take a list of lat-lon coordinates for a polygon and convert
+    """
+    shapely_poly = Polygon(polygon_lat_lon_coords)
+    geojson_poly = geopandas.GeoSeries(shapely_poly).to_json()
+    return geojson_poly
