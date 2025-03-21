@@ -56,6 +56,7 @@ def generateSatelliteImage(latitude, longitude,
     zoom_level: int, default 18
         Zoom level of the image. Set to 18 as default, as that's what's used
         for the original panel-segmentation models.
+        
     Returns
     -------
         Figure of the satellite image
@@ -190,7 +191,6 @@ def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
     Returns
     -------
     None.
-
     """
     # Ensure that the inputs are of the correct type
     if type(northwest_latitude) != float:
@@ -451,7 +451,7 @@ def locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
 def translate_lat_long_coordinates(latitude, longitude, 
                                    lat_translation_meters,
                                    long_translation_meters):
-    '''
+    """
     Method to move any lat-lon coordinate by provided meters in lat and long
     direction, and return the new latitude-longitude coordinates.
     Taken from the following source:
@@ -476,7 +476,7 @@ def translate_lat_long_coordinates(latitude, longitude,
         New latitude coordinate, post-translation
     long_new : float
         New longitude coordinate, post-translation
-    '''
+    """
     earth_radius = 6378.137
     # Calculate top, which is lat_translation_meters
     m_lat = (1 / ((2 * math.pi / 360) * earth_radius)) / 1000
@@ -497,14 +497,24 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
     
     Parameters
     -----------
-    box
-    img_center_lat
-    img_center_lon
-    image_x_pixels
-    image_y_pixels
-
+    box : list
+        A list of float pixel values containing the coordinates of a bounding
+        box in the format [xmin, ymin, xmax, ymax].
+    img_center_lat : float
+        Latitude coordinate of the image center.
+    img_center_lon : float
+        Longitude coordinate of the image center.
+    image_x_pixels : int
+        The x width of the image in pixels.
+    image_y_pixels : int
+        The y height of the image in pixels.
+    zoom_level : int
+        The zoom level of the image for meter-to-pixel conversion.
+        
     Returns
     -------
+    (box_lat, box_lon) : tuple
+        The (latitude, longitude) coordinates of the centroid of a box.
     """
     image_center_pixels_x, image_center_pixels_y = (image_x_pixels/2,
                                                     image_y_pixels/2)
@@ -541,7 +551,7 @@ def binary_mask_to_polygon(mask):
     Returns
     -------
     contours_new : list
-        A list of (x,y) coordinates for a polygon
+        A list of (x,y) coordinates for a polygon.
     """
     # Ensure the mask is binary
     binary_mask = (mask > 0).astype(np.uint8)
@@ -568,17 +578,21 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_latitude,
     mask : nparray
         A binary mask output from a deep learning model, which can be converted
         to a polygon.
-    img_center_lat, 
-    img_center_lon,
-    image_x_pixels, 
-    image_y_pixels,
-    zoom_level
-        
-    
+    img_center_lat : float
+        Latitude coordinate of the image center.
+    img_center_lon : float
+        Longitude coordinate of the image center.
+    image_x_pixels : int
+        The x width of the image in pixels.
+    image_y_pixels : int
+        The y height of the image in pixels.
+    zoom_level : int
+        The zoom level of the image.
 
     Returns
     -------
-    None.
+    polygon_coord_list : list
+        A list of (latitude, longitude) coordinates for a polygon.
     """
     # First convert the mask to a polygon (in pixel coordinates)
     polygon_coords = binary_mask_to_polygon(mask)
@@ -599,6 +613,17 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_latitude,
 def convert_polygon_to_geojson(polygon_coord_list):
     """
     Take a list of lat-lon coordinates for a polygon and convert
+    to GeoJSON format.
+    
+    Parameters
+    -----------
+    polygon_coord_list : list
+        A list of (latitude, longitude) coordinates for a polygon.
+
+    Returns
+    -------
+    str
+        A GeoJSON string representation of the polygon.
     """
     shapely_poly = Polygon(polygon_lat_lon_coords)
     geojson_poly = geopandas.GeoSeries(shapely_poly).to_json()
