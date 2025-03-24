@@ -548,7 +548,7 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
     image_y_pixels : int
         The y height of the image in pixels.
     zoom_level : int
-        The zoom level of the image for meter-to-pixel conversion.
+        Zoom level of the image.
 
     Returns
     -------
