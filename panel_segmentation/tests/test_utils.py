@@ -80,7 +80,7 @@ def split_tif_to_pngs_params():
                                 "40.1072_-75.0137.tif")
     meters_per_pixel = 0.152401
     meters_png_image = 2500.0
-    file_save_folder = "../examples/utils_examples/"
+    file_save_folder = os.path.join("..", "examples", "utils_examples")
     return geotiff_file, meters_per_pixel, meters_png_image, file_save_folder
 
 

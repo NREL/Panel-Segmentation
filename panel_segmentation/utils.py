@@ -380,8 +380,9 @@ def split_tif_to_pngs(geotiff_file, meters_per_pixel,
                                 'driver': "PNG"})
                 # Get center of cropped image
                 center = pixel_meter_conversion/2
-                # Check if crs is in lat-lon coordinates, if not transform it
-                # to latlon. Otherwise, get coordinates directory
+                # Check if crs is in  "EPSG:4326" lat-lon coordinates.
+                # If it's not, transform it to "EPSG:4326" coordinates.
+                # Otherwise, get coordinates directly
                 lon, lat = rasterio.transform.xy(transform, center, center)
                 if img.crs and not img.crs.is_geographic:
                     transformer = Transformer.from_crs(img.crs, "EPSG:4326",
@@ -390,7 +391,8 @@ def split_tif_to_pngs(geotiff_file, meters_per_pixel,
 
                 # Put coordinats in lat_lon format for file name
                 lat_lon = f"{lat:.7f}_{lon:.7f}"
-                with rasterio.open(f'{file_save_folder}{lat_lon}.png', 'w',
+                file_path = os.path.join(file_save_folder, f"{lat_lon}.png")
+                with rasterio.open(file_path, 'w',
                                    **profile) as png:
                     # Read the data from the window and write it as a
                     # png output
@@ -438,8 +440,9 @@ def locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
     # Open the file and get its boundaries
     with rasterio.open(geotiff_file) as dat:
         bounds = dat.bounds
-        # Check if crs is in lat-lon coordinates, if not transform it to latlon
-        if not dat.crs.is_geographic:
+        # Check if crs is in "EPSG:4326" lat-lon coordinates.
+        # If not, transform it to "EPSG:4326" coordinates.
+        if dat.crs and not dat.crs.is_geographic:
             lon, lat = transform("EPSG:4326", dat.crs,
                                  [longitude], [latitude])
             longitude, latitude = lon[0], lat[0]
@@ -489,8 +492,6 @@ def translate_lat_long_coordinates(latitude, longitude,
     """
     Method to move any lat-lon coordinate by provided meters in lat and long
     direction, and return the new latitude-longitude coordinates.
-    Taken from the following source:
-        https://stackoverflow.com/questions/7477003/calculating-new-longitude-latitude-from-old-n-meters
 
     Parameters
     -----------
