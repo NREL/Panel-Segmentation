@@ -380,14 +380,14 @@ def split_tif_to_pngs(geotiff_file, meters_per_pixel,
                                 'driver': "PNG"})
                 # Get center of cropped image
                 center = pixel_meter_conversion/2
-                # Check if crs is in lat-lon coordinates, if not transform it to latlon
-                # Otherwise, get coordinates 
+                # Check if crs is in lat-lon coordinates, if not transform it
+                # to latlon. Otherwise, get coordinates directory
                 lon, lat = rasterio.transform.xy(transform, center, center)
                 if img.crs and not img.crs.is_geographic:
                     transformer = Transformer.from_crs(img.crs, "EPSG:4326",
                                                        always_xy=True)
                     lon, lat = transformer.transform(lon, lat)
-                    
+
                 # Put coordinats in lat_lon format for file name
                 lat_lon = f"{lat:.7f}_{lon:.7f}"
                 with rasterio.open(f'{file_save_folder}{lat_lon}.png', 'w',
