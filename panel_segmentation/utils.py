@@ -9,10 +9,13 @@ import os
 import time
 import random
 import rasterio
+from rasterio.warp import transform
 import math
 import cv2
 from mpl_toolkits.axes_grid1 import ImageGrid
 import matplotlib.pyplot as plt
+from shapely.geometry import Polygon
+import geopandas
 
 # meter/pixel zoom level data taken from the following source:
 # https://support.plexearth.com/hc/en-us/articles/6325794324497-Understanding-Zoom-Level-in-Maps-and-Imagery
@@ -32,6 +35,7 @@ meter_pixel_zoom_dict = {9: 305.8,
                          21: 0.0746,
                          22: 0.0373,
                          23: 0.0187}
+
 
 def generateSatelliteImage(latitude, longitude,
                            file_name_save, google_maps_api_key,
@@ -56,21 +60,21 @@ def generateSatelliteImage(latitude, longitude,
     zoom_level: int, default 18
         Zoom level of the image. Set to 18 as default, as that's what's used
         for the original panel-segmentation models.
-        
+
     Returns
     -------
         Figure of the satellite image
     """
     # Check input variable for types
-    if type(latitude) != float:
+    if not isinstance(latitude, float):
         raise TypeError("latitude variable must be of type float.")
-    if type(longitude) != float:
+    if not isinstance(longitude, float):
         raise TypeError("longitude variable must be of type float.")
-    if type(zoom_level) != int:
+    if not isinstance(zoom_level, int) or isinstance(zoom_level, bool):
         raise TypeError("zoom_level variable must be of type int.")
-    if type(file_name_save) != str:
+    if not isinstance(file_name_save, str):
         raise TypeError("file_name_save variable must be of type string.")
-    if type(google_maps_api_key) != str:
+    if not isinstance(google_maps_api_key, str):
         raise TypeError("google_maps_api_key variable must be "
                         "of type string.")
     # Build up the lat_long string from the latitude-longitude coordinates
@@ -103,7 +107,7 @@ def generate_address(latitude, longitude, google_maps_api_key):
     Gets the address of a latitude, longitude coordinates using Google
     Geocoding API. Please note rates for running geocoding checks here:
         https://developers.google.com/maps/billing-and-pricing/pricing
-    
+
     Parameters
     -----------
     latitude: float
@@ -121,11 +125,11 @@ def generate_address(latitude, longitude, google_maps_api_key):
         Address of given latitude, longitude coordinates.
     """
     # Ensure that the inputs are of the correct type
-    if type(latitude) != float:
+    if not isinstance(latitude, float):
         raise TypeError("latitude variable must be of type float.")
-    if type(longitude) != float:
+    if not isinstance(longitude, float):
         raise TypeError("longitude variable must be of type float.")
-    if type(google_maps_api_key) != str:
+    if not isinstance(google_maps_api_key, str):
         raise TypeError("google_maps_api_key variable must be "
                         "of type string.")
     # return response object
@@ -146,15 +150,15 @@ def generate_address(latitude, longitude, google_maps_api_key):
 def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
                                     southeast_latitude, southeast_longitude,
                                     google_maps_api_key,
-                                    zoom_level,
                                     file_save_folder,
-                                    lat_lon_distance=.00145,
+                                    zoom_level=18,
+                                    lat_lon_distance=0.00145,
                                     number_allowed_images_taken=6000):
     """
     Take satellite images via the Google Maps API in a grid fashion for a large
     area, and save the associated images to a folder. The associated images
     can then be used to feed into different models to assess a larger area.
-    
+
     Please note rates for running the Google Maps API here:
         https://developers.google.com/maps/billing-and-pricing/pricing
 
@@ -174,11 +178,11 @@ def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
         we wish to scan.
     google_maps_api_key : str
         API key for Google Maps API
-    zoom_level: int, default 18
-        Zoom level of the image. 
     file_save_folder : str
         Folder path for which to save all of the images
-    lat_lon_distance : float
+    zoom_level: int, default 18
+        Zoom level of the image.
+    lat_lon_distance : float, default 0.00145
         Distance to traverse between images, in terms of lat-long
         degree distance. For example, default distance of 0.00145 degrees
         equates to approx. 161 meters.
@@ -193,26 +197,27 @@ def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
     None.
     """
     # Ensure that the inputs are of the correct type
-    if type(northwest_latitude) != float:
+    if not isinstance(northwest_latitude, float):
         raise TypeError("northwest_latitude variable must be of type float.")
-    if type(northwest_longitude) != float:
+    if not isinstance(northwest_longitude, float):
         raise TypeError("northwest_longitude variable must be of type float.")
-    if type(southeast_latitude) != float:
+    if not isinstance(southeast_latitude, float):
         raise TypeError("southeast_latitude variable must be of type float.")
-    if type(southeast_longitude) != float:
-        raise TypeError("southeast_longitude variable must be of type float.")           
-    if type(google_maps_api_key) != str:
+    if not isinstance(southeast_longitude, float):
+        raise TypeError("southeast_longitude variable must be of type float.")
+    if not isinstance(google_maps_api_key, str):
         raise TypeError("google_maps_api_key variable must be "
                         "of type string.")
-    if type(zoom_level) != int:
-        raise TypeError("zoom_level variable must be of type int.")
-    if type(file_save_folder) != str:
+    if not isinstance(file_save_folder, str):
         raise TypeError("file_save_folder variable must be "
                         "of type string.")
-    if type(lat_lon_distance) != float:
+    if not isinstance(zoom_level, int) or isinstance(zoom_level, bool):
+        raise TypeError("zoom_level variable must be of type int.")
+    if not isinstance(lat_lon_distance, float):
         raise TypeError("lat_lon_distance variable must be "
                         "of type float.")
-    if type(number_allowed_images_taken) != int:
+    if not isinstance(number_allowed_images_taken, int) or \
+            isinstance(number_allowed_images_taken, bool):
         raise TypeError("number_allowed_images_taken variable must be "
                         "of type int.")
     # Build the grid out
@@ -237,6 +242,7 @@ def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
             # For every coordinate, take a satellite image and save it
             file_name = (str(round(lat, 7)) + "_" + str(
                          round(lon, 7)) + ".png")
+            print(file_name)
             file_save = os.path.join(file_save_folder,
                                      file_name)
             grid_location_list.append({"file_name": file_name,
@@ -246,10 +252,10 @@ def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
                                        "grid_y": grid_y})
             grid_x += 1
             if not os.path.exists(file_save):
-                generateSatelliteImage(lat, lon, 
-                                       zoom_level,
+                generateSatelliteImage(lat, lon,
                                        file_save,
-                                       google_maps_api_key)
+                                       google_maps_api_key,
+                                       zoom_level)
             else:
                 print("File already pulled!")
                 continue
@@ -260,12 +266,13 @@ def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
         grid_y += 1
     return grid_location_list
 
+
 def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
     """
-    Using the grid_location_list output from the 
+    Using the grid_location_list output from the
     generate_satellite_imagery_grid() function, visualize all of the images
     taken in a grid.
-    
+
     Parameters
     ----------
     grid_location_list: List of dictionaries
@@ -274,7 +281,6 @@ def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
     file_save_folder: Str
         Folder path where all of the outputed satellite images from the
         generate_satellite_imagery_grid() function are stored.
-        
 
     Returns
     -------
@@ -282,11 +288,11 @@ def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
         Plot of gridded satellite images.
     """
     # Ensure that the inputs are of the correct type
-    if type(grid_location_list) != list:
+    if not isinstance(grid_location_list, list):
         raise TypeError("grid_location_list variable must be of type list.")
-    if type(grid_location_list[0]) != dict:
+    if not isinstance(grid_location_list[0], dict):
         raise TypeError("grid_location_list must be a list of dictionaries.")
-    if type(file_save_folder) != str:
+    if not isinstance(file_save_folder, str):
         raise TypeError("file_save_folder variable must be of type str.")
     # Get the max grid coordinates so we can build the appropriate matplotlib
     # gridded graphic
@@ -294,19 +300,21 @@ def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
     y_max = max([x['grid_y'] for x in grid_location_list]) + 1
     fig = plt.figure(figsize=(x_max*4, y_max*4))
     grid = ImageGrid(fig, 111,
-                     nrows_ncols=(x_max, y_max), 
+                     nrows_ncols=(x_max, y_max),
                      axes_pad=0.1,
                      )
     # Read in all of the imagery into the grid
     for file in grid_location_list:
         file_name = file['file_name']
+        print(file_name)
         x_loc = file['grid_x']
         y_loc = file['grid_y']
         img = Image.open(os.path.join(file_save_folder, file_name))
-        grid[(x_loc * y_max)+ y_loc].imshow(img)
+        grid[(x_loc * y_max) + y_loc].imshow(img)
     return grid
 
-def split_tif_to_pngs(geotiff_file, meters_per_pixel, 
+
+def split_tif_to_pngs(geotiff_file, meters_per_pixel,
                       meters_png_image, file_save_folder):
     """
     Take a master GEOTIFF file, grid it, and convert it to a series of PNG
@@ -322,7 +330,7 @@ def split_tif_to_pngs(geotiff_file, meters_per_pixel,
         each image represents (ie zoom level)
     meters_png_image: float
         Number of meters we want an individual image output to represent, in
-        both the x- and y-direction 
+        both the x- and y-direction
     file_save_folder: str
         Folder path where we write all of the gridded images from the master
         TIF file.
@@ -332,13 +340,13 @@ def split_tif_to_pngs(geotiff_file, meters_per_pixel,
     None.
     """
     # Ensure that the inputs are of the correct type
-    if type(geotiff_file) != str:
-        raise TypeError("tif_file variable must be of type str.")
-    if type(meters_per_pixel) != float:
+    if not isinstance(geotiff_file, str):
+        raise TypeError("geotiff_file variable must be of type str.")
+    if not isinstance(meters_per_pixel, float):
         raise TypeError("meters_per_pixel variable must be of type float.")
-    if type(meters_png_image) != float:
+    if not isinstance(meters_png_image, float):
         raise TypeError("meters_png_image variable must be of type float.")
-    if type(file_save_folder) != str:
+    if not isinstance(file_save_folder, str):
         raise TypeError("file_save_folder variable must be of type str.")
     # Ignore aux.xml files when creating the png
     os.environ["GDAL_PAM_ENABLED"] = "NO"
@@ -402,53 +410,73 @@ def locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
         Name of the file of the image taken of the target lat-lon
         coordinate and its surrounding area.
     pixel_resolution : int, default 300
-        Number of pixels in the x- and y-direction o
-        
+        Number of pixels in the x- and y-direction of the resulting image.
+
     Returns
     -------
     image or None
     """
+    # Ensure that the inputs are of the correct type
+    if not isinstance(geotiff_file, str):
+        raise TypeError("geotiff_file variable must be of type str.")
+    if not isinstance(latitude, float):
+        raise TypeError("latitude variable must be of type float.")
+    if not isinstance(longitude, float):
+        raise TypeError("longitude variable must be of type float.")
+    if not isinstance(file_name_save, str):
+        raise TypeError("file_name_save variable must be of type str.")
+    if not isinstance(pixel_resolution, int) or \
+            isinstance(pixel_resolution, bool):
+        raise TypeError("pixel_resolution variable must be of type int.")
     # Open the file and get its boundaries
-    dat = rasterio.open(geotiff_file)
-    boundaries = dat.bounds
-    # Check that the lat-lon is within the image. If so, go to it
-    if ((longitude >= boundaries.left) & (longitude <= boundaries.right) &
-        (latitude <= boundaries.top) & (latitude >= boundaries.bottom)):
-        # Convert lon, lat to pixel row, col coords
-        rows, cols = dat.index(longitude, latitude)
-        # Get top left corner of window
-        top, left = (rows - pixel_resolution//2), (cols - pixel_resolution//2)
-        # Create a cropping window
-        window = rasterio.windows.Window(
-            col_off=left,
-            row_off=top,
-            width=pixel_resolution,
-            height=pixel_resolution
-        )
-        # Read data in the window
-        clip = dat.read(window=window)
-        # Skip image if all pixels are black
-        if np.all(clip == 0):
-            print("All pixels are black in area, skipping...")
+    with rasterio.open(geotiff_file) as dat:
+        bounds = dat.bounds
+        # Check if crs is in lat-lon coordinates, if not transform it to latlon
+        if not dat.crs.is_geographic:
+            lon, lat = transform("EPSG:4326", dat.crs,
+                                 [longitude], [latitude])
+            longitude, latitude = lon[0], lat[0]
+        # Check that the lat-lon is within the image. If so, go to it
+        if ((longitude >= bounds.left) & (longitude <= bounds.right) &
+                (latitude <= bounds.top) & (latitude >= bounds.bottom)):
+            # Convert lon, lat to pixel row, col coords
+            rows, cols = dat.index(longitude, latitude)
+            # Get top left corner of window
+            top, left = (rows - pixel_resolution //
+                         2), (cols - pixel_resolution//2)
+            # Create a cropping window
+            window = rasterio.windows.Window(
+                col_off=left,
+                row_off=top,
+                width=pixel_resolution,
+                height=pixel_resolution
+            )
+            # Read data in the window
+            clip = dat.read(window=window)
+            # Skip image if all pixels are black
+            if np.all(clip == 0):
+                print("All pixels are black in area, skipping...")
+                return None
+            # Save metadata
+            meta = dat.meta
+            meta['width'], meta['height'] = pixel_resolution, pixel_resolution
+            meta['transform'] = rasterio.windows.transform(
+                window, dat.transform)
+            with rasterio.open(file_name_save, 'w', **meta) as dst:
+                # Read the data from the window and write it as a png output
+                dst.write(clip)
+            # Open the file again and re-write via pillow so it doesn't have
+            # any strange format issues
+            image = Image.open(file_name_save)
+            image.save(file_name_save)
+            return image
+        else:
+            print("""Latitude-longitude coordinates are not within bounds of
+                the image, no PNG captured...""")
             return None
-        # Save metadata
-        meta = dat.meta
-        meta['width'], meta['height'] = pixel_resolution, pixel_resolution
-        meta['transform'] = rasterio.windows.transform(window, dat.transform)
-        with rasterio.open(file_name_save, 'w', **meta) as dst:
-            # Read the data from the window and write it as a png output
-            dst.write(clip)
-        # Open the file again and re-write via pillow so it doesn't have any
-        # strange format issues
-        image = Image.open(file_name_save)
-        image.save(file_name_save)
-        return image
-    else:
-        print("""Latitude-longitude coordinates are not within bounds of
-              the image, no PNG captured...""")
-        return None
 
-def translate_lat_long_coordinates(latitude, longitude, 
+
+def translate_lat_long_coordinates(latitude, longitude,
                                    lat_translation_meters,
                                    long_translation_meters):
     """
@@ -456,7 +484,7 @@ def translate_lat_long_coordinates(latitude, longitude,
     direction, and return the new latitude-longitude coordinates.
     Taken from the following source:
         https://stackoverflow.com/questions/7477003/calculating-new-longitude-latitude-from-old-n-meters
-    
+
     Parameters
     -----------
     latitude: float
@@ -466,10 +494,10 @@ def translate_lat_long_coordinates(latitude, longitude,
     lat_translation_meters: float
         Movement of point in meters in latitude direction.If the value is
         postive, translation moves up, if negative it moves down
-    long_translation_meters: float 
+    long_translation_meters: float
         Movement of point in meters in longitude direction. If the value is
         postive, translation moves left, if negative it moves right
-    
+
     Returns
     -------
     lat_new : float
@@ -477,6 +505,17 @@ def translate_lat_long_coordinates(latitude, longitude,
     long_new : float
         New longitude coordinate, post-translation
     """
+    # Ensure that the inputs are of the correct type
+    if not isinstance(latitude, float):
+        raise TypeError("latitude variable must be of type float.")
+    if not isinstance(longitude, float):
+        raise TypeError("longitude variable must be of type float.")
+    if not isinstance(lat_translation_meters, float):
+        raise TypeError("lat_translation_meters variable must be of" +
+                        " type float.")
+    if not isinstance(long_translation_meters, float):
+        raise TypeError("long_translation_meters variable must be of" +
+                        " type float.")
     earth_radius = 6378.137
     # Calculate top, which is lat_translation_meters
     m_lat = (1 / ((2 * math.pi / 360) * earth_radius)) / 1000
@@ -494,7 +533,7 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
     """
     Get the latitude-longitude coordinates of the centroid of a box output
     from model inference, based on the image center location & zoom level.
-    
+
     Parameters
     -----------
     box : list
@@ -510,17 +549,30 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
         The y height of the image in pixels.
     zoom_level : int
         The zoom level of the image for meter-to-pixel conversion.
-        
+
     Returns
     -------
     (box_lat, box_lon) : tuple
         The (latitude, longitude) coordinates of the centroid of a box.
     """
+    # Ensure that the inputs are of the correct type
+    if not isinstance(box, list):
+        raise TypeError("box variable must be of type list.")
+    if not isinstance(img_center_lat, float):
+        raise TypeError("img_center_lat variable must be of type float.")
+    if not isinstance(img_center_lon, float):
+        raise TypeError("img_center_lon variable must be of type float.")
+    if not isinstance(image_x_pixels, int) or isinstance(image_x_pixels, bool):
+        raise TypeError("image_x_pixels variable must be of type int.")
+    if not isinstance(image_y_pixels, int) or isinstance(image_y_pixels, bool):
+        raise TypeError("image_y_pixels variable must be of type int.")
+    if not isinstance(zoom_level, int) or isinstance(zoom_level, bool):
+        raise TypeError("zoom_level variable must be of type int.")
     image_center_pixels_x, image_center_pixels_y = (image_x_pixels/2,
                                                     image_y_pixels/2)
     xmin, ymin, xmax, ymax = (float(box[0]), float(box[1]),
                               float(box[2]), float(box[3]))
-    cx = int((xmin + xmax) / 2)                                                                                                                                                                     
+    cx = int((xmin + xmax) / 2)
     cy = int((ymin + ymax) / 2)
     # Get the difference in meters between the main centroid and
     # label centroid, based on the image zoom level
@@ -530,29 +582,33 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
     lat_translation_meters = ((image_center_pixels_y - cy) *
                               meter_pixel_conversion)
     box_lat, box_lon = translate_lat_long_coordinates(
-        latitude = img_center_lat,
-        longitude = img_center_lon, 
-        lat_translation_meters = lat_translation_meters,
-        long_translation_meters = lon_translation_meters)
+        latitude=img_center_lat,
+        longitude=img_center_lon,
+        lat_translation_meters=lat_translation_meters,
+        long_translation_meters=lon_translation_meters)
     return (box_lat, box_lon)
+
 
 def binary_mask_to_polygon(mask):
     """
     Convert a binary mask output (from a deep learning model) to a list of
     polygon coordinates, which can later be converted to latitude-longitude
     coordinates.
-    
+
     Parameters
     -----------
     mask : nparray
         A binary mask output from a deep learning model, which can be converted
         to a polygon.
-    
+
     Returns
     -------
     contours_new : list
         A list of (x,y) coordinates for a polygon.
     """
+    # Ensure that the input are of the correct type
+    if not isinstance(mask, np.ndarray):
+        raise TypeError("mask variable must be of type numpy.ndarray")
     # Ensure the mask is binary
     binary_mask = (mask > 0).astype(np.uint8)
     # Find contours
@@ -565,14 +621,14 @@ def binary_mask_to_polygon(mask):
     return contours_new
 
 
-def convert_mask_to_lat_lon_polygon(mask, img_center_latitude,
-                                    img_center_longitude,
+def convert_mask_to_lat_lon_polygon(mask, img_center_lat,
+                                    img_center_lon,
                                     image_x_pixels, image_y_pixels,
                                     zoom_level):
     """
     Take an inference mask output from a model, and convert it to a polygon
     with listed latitude-longitude coordinates.
-    
+
     Parameters
     -----------
     mask : nparray
@@ -594,6 +650,19 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_latitude,
     polygon_coord_list : list
         A list of (latitude, longitude) coordinates for a polygon.
     """
+    # Ensure that the input are of the correct type
+    if not isinstance(mask, np.ndarray):
+        raise TypeError("mask variable must be of type numpy.ndarray")
+    if not isinstance(img_center_lat, float):
+        raise TypeError("img_center_lat variable must be of type float.")
+    if not isinstance(img_center_lon, float):
+        raise TypeError("img_center_lon variable must be of type float.")
+    if not isinstance(image_x_pixels, int) or isinstance(image_x_pixels, bool):
+        raise TypeError("image_x_pixels variable must be of type int.")
+    if not isinstance(image_y_pixels, int) or isinstance(image_y_pixels, bool):
+        raise TypeError("image_y_pixels variable must be of type int.")
+    if not isinstance(zoom_level, int) or isinstance(zoom_level, bool):
+        raise TypeError("zoom_level variable must be of type int.")
     # First convert the mask to a polygon (in pixel coordinates)
     polygon_coords = binary_mask_to_polygon(mask)
     x_center, y_center = image_x_pixels/2, image_y_pixels/2
@@ -605,16 +674,17 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_latitude,
         dx = -(x_center - coord[0]) * meter_pixel_conversion
         dy = (y_center - coord[1]) * meter_pixel_conversion
         new_coords = translate_lat_long_coordinates(img_center_lat,
-                                                    img_center_lon, 
-                                                    dy, dx)[::-1] 
+                                                    img_center_lon,
+                                                    dy, dx)[::-1]
         polygon_coord_list.append(new_coords)
     return polygon_coord_list
+
 
 def convert_polygon_to_geojson(polygon_coord_list):
     """
     Take a list of lat-lon coordinates for a polygon and convert
     to GeoJSON format.
-    
+
     Parameters
     -----------
     polygon_coord_list : list
@@ -625,6 +695,9 @@ def convert_polygon_to_geojson(polygon_coord_list):
     str
         A GeoJSON string representation of the polygon.
     """
-    shapely_poly = Polygon(polygon_lat_lon_coords)
+    # Ensure that the input are of the correct type
+    if not isinstance(polygon_coord_list, list):
+        raise TypeError("polygon_coord_list variable must be of type list")
+    shapely_poly = Polygon(polygon_coord_list)
     geojson_poly = geopandas.GeoSeries(shapely_poly).to_json()
     return geojson_poly
