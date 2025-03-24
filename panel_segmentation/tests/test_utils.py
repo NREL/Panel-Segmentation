@@ -21,7 +21,7 @@ def satellite_image_params():
     # Proper variable types
     lat = 37.18385
     lon = -113.70663
-    file_name_save = os.path.join("examples", "utils_examples",
+    file_name_save = os.path.join("..", "examples", "utils_examples",
                                   "satellite_img")
     api_key = "123456789ABC"
     zoom = 19
@@ -40,7 +40,7 @@ def satellite_image_grid_params():
     se_lat = 37.17385
     se_lon = -113.69663
     api_key = "123456789ABC"
-    file_save_folder = os.path.join("examples", "utils_examples")
+    file_save_folder = os.path.join("..", "examples", "utils_examples")
     zoom = 19
     lat_lon_dist = 0.01
     num_allowed_img = 2
@@ -65,7 +65,7 @@ def vis_satellite_img_grid_params():
         {'file_name': '37.18385_-113.68663.png', 'latitude': 37.18385,
             'lon': -113.68663, 'grid_x': 0, 'grid_y': 2}
     ]
-    file_save_folder = os.path.join("examples", "utils_examples",
+    file_save_folder = os.path.join("..", "examples", "utils_examples",
                                     "satellite_grid")
     return grid_location_list, file_save_folder
 
@@ -76,11 +76,11 @@ def split_tif_to_pngs_params():
     Contains the proper variable types for running split_tif_to_png
     function
     """
-    geotiff_file = os.path.join("examples", "utils_examples",
+    geotiff_file = os.path.join("..", "examples", "utils_examples",
                                 "40.1072_-75.0137.tif")
     meters_per_pixel = 0.152401
     meters_png_image = 2500.0
-    file_save_folder = os.path.join("examples", "utils_examples")
+    file_save_folder = "../examples/utils_examples/"
     return geotiff_file, meters_per_pixel, meters_png_image, file_save_folder
 
 
@@ -90,11 +90,11 @@ def locate_lat_lon_geotiff_params():
     Contains the proper variable types for running locate_lat_lon_geotiff
     function
     """
-    geotiff_file = os.path.join("examples", "utils_examples",
+    geotiff_file = os.path.join("..", "examples", "utils_examples",
                                 "40.1072_-75.0137.tif")
     latitude = 40.1072
     longitude = -75.0137
-    file_name_save = os.path.join("examples", "utils_examples",
+    file_name_save = os.path.join("..", "examples", "utils_examples",
                                   "40.1072_-75.0137.png")
     pixel_resolution = 600
     return geotiff_file, latitude, longitude, file_name_save, pixel_resolution
@@ -396,7 +396,7 @@ def test_generate_satellite_imagery_grid_pulled(
     nw_lat, nw_lon, se_lat, se_lon, api_key, _, zoom, \
         lat_lon_dist, num_allowed_img = satellite_image_grid_params
     # Direct to directory where file exists
-    file_save_folder = os.path.join(
+    file_save_folder = os.path.join("..", 
         "examples", "utils_examples", "satellite_grid")
     # Mock satellite file pull from generateSatelliteImage function
     mocker.patch("panel_segmentation.utils.generateSatelliteImage")
