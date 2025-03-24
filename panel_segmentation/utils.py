@@ -16,6 +16,7 @@ from mpl_toolkits.axes_grid1 import ImageGrid
 import matplotlib.pyplot as plt
 from shapely.geometry import Polygon
 import geopandas
+from pyproj import Transformer
 
 # meter/pixel zoom level data taken from the following source:
 # https://support.plexearth.com/hc/en-us/articles/6325794324497-Understanding-Zoom-Level-in-Maps-and-Imagery
@@ -379,8 +380,14 @@ def split_tif_to_pngs(geotiff_file, meters_per_pixel,
                                 'driver': "PNG"})
                 # Get center of cropped image
                 center = pixel_meter_conversion/2
-                # Get coordinates
+                # Check if crs is in lat-lon coordinates, if not transform it to latlon
+                # Otherwise, get coordinates 
                 lon, lat = rasterio.transform.xy(transform, center, center)
+                if img.crs and not img.crs.is_geographic:
+                    transformer = Transformer.from_crs(img.crs, "EPSG:4326",
+                                                       always_xy=True)
+                    lon, lat = transformer.transform(lon, lat)
+                    
                 # Put coordinats in lat_lon format for file name
                 lat_lon = f"{lat:.7f}_{lon:.7f}"
                 with rasterio.open(f'{file_save_folder}{lat_lon}.png', 'w',

@@ -396,8 +396,8 @@ def test_generate_satellite_imagery_grid_pulled(
     nw_lat, nw_lon, se_lat, se_lon, api_key, _, zoom, \
         lat_lon_dist, num_allowed_img = satellite_image_grid_params
     # Direct to directory where file exists
-    file_save_folder = os.path.join("..", 
-        "examples", "utils_examples", "satellite_grid")
+    file_save_folder = os.path.join("..", "examples",
+                                    "utils_examples", "satellite_grid")
     # Mock satellite file pull from generateSatelliteImage function
     mocker.patch("panel_segmentation.utils.generateSatelliteImage")
     utils.generate_satellite_imagery_grid(
@@ -486,6 +486,9 @@ def test_split_tif_to_pngs_type_output(split_tif_to_pngs_params, mocker):
     actual_output = utils.split_tif_to_pngs(
         geotiff_file, meters_per_pixel,
         meters_png_image, file_save_folder)
+    # Delete the produced image
+    os.remove(os.path.join(file_save_folder,
+                           "40.0990931_-75.0039022.png"))
     assert actual_output is None
 
 
