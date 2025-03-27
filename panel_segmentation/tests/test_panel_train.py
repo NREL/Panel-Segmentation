@@ -45,8 +45,8 @@ def testTrainPanelClassifier():
     # Delete the model
     os.remove('./panel_segmentation/tests/classifier.h5')
     # Assert the mod and results types.
-    assert_isinstance(mod, tensorflow.python.keras.engine.training.Model)
-    assert_isinstance(results, tensorflow.python.keras.callbacks.History)
+    assert_isinstance(mod, tensorflow.keras.models.Model)
+    assert_isinstance(results, tensorflow.keras.callbacks.History)
 
 
 def testTrainSegmentation():
@@ -79,8 +79,8 @@ def testTrainSegmentation():
     # Delete the model
     os.remove('./panel_segmentation/tests/semantic_segmentation.h5')
     # Make assertions about model mod and the results
-    assert_isinstance(mod, tensorflow.python.keras.engine.training.Model)
-    assert_isinstance(results, tensorflow.python.keras.callbacks.History)
+    assert_isinstance(mod, tensorflow.keras.models.Model)
+    assert_isinstance(results, tensorflow.keras.callbacks.History)
     assert (list(results.history.keys()) ==
             ['loss', 'accuracy', 'diceCoeff', 'val_loss',
              'val_accuracy', 'val_diceCoeff'])
