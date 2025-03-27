@@ -1,3 +1,5 @@
+version: 2
+
 build:
   os: "ubuntu-22.04"
   tools:
@@ -9,8 +11,9 @@ sphinx:
 formats: all
 
 python:
-    version: 3.7
-    use_system_site_packages: true
-    pip_install: true
-    extra_requirements:
+  install:
+    - method: pip
+      path: .
+      extra_requirements:
         - doc
+        - optional
