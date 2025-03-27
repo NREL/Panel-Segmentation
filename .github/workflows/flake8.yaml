@@ -15,11 +15,11 @@ jobs:
         python-version: [3.8]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0  # fetch all branches, needed so we can diff against the target branch
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install flake8
@@ -29,6 +29,6 @@ jobs:
     - name: List changed files
       run: |
         git diff --compact-summary "origin/$GITHUB_BASE_REF"
-    - name: Run linter on changed files
+    - name: Run linter
       run: |
-        git diff "origin/$GITHUB_BASE_REF" -- "*.py" | flake8 . --config=.flake8 --diff --count --statistics --show-source
+        flake8 . --config=.flake8 --count --statistics --show-source

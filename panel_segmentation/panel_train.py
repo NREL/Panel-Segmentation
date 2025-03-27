@@ -374,7 +374,7 @@ class TrainPanelSegmentationModel():
         train_data = pd.read_csv(train_labels_path)
         class_count = pd.Series(train_data['class'].value_counts())
         train_data_resampled = train_data.copy()
-        for index, count in class_count.iteritems():
+        for index, count in class_count.items():
             number_times_resample = class_count.max() - count
             # Randomly sample a class X times
             class_index_list = list(
@@ -386,7 +386,8 @@ class TrainPanelSegmentationModel():
                 dup = train_data.loc[idx]
                 # Add to the dataframe
                 train_data_resampled = \
-                    train_data_resampled.append(dup, ignore_index=True)
+                    pd.concat([train_data_resampled, pd.DataFrame([dup])],
+                              ignore_index=True)
         # Reindex after all of the duplicates have been added
         train_data_resampled = train_data_resampled.reset_index(drop=True)
         # Re-write the resampled data set
