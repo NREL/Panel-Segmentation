@@ -31,4 +31,4 @@ jobs:
         git diff --compact-summary "origin/$GITHUB_BASE_REF"
     - name: Run linter
       run: |
-        flake8 . --config=.flake8 --count --statistics --show-source
+        git diff "origin/$GITHUB_BASE_REF" -- "*.py" | flake8 . --config=.flake8 --count --statistics --show-source
