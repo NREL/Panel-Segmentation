@@ -1,3 +1,8 @@
+build:
+  os: "ubuntu-22.04"
+  tools:
+    python: "3.7"
+
 python:
     version: 3.7
     use_system_site_packages: true
