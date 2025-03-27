@@ -3,6 +3,11 @@ build:
   tools:
     python: "3.7"
 
+sphinx:
+  configuration: sphinx/source/conf.py
+
+formats: all
+
 python:
     version: 3.7
     use_system_site_packages: true
