@@ -84,13 +84,13 @@ class PanelDetection:
             Figure of the satellite image
         """
         # Check input variable for types
-        if type(latitude) != float:
+        if not isinstance(latitude, float):
             raise TypeError("latitude variable must be of type float.")
-        if type(longitude) != float:
+        if not isinstance(longitude, float):
             raise TypeError("longitude variable must be of type float.")
-        if type(file_name_save) != str:
+        if not isinstance(file_name_save, str):
             raise TypeError("file_name_save variable must be of type string.")
-        if type(google_maps_api_key) != str:
+        if not isinstance(google_maps_api_key, str):
             raise TypeError("google_maps_api_key variable must be "
                             "of type string.")
         # Build up the lat_long string from the latitude-longitude coordinates
@@ -218,11 +218,11 @@ class PanelDetection:
             and ground truth
         """
         # Ensure that the inputs are of the correct type
-        if type(y_true) != np.ndarray:
+        if not isinstance(y_true, np.ndarray):
             raise TypeError("Variable y_true should be of type np.ndarray.")
-        if type(y_pred) != np.ndarray:
+        if not isinstance(y_pred, np.ndarray):
             raise TypeError("Variable y_pred should be of type np.ndarray.")
-        if type(smooth) != int:
+        if not isinstance(smooth, int) or isinstance(smooth, bool):
             raise TypeError("Variable smooth should be of type int.")
         # If variable types are correct, continue with function
         intersection = K.sum(y_true * y_pred, axis=[1, 2, 3])
@@ -250,9 +250,9 @@ class PanelDetection:
             The loss metric between prediction and ground truth
         """
         # Ensure that the inputs are of the correct type
-        if type(y_true) != np.ndarray:
+        if not isinstance(y_true, np.ndarray):
             raise TypeError("Variable y_true should be of type np.ndarray.")
-        if type(y_pred) != np.ndarray:
+        if not isinstance(y_pred, np.ndarray):
             raise TypeError("Variable y_pred should be of type np.ndarray.")
         return 1-self.dice_coef(y_true, y_pred)
 
@@ -285,9 +285,9 @@ class PanelDetection:
             truth if provided
         """
         # Ensure that the inputs are of the correct type
-        if type(test_data) != np.ndarray:
+        if not isinstance(test_data, np.ndarray):
             raise TypeError("Variable test_data should be of type np.ndarray.")
-        if type(batch_size) != int:
+        if not isinstance(batch_size, int) or isinstance(batch_size, bool):
             raise TypeError("Variable batch_size should be of type int.")
         test_datagen = image.ImageDataGenerator(rescale=1./255,
                                                 dtype='float32')
@@ -335,7 +335,7 @@ class PanelDetection:
             with the ground truth if provided
         """
         # Check that the inputs are correct
-        if type(test_data) != np.ndarray:
+        if not isinstance(test_data, np.ndarray):
             raise TypeError(
                 "Variable test_data must be of type numpy ndarray.")
         # Test that the input array has 2 to 3 channels
@@ -376,7 +376,7 @@ class PanelDetection:
             and False otherwise.
         """
         # Check that the input is correct
-        if type(test_data) != np.ndarray:
+        if not isinstance(test_data, np.ndarray):
             raise TypeError(
                 "Variable test_data must be of type numpy ndarray.")
         # Test that the input array has 3 to 4 channels
@@ -424,9 +424,9 @@ class PanelDetection:
             The azimuth of the panel in the image.
         """
         # Check that the input variables are of the correct type
-        if type(in_img) != np.ndarray:
+        if not isinstance(in_img, np.ndarray):
             raise TypeError("Variable in_img must be of type numpy ndarray.")
-        if type(number_lines) != int:
+        if not isinstance(number_lines, int) or isinstance(number_lines, bool):
             raise TypeError("Variable number_lines must be of type int.")
         # Run through the function
         edges = cv2.Canny(in_img[0], 50, 150, apertureSize=3)
@@ -491,10 +491,10 @@ class PanelDetection:
             input images.
         """
         # Check that the input variables are of the correct type
-        if type(test_data) != np.ndarray:
+        if not isinstance(test_data, np.ndarray):
             raise TypeError(
                 "Variable test_data must be of type numpy ndarray.")
-        if type(test_res) != np.ndarray:
+        if not isinstance(test_res, np.ndarray):
             raise TypeError("Variable test_res must be of type numpy ndarray.")
         # Convert the test_data array from 3D to 4D
         if test_data.ndim == 3:
@@ -554,14 +554,14 @@ class PanelDetection:
             estimate.
         """
         # Check that the input variables are of the correct type
-        if type(test_results) != np.ndarray:
+        if not isinstance(test_results, np.ndarray):
             raise TypeError(
                 "Variable test_results must be of type numpy ndarray.")
-        if type(no_lines) != int:
+        if not isinstance(no_lines, int) or isinstance(no_lines, bool):
             raise TypeError("Variable no_lines must be of type int.")
-        if type(no_figs) != int:
+        if not isinstance(no_figs, int) or isinstance(no_figs, bool):
             raise TypeError("Variable no_figs must be of type int.")
-        if type(plot_show) != bool:
+        if not isinstance(plot_show, bool):
             raise TypeError("Variable no_figs must be of type boolean.")
 
         for ii in np.arange(test_results.shape[0]):
@@ -713,10 +713,10 @@ class PanelDetection:
             (number clusters, 640, 640, 3)
         '''
         # Check that the input variables are of the correct type
-        if type(test_mask) != np.ndarray:
+        if not isinstance(test_mask, np.ndarray):
             raise TypeError(
                 "Variable test_mask must be of type numpy ndarray.")
-        if type(fig) != bool:
+        if not isinstance(fig, bool):
             raise TypeError("Variable fig must be of type bool.")
         # Continue running through the function if all the inputs are correct
         if (len(test_mask.shape) < 3):
