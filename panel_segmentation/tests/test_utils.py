@@ -15,10 +15,10 @@ example_path = os.path.join("panel_segmentation", "examples", "utils_examples")
 
 
 @pytest.fixture
-def satellite_image_params():
+def satelliteImageParams():
     """
     Contains the proper variable types for running GenerateSatelliteImage
-    and generate_address functions.
+    and generateAddress functions.
     """
     # Proper variable types
     lat = 37.18385
@@ -31,10 +31,10 @@ def satellite_image_params():
 
 
 @pytest.fixture
-def satellite_image_grid_params():
+def satelliteImageGridParams():
     """
     Contains the proper variable types for running
-    generate_satellite_imagery_grid function.
+    generateSatelliteImageryGrid function.
     """
     # Proper variable types
     nw_lat = 37.18385
@@ -51,10 +51,10 @@ def satellite_image_grid_params():
 
 
 @pytest.fixture
-def vis_satellite_img_grid_params():
+def visSatelliteImgGridParams():
     """
     Contains the proper variable types for running
-    visualize_satellite_imagery_grid function.
+    visualizeSatelliteImageryGrid function.
     """
     # Proper variable types
     grid_location_list = [
@@ -73,9 +73,9 @@ def vis_satellite_img_grid_params():
 
 
 @pytest.fixture
-def split_tif_to_pngs_params():
+def splitTifToPngsParams():
     """
-    Contains the proper variable types for running split_tif_to_png
+    Contains the proper variable types for running splitTifToPngs
     function
     """
     geotiff_file = os.path.join(example_path,
@@ -87,9 +87,9 @@ def split_tif_to_pngs_params():
 
 
 @pytest.fixture
-def locate_lat_lon_geotiff_params():
+def locateLatLonGeotiffParams():
     """
-    Contains the proper variable types for running locate_lat_lon_geotiff
+    Contains the proper variable types for running locateLatLonGeotiff
     function
     """
     geotiff_file = os.path.join(example_path, "40.1072_-75.0137.tif")
@@ -101,10 +101,10 @@ def locate_lat_lon_geotiff_params():
 
 
 @pytest.fixture
-def translate_lat_long_coords_params():
+def translateLatLongCoordsParams():
     """
     Contains the proper variable types for running
-    translate_lat_long_coordinates function
+    translateLatLongCoordinates function
     """
     latitude = 40.1072
     longitude = -75.0137
@@ -114,10 +114,10 @@ def translate_lat_long_coords_params():
 
 
 @pytest.fixture
-def get_inference_box_lat_lon_coords_params():
+def getInferenceBoxLatLonCoordsParams():
     """
     Contains the proper variable types for running
-    get_inference_box_lat_lon_coordinates function.
+    getInferenceBoxLatLonCoordinates function.
     """
     box = [15.0, 0.0, 485.0, 500.0]
     img_center_lat = 40.1072
@@ -130,10 +130,10 @@ def get_inference_box_lat_lon_coords_params():
 
 
 @pytest.fixture
-def convert_mask_to_lat_lon_polygon_params():
+def convertMaskToLatLonPolygonParams():
     """
     Contains the proper variable types for running
-    convert_mask_to_lat_lon_polygon function.
+    convertMaskToLatLonPolygon function.
     """
     mask = np.zeros((4, 4))
     mask[1:3, 1:3] = 1
@@ -146,11 +146,11 @@ def convert_mask_to_lat_lon_polygon_params():
         image_y_pixels, zoom_level
 
 
-def test_generate_satellite_image_type_errors(satellite_image_params):
+def testGenerateSatelliteImageTypeErrors(satelliteImageParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
-    lat, lon, file_name_save, api_key, zoom = satellite_image_params
+    lat, lon, file_name_save, api_key, zoom = satelliteImageParams
     # Tests for float latitude type
     with pytest.raises(TypeError,
                        match="latitude variable must be of type float."):
@@ -176,13 +176,12 @@ def test_generate_satellite_image_type_errors(satellite_image_params):
         utils.generateSatelliteImage(lat, lon, file_name_save, 4, zoom)
 
 
-def test_generate_satellite_image_error_response(satellite_image_params,
-                                                 mocker):
+def testGenerateSatelliteImageErrorResponse(satelliteImageParams, mocker):
     """
     Tests if requests response returns the correct output for non-200
     status code.
     """
-    lat, lon, file_name_save, api_key, zoom = satellite_image_params
+    lat, lon, file_name_save, api_key, zoom = satelliteImageParams
     # Simulate mocked status code response of 404
     mocked_requests_get = mocker.patch("requests.get")
     mocked_response = mocker.Mock(spec=requests.Response)
@@ -195,11 +194,11 @@ def test_generate_satellite_image_error_response(satellite_image_params,
         utils.generateSatelliteImage(lat, lon, file_name_save, api_key, zoom)
 
 
-def test_generate_satellite_image_200_response(satellite_image_params, mocker):
+def testGenerateSatelliteImage200Response(satelliteImageParams, mocker):
     """
     Tests if requests response returns the correct output for 200 status code.
     """
-    lat, lon, file_name_save, api_key, zoom = satellite_image_params
+    lat, lon, file_name_save, api_key, zoom = satelliteImageParams
     # Simulate mocked response of code 200 and returned image data
     mocked_requests_get = mocker.patch("requests.get")
     mocked_response = mocker.Mock(spec=requests.Response)
@@ -221,32 +220,32 @@ def test_generate_satellite_image_200_response(satellite_image_params, mocker):
     assert actual_pulled_img == mocked_img
 
 
-def test_generate_address_type_errors(satellite_image_params):
+def testGenerateAddressTypeErrors(satelliteImageParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
-    lat, lon, _, api_key, _ = satellite_image_params
+    lat, lon, _, api_key, _ = satelliteImageParams
     # Tests for float latitude type
     with pytest.raises(TypeError,
                        match="latitude variable must be of type float."):
-        utils.generate_address(1, lon, api_key)
+        utils.generateAddress(1, lon, api_key)
     # Tests for float longitude type
     with pytest.raises(TypeError,
                        match="longitude variable must be of type float."):
-        utils.generate_address(lat, "-12.34", api_key)
+        utils.generateAddress(lat, "-12.34", api_key)
     # Tests for str google_maps_api_key type
     with pytest.raises(
             TypeError,
             match="google_maps_api_key variable must be of type string."):
-        utils.generate_address(lat, lon, 4)
+        utils.generateAddress(lat, lon, 4)
 
 
-def test_generate_address_error_response(satellite_image_params, mocker):
+def testGenerateAddressErrorResponse(satelliteImageParams, mocker):
     """
     Tests if requests response returns the correct output for non-200
     status code.
     """
-    lat, lon, _, api_key, _ = satellite_image_params
+    lat, lon, _, api_key, _ = satelliteImageParams
     # Simulate mocked status code response of 404
     mocked_requests_get = mocker.patch("requests.get")
     mocked_response = mocker.Mock(spec=requests.Response)
@@ -256,14 +255,14 @@ def test_generate_address_error_response(satellite_image_params, mocker):
                     "Address not pulled successfully from API.")
     # Test is ValueErroor is raised if status code is 404
     with pytest.raises(ValueError, match=error_string):
-        utils.generate_address(lat, lon, api_key)
+        utils.generateAddress(lat, lon, api_key)
 
 
-def test_generate_address_image_200_response(satellite_image_params, mocker):
+def testGenerateAddressImage200Response(satelliteImageParams, mocker):
     """
     Tests if requests response returns the correct output for 200 status code.
     """
-    lat, lon, _, api_key, _ = satellite_image_params
+    lat, lon, _, api_key, _ = satelliteImageParams
     expected_address = "875 Coyote Gulch Ct, Ivins, UT 84738, USA"
     # Simulate mocked response of code 200 and returned str address
     mocked_requests_get = mocker.patch("requests.get")
@@ -274,98 +273,96 @@ def test_generate_address_image_200_response(satellite_image_params, mocker):
     ]}
     mocked_requests_get.return_value = mocked_response
     # Test function with mocked parameters
-    actual_address = utils.generate_address(lat, lon, api_key)
+    actual_address = utils.generateAddress(lat, lon, api_key)
     assert actual_address == expected_address
     # Assert address is a string
     assert isinstance(actual_address, str)
 
 
-def test_generate_satellite_imagery_grid_type_errors(
-        satellite_image_grid_params):
+def testGenerateSatelliteImageryGridTypeErrors(satelliteImageGridParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
     nw_lat, nw_lon, se_lat, se_lon, api_key, file_save_folder, zoom, \
-        lat_lon_dist, num_allowed_img = satellite_image_grid_params
+        lat_lon_dist, num_allowed_img = satelliteImageGridParams
     # Tests for float northwest_latitude type
     with pytest.raises(
             TypeError,
             match="northwest_latitude variable must be of type float."):
-        utils.generate_satellite_imagery_grid(1, nw_lon, se_lat, se_lon,
-                                              api_key, zoom, file_save_folder,
-                                              lat_lon_dist, num_allowed_img)
+        utils.generateSatelliteImageryGrid(1, nw_lon, se_lat, se_lon,
+                                           api_key, zoom, file_save_folder,
+                                           lat_lon_dist, num_allowed_img)
     # Tests for float northwest_longitude type
     with pytest.raises(
             TypeError,
             match="northwest_longitude variable must be of type float."):
-        utils.generate_satellite_imagery_grid(nw_lat, "13", se_lat, se_lon,
-                                              api_key, zoom, file_save_folder,
-                                              lat_lon_dist, num_allowed_img)
+        utils.generateSatelliteImageryGrid(nw_lat, "13", se_lat, se_lon,
+                                           api_key, zoom, file_save_folder,
+                                           lat_lon_dist, num_allowed_img)
     # Tests for float southeast_latitude type
     with pytest.raises(
             TypeError,
             match="southeast_latitude variable must be of type float."):
-        utils.generate_satellite_imagery_grid(nw_lat, nw_lon, True, se_lon,
-                                              api_key, file_save_folder, zoom,
-                                              lat_lon_dist, num_allowed_img)
+        utils.generateSatelliteImageryGrid(nw_lat, nw_lon, True, se_lon,
+                                           api_key, file_save_folder, zoom,
+                                           lat_lon_dist, num_allowed_img)
     # Tests for float southeast_longitude type
     with pytest.raises(
             TypeError,
             match="southeast_longitude variable must be of type float."):
-        utils.generate_satellite_imagery_grid(nw_lat, nw_lon, se_lat, 21,
-                                              api_key, file_save_folder, zoom,
-                                              lat_lon_dist, num_allowed_img)
+        utils.generateSatelliteImageryGrid(nw_lat, nw_lon, se_lat, 21,
+                                           api_key, file_save_folder, zoom,
+                                           lat_lon_dist, num_allowed_img)
     # Tests for str google_maps_api_key type
     with pytest.raises(
             TypeError,
             match="google_maps_api_key variable must be of type string."):
-        utils.generate_satellite_imagery_grid(nw_lat, nw_lon, se_lat, se_lon,
-                                              123, file_save_folder, zoom,
-                                              lat_lon_dist, num_allowed_img)
+        utils.generateSatelliteImageryGrid(nw_lat, nw_lon, se_lat, se_lon,
+                                           123, file_save_folder, zoom,
+                                           lat_lon_dist, num_allowed_img)
     # Tests for str file_save_folder type
     with pytest.raises(
             TypeError,
             match="file_save_folder variable must be of type string."):
-        utils.generate_satellite_imagery_grid(nw_lat, nw_lon, se_lat, se_lon,
-                                              api_key, 902, zoom,
-                                              lat_lon_dist, num_allowed_img)
+        utils.generateSatelliteImageryGrid(nw_lat, nw_lon, se_lat, se_lon,
+                                           api_key, 902, zoom,
+                                           lat_lon_dist, num_allowed_img)
     # Tests for int zoom_level type
     with pytest.raises(
             TypeError,
             match="zoom_level variable must be of type int."):
-        utils.generate_satellite_imagery_grid(nw_lat, nw_lon, se_lat, se_lon,
-                                              api_key, file_save_folder, False,
-                                              lat_lon_dist, num_allowed_img)
+        utils.generateSatelliteImageryGrid(nw_lat, nw_lon, se_lat, se_lon,
+                                           api_key, file_save_folder, False,
+                                           lat_lon_dist, num_allowed_img)
     # Tests for float lat_lon_distance type
     with pytest.raises(
             TypeError,
             match="lat_lon_distance variable must be of type float."):
-        utils.generate_satellite_imagery_grid(nw_lat, nw_lon, se_lat, se_lon,
-                                              api_key, file_save_folder, zoom,
-                                              "lat_lon_dist", num_allowed_img)
+        utils.generateSatelliteImageryGrid(nw_lat, nw_lon, se_lat, se_lon,
+                                           api_key, file_save_folder, zoom,
+                                           "lat_lon_dist", num_allowed_img)
     # Tests for int number_allowed_images_taken type
     with pytest.raises(
             TypeError,
             match="number_allowed_images_taken variable must be of type int."):
-        utils.generate_satellite_imagery_grid(nw_lat, nw_lon, se_lat, se_lon,
-                                              api_key, file_save_folder, zoom,
-                                              lat_lon_dist, 9.1)
+        utils.generateSatelliteImageryGrid(nw_lat, nw_lon, se_lat, se_lon,
+                                           api_key, file_save_folder, zoom,
+                                           lat_lon_dist, 9.1)
 
 
-def test_generate_satellite_imagery_grid_output(
-        satellite_image_grid_params, mocker):
+def testGenerateSatelliteImageryGridOutput(satelliteImageGridParams, mocker):
     """
-    Tests if generate_satellite_imagery_grid returns the correct output for
+    Tests if generateSatelliteImageryGrid returns the correct output for
     sateliite images.
     """
     nw_lat, nw_lon, se_lat, se_lon, api_key, file_save_folder, zoom, \
-        lat_lon_dist, num_allowed_img = satellite_image_grid_params
+        lat_lon_dist, num_allowed_img = satelliteImageGridParams
 
     # Mock satellite file pull from generateSatelliteImage function
     mocked_pull = mocker.patch(
         "panel_segmentation.utils.generateSatelliteImage")
 
-    actual_output = utils.generate_satellite_imagery_grid(
+    actual_output = utils.generateSatelliteImageryGrid(
         nw_lat, nw_lon, se_lat, se_lon, api_key, file_save_folder, zoom,
         lat_lon_dist, num_allowed_img
     )
@@ -387,81 +384,78 @@ def test_generate_satellite_imagery_grid_output(
     assert mocked_pull.call_count == len(expected_output)
 
 
-def test_visualize_satellite_imagery_grid_type_errors(
-        vis_satellite_img_grid_params):
+def testVisualizeSatelliteImageryGridTypeErrors(visSatelliteImgGridParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
-    grid_location_list, file_save_folder = vis_satellite_img_grid_params
+    grid_location_list, file_save_folder = visSatelliteImgGridParams
     # Tests for grid_location_list list type
     with pytest.raises(
             TypeError,
             match="grid_location_list variable must be of type list."):
-        utils.visualize_satellite_imagery_grid(
+        utils.visualizeSatelliteImageryGrid(
             {'file_name': '37.17385_-113.70663.png'}, file_save_folder)
     # Tests for values within grid_location_list are dict type
     with pytest.raises(
             TypeError,
             match="grid_location_list must be a list of dictionaries."):
-        utils.visualize_satellite_imagery_grid([1, 2, 3, 4],
-                                               file_save_folder)
+        utils.visualizeSatelliteImageryGrid([1, 2, 3, 4],
+                                            file_save_folder)
     # Tests for file_str_folder str type
     with pytest.raises(
             TypeError, match="file_save_folder variable must be of type str."):
-        utils.visualize_satellite_imagery_grid(grid_location_list,
-                                               False)
+        utils.visualizeSatelliteImageryGrid(grid_location_list,
+                                            False)
 
 
-def test_visualize_satellite_imagery_grid_output(
-        vis_satellite_img_grid_params):
+def testVisualizeSatelliteImageryGridOutput(visSatelliteImgGridParams):
     """
-    Tests if visualize_satellite_imagery_grid returns the correct output.
+    Tests if visualizeSatelliteImageryGrid returns the correct output.
     """
-    grid_location_list, file_save_folder = vis_satellite_img_grid_params
-    grid = utils.visualize_satellite_imagery_grid(grid_location_list,
-                                                  file_save_folder)
+    grid_location_list, file_save_folder = visSatelliteImgGridParams
+    grid = utils.visualizeSatelliteImageryGrid(grid_location_list,
+                                               file_save_folder)
     # Assert grid is of ImageGrid (plot of gridded satellite images)
     assert isinstance(grid, ImageGrid)
 
 
-def test_split_tif_to_pngs_type_errors(
-        split_tif_to_pngs_params):
+def testSplitTifToPngsTypeErrors(splitTifToPngsParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
     geotiff_file, meters_per_pixel, meters_png_image, \
-        file_save_folder = split_tif_to_pngs_params
+        file_save_folder = splitTifToPngsParams
     # Tests for geotiff_file str type
     with pytest.raises(
             TypeError, match="geotiff_file variable must be of type str."):
-        utils.split_tif_to_pngs(["a_geotiff_file.tif"], meters_per_pixel,
-                                meters_png_image, file_save_folder)
+        utils.splitTifToPngs(["a_geotiff_file.tif"], meters_per_pixel,
+                             meters_png_image, file_save_folder)
     # Tests for meters_per_pixel float type
     with pytest.raises(
             TypeError,
             match="meters_per_pixel variable must be of type float."):
-        utils.split_tif_to_pngs(geotiff_file, 871,
-                                meters_png_image, file_save_folder)
+        utils.splitTifToPngs(geotiff_file, 871,
+                             meters_png_image, file_save_folder)
     # Tests for meters_png_image float type
     with pytest.raises(
             TypeError,
             match="meters_png_image variable must be of type float."):
-        utils.split_tif_to_pngs(geotiff_file, meters_per_pixel,
-                                "201", file_save_folder)
+        utils.splitTifToPngs(geotiff_file, meters_per_pixel,
+                             "201", file_save_folder)
     # Tests for file_save_folder str type
     with pytest.raises(
             TypeError, match="file_save_folder variable must be of type str."):
-        utils.split_tif_to_pngs(geotiff_file, meters_per_pixel,
-                                meters_png_image, False)
+        utils.splitTifToPngs(geotiff_file, meters_per_pixel,
+                             meters_png_image, False)
 
 
-def test_split_tif_to_pngs_type_output(split_tif_to_pngs_params, mocker):
+def testSplitTifToPngsTypeOutput(splitTifToPngsParams, mocker):
     """
-    Tests if split_tif_to_pngs_type function returns None.
+    Tests if splitTifToPngs function returns None.
     """
     geotiff_file, meters_per_pixel, meters_png_image, \
-        file_save_folder = split_tif_to_pngs_params
-    actual_output = utils.split_tif_to_pngs(
+        file_save_folder = splitTifToPngsParams
+    actual_output = utils.splitTifToPngs(
         geotiff_file, meters_per_pixel,
         meters_png_image, file_save_folder)
     # Delete the produced image
@@ -470,65 +464,63 @@ def test_split_tif_to_pngs_type_output(split_tif_to_pngs_params, mocker):
     assert actual_output is None
 
 
-def test_locate_lat_lon_geotiff_image_type_errors(
-        locate_lat_lon_geotiff_params):
+def testLocateLatLonGeotiffImageTypeErrors(locateLatLonGeotiffParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
     geotiff_file, latitude, longitude, file_name_save, \
-        pixel_resolution = locate_lat_lon_geotiff_params
+        pixel_resolution = locateLatLonGeotiffParams
     # Tests for geotiff_file str type
     with pytest.raises(
             TypeError, match="geotiff_file variable must be of type str."):
-        utils.locate_lat_lon_geotiff(-231, latitude, longitude,
-                                     file_name_save, pixel_resolution)
+        utils.locateLatLonGeotiff(-231, latitude, longitude,
+                                  file_name_save, pixel_resolution)
     # Tests for latitude float type
     with pytest.raises(
             TypeError, match="latitude variable must be of type float."):
-        utils.locate_lat_lon_geotiff(geotiff_file, [3219, 31], longitude,
-                                     file_name_save, pixel_resolution)
+        utils.locateLatLonGeotiff(geotiff_file, [3219, 31], longitude,
+                                  file_name_save, pixel_resolution)
     # Tests for longitude float type
     with pytest.raises(
             TypeError, match="longitude variable must be of type float."):
-        utils.locate_lat_lon_geotiff(geotiff_file, latitude, "1093",
-                                     file_name_save, pixel_resolution)
+        utils.locateLatLonGeotiff(geotiff_file, latitude, "1093",
+                                  file_name_save, pixel_resolution)
     # Tests for file_name_save str type
     with pytest.raises(
             TypeError, match="file_name_save variable must be of type str."):
-        utils.locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
-                                     True, pixel_resolution)
+        utils.locateLatLonGeotiff(geotiff_file, latitude, longitude,
+                                  True, pixel_resolution)
     # Tests for pixel_resolution int type
     with pytest.raises(
             TypeError, match="pixel_resolution variable must be of type int."):
-        utils.locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
-                                     file_name_save, 678.1)
+        utils.locateLatLonGeotiff(geotiff_file, latitude, longitude,
+                                  file_name_save, 678.1)
 
 
-def test_locate_lat_lon_geotiff_image_output(locate_lat_lon_geotiff_params):
+def testLocateLatLonGeotiffImageOutput(locateLatLonGeotiffParams):
     """
     Tests if the output returns an image output for when latitude and longitude
     is within bounds to capture the png image.
     """
     geotiff_file, latitude, longitude, file_name_save, \
-        pixel_resolution = locate_lat_lon_geotiff_params
+        pixel_resolution = locateLatLonGeotiffParams
     actual_output = utils.locate_lat_lon_geotiff(
         geotiff_file, latitude, longitude, file_name_save, pixel_resolution)
     # Assert that actual_output returns an image
     assert isinstance(actual_output, Image.Image)
 
 
-def test_locate_lat_lon_geotiff_none_output(locate_lat_lon_geotiff_params,
-                                            capsys):
+def testLocateLatLonGeotiffNoneOutput(locateLatLonGeotiffParams, capsys):
     """
     Tests if the output returns None for when latitude and longitude is out of
     bounds.
     """
     geotiff_file, _, _, file_name_save, \
-        pixel_resolution = locate_lat_lon_geotiff_params
+        pixel_resolution = locateLatLonGeotiffParams
     # Make the latitude and longitude out of image bounds
     latitude = 39.0662
     longitude = -121.1606
-    actual_output = utils.locate_lat_lon_geotiff(
+    actual_output = utils.locateLatLonGeotiff(
         geotiff_file, latitude, longitude, file_name_save, pixel_resolution)
     captured = capsys.readouterr()
     print_msg = ("""Latitude-longitude coordinates are not within bounds of
@@ -539,46 +531,44 @@ def test_locate_lat_lon_geotiff_none_output(locate_lat_lon_geotiff_params,
     assert actual_output is None
 
 
-def test_translate_lat_long_coordinates_type_errors(
-        translate_lat_long_coords_params):
+def testTranslateLatLongCoordinatesTypeErrors(translateLatLongCoordsParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
     latitude, longitude, lat_translation_meters, \
-        long_translation_meters = translate_lat_long_coords_params
+        long_translation_meters = translateLatLongCoordsParams
     # Tests for latitude float type
     with pytest.raises(
             TypeError, match="latitude variable must be of type float."):
-        utils.translate_lat_long_coordinates(91, longitude,
-                                             lat_translation_meters,
-                                             long_translation_meters)
+        utils.translateLatLongCoordinates(91, longitude,
+                                          lat_translation_meters,
+                                          long_translation_meters)
     # Tests for longitude float type
     with pytest.raises(
             TypeError, match="longitude variable must be of type float."):
-        utils.translate_lat_long_coordinates(latitude, "191",
-                                             lat_translation_meters,
-                                             long_translation_meters)
+        utils.translateLatLongCoordinates(latitude, "191",
+                                          lat_translation_meters,
+                                          long_translation_meters)
     # Tests for lat_translation_meters float type
     with pytest.raises(
             TypeError,
             match="lat_translation_meters variable must be of type float."):
-        utils.translate_lat_long_coordinates(latitude, longitude,
-                                             True, long_translation_meters)
+        utils.translateLatLongCoordinates(latitude, longitude,
+                                          True, long_translation_meters)
     # Tests for long_translation_meters float type
     with pytest.raises(
             TypeError,
             match="long_translation_meters variable must be of type float."):
-        utils.translate_lat_long_coordinates(latitude, longitude,
-                                             lat_translation_meters, ["5"])
+        utils.translateLatLongCoordinates(latitude, longitude,
+                                          lat_translation_meters, ["5"])
 
 
-def test_translate_lat_long_coordinates_type_output(
-        translate_lat_long_coords_params):
+def testTranslateLatLongCoordinatesTypeOutput(translateLatLongCoordsParams):
     """
     Tests the if the output returns float values.
     """
     latitude, longitude, lat_translation_meters, \
-        long_translation_meters = translate_lat_long_coords_params
+        long_translation_meters = translateLatLongCoordsParams
     actual_lat, actual_lon = utils.translate_lat_long_coordinates(
         latitude, longitude, lat_translation_meters, long_translation_meters)
     # Assert actual_lat is a float
@@ -587,59 +577,59 @@ def test_translate_lat_long_coordinates_type_output(
     assert isinstance(actual_lon, float)
 
 
-def test_get_inference_box_lat_lon_coordinates_type_errors(
-        get_inference_box_lat_lon_coords_params):
+def testGetInferenceBoxLatLonCoordinatesTypeErrors(
+        getInferenceBoxLatLonCoordsParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
     box, img_center_lat, img_center_lon, image_x_pixels, \
-        image_y_pixels, zoom_level = get_inference_box_lat_lon_coords_params
+        image_y_pixels, zoom_level = getInferenceBoxLatLonCoordsParams
     # Tests for box list type
     with pytest.raises(
             TypeError, match="box variable must be of type list."):
-        utils.get_inference_box_lat_lon_coordinates(
+        utils.getInferenceBoxLatLonCoordinates(
             124, img_center_lat, img_center_lon, image_x_pixels,
             image_y_pixels, zoom_level)
     # Tests for img_center_lat float type
     with pytest.raises(
             TypeError, match="img_center_lat variable must be of type float."):
-        utils.get_inference_box_lat_lon_coordinates(
+        utils.getInferenceBoxLatLonCoordinates(
             box, "341", img_center_lon, image_x_pixels,
             image_y_pixels, zoom_level)
     # Tests for img_center_lon float type
     with pytest.raises(
             TypeError, match="img_center_lon variable must be of type float."):
-        utils.get_inference_box_lat_lon_coordinates(
+        utils.getInferenceBoxLatLonCoordinates(
             box, img_center_lat, 82, image_x_pixels,
             image_y_pixels, zoom_level)
     # Tests for image_x_pixels int type
     with pytest.raises(
             TypeError, match="image_x_pixels variable must be of type int."):
-        utils.get_inference_box_lat_lon_coordinates(
+        utils.getInferenceBoxLatLonCoordinates(
             box, img_center_lat, img_center_lon, 51.0,
             image_y_pixels, zoom_level)
     # Tests for image_y_pixels int type
     with pytest.raises(
             TypeError, match="image_y_pixels variable must be of type int."):
-        utils.get_inference_box_lat_lon_coordinates(
+        utils.getInferenceBoxLatLonCoordinates(
             box, img_center_lat, img_center_lon, image_x_pixels,
             "152", zoom_level)
     # Tests for zoom_level int type
     with pytest.raises(
             TypeError, match="zoom_level variable must be of type int."):
-        utils.get_inference_box_lat_lon_coordinates(
+        utils.getInferenceBoxLatLonCoordinates(
             box, img_center_lat, img_center_lon, image_x_pixels,
             image_y_pixels, [51])
 
 
-def test_get_inference_box_lat_lon_coordinates_output(
-        get_inference_box_lat_lon_coords_params):
+def testGetInferenceBoxLatLonCoordinatesOutput(
+        getInferenceBoxLatLonCoordsParams):
     """
     Tests if the output returns a tuple type with float values.
     """
     box, img_center_lat, img_center_lon, image_x_pixels, \
-        image_y_pixels, zoom_level = get_inference_box_lat_lon_coords_params
-    actual_output = utils.get_inference_box_lat_lon_coordinates(
+        image_y_pixels, zoom_level = getInferenceBoxLatLonCoordsParams
+    actual_output = utils.getInferenceBoxLatLonCoordinates(
         box, img_center_lat, img_center_lon, image_x_pixels,
         image_y_pixels, zoom_level)
     # Assert actual output is a tuple
@@ -651,7 +641,7 @@ def test_get_inference_box_lat_lon_coordinates_output(
         assert isinstance(val, float)
 
 
-def test_binary_mask_to_polygon_type_errors():
+def testBinaryMaskToPolygonTypeErrors():
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
@@ -662,17 +652,17 @@ def test_binary_mask_to_polygon_type_errors():
     # Tests for mask np.ndarray type
     with pytest.raises(
             TypeError, match="mask variable must be of type numpy.ndarray"):
-        utils.binary_mask_to_polygon(mask)
+        utils.binaryMaskToPolygon(mask)
 
 
-def test_binary_mask_to_polygon_output():
+def testBinaryMaskToPolygonOutput():
     """
     Tests if the output returns a list of coordinates for a polygon.
     """
     # Generate a square binary mask of 2x2 block (1,1) to (2,2) in a 4x4 matrix
     mask = np.zeros((4, 4))
     mask[1:3, 1:3] = 1
-    polygon_contours = utils.binary_mask_to_polygon(mask)
+    polygon_contours = utils.binaryMaskToPolygon(mask)
     # Assert that polygon_contours is a list
     assert isinstance(polygon_contours, list)
     # Assert that polygon_contours is of length 4 (a square) from mask
@@ -684,59 +674,57 @@ def test_binary_mask_to_polygon_output():
         assert len(coordinates) == 2
 
 
-def test_convert_mask_to_lat_lon_polygon_type_errors(
-        convert_mask_to_lat_lon_polygon_params):
+def testConvertMaskToLatLonPolygonTypeErrors(convertMaskToLatLonPolygonParams):
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
     mask, img_center_lat, img_center_lon, image_x_pixels, \
-        image_y_pixels, zoom_level = convert_mask_to_lat_lon_polygon_params
+        image_y_pixels, zoom_level = convertMaskToLatLonPolygonParams
     # Tests for mask variable np.ndarray type
     with pytest.raises(
             TypeError, match="mask variable must be of type numpy.ndarray"):
-        utils.convert_mask_to_lat_lon_polygon(
+        utils.convertMaskToLatLonPolygon(
             [(0, 0, 0), (1, 1, 0)], img_center_lat, img_center_lon,
             image_x_pixels, image_y_pixels, zoom_level)
     # Tests for img_center_lat float type
     with pytest.raises(
             TypeError, match="img_center_lat variable must be of type float."):
-        utils.convert_mask_to_lat_lon_polygon(
+        utils.convertMaskToLatLonPolygon(
             mask, [4231], img_center_lon, image_x_pixels,
             image_y_pixels, zoom_level)
     # Tests for img_center_lon float type
     with pytest.raises(
             TypeError, match="img_center_lon variable must be of type float."):
-        utils.convert_mask_to_lat_lon_polygon(
+        utils.convertMaskToLatLonPolygon(
             mask, img_center_lat, False, image_x_pixels,
             image_y_pixels, zoom_level)
     # Tests for image_x_pixels int type
     with pytest.raises(
             TypeError, match="image_x_pixels variable must be of type int."):
-        utils.convert_mask_to_lat_lon_polygon(
+        utils.convertMaskToLatLonPolygon(
             mask, img_center_lat, img_center_lon, True,
             image_y_pixels, zoom_level)
     # Tests for image_y_pixels int type
     with pytest.raises(
             TypeError, match="image_y_pixels variable must be of type int."):
-        utils.convert_mask_to_lat_lon_polygon(
+        utils.convertMaskToLatLonPolygon(
             mask, img_center_lat, img_center_lon, image_x_pixels,
             -2.0, zoom_level)
     # Tests for zoom_level int type
     with pytest.raises(
             TypeError, match="zoom_level variable must be of type int."):
-        utils.convert_mask_to_lat_lon_polygon(
+        utils.convertMaskToLatLonPolygon(
             mask, img_center_lat, img_center_lon, image_x_pixels,
             image_y_pixels, "18")
 
 
-def test_convert_mask_to_lat_lon_polygon_output(
-        convert_mask_to_lat_lon_polygon_params):
+def testConvertMaskToLatLonPolygonOutput(convertMaskToLatLonPolygonParams):
     """
     Tests if the output returns a list of coordinates for a polygon.
     """
     mask, img_center_lat, img_center_lon, image_x_pixels, \
-        image_y_pixels, zoom_level = convert_mask_to_lat_lon_polygon_params
-    polygon_coord_list = utils.convert_mask_to_lat_lon_polygon(
+        image_y_pixels, zoom_level = convertMaskToLatLonPolygonParams
+    polygon_coord_list = utils.convertMaskToLatLonPolygon(
         mask, img_center_lat, img_center_lon, image_x_pixels,
         image_y_pixels, zoom_level)
     # Assert that polygon_coord_list is a list
@@ -750,7 +738,7 @@ def test_convert_mask_to_lat_lon_polygon_output(
         assert len(coordinates) == 2
 
 
-def test_convert_polygon_to_geojson_type_errors():
+def testConvertPolygonToGeojsonTypeErrors():
     """
     Tests if TypeErrors is rasied for incorrect variable types.
     """
@@ -759,17 +747,17 @@ def test_convert_polygon_to_geojson_type_errors():
     with pytest.raises(
             TypeError, match="polygon_coord_list variable must be of type" +
             " list"):
-        utils.convert_polygon_to_geojson(polygon_coord_list)
+        utils.convertPolygonToGeojson(polygon_coord_list)
 
 
-def test_convert_polygon_to_geojson_output():
+def testConvertPolygonToGeojsonOutput():
     """
     Tests if the output returns a GeoJSON string.
     """
     polygon_coord_list = [(0, 0), (1, 0), (1, 1), (0, 1), (0, 0)]
     geojson_poly_coord_list = [[[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
                                 [0.0, 1.0], [0.0, 0.0]]]
-    geojson_poly = utils.convert_polygon_to_geojson(polygon_coord_list)
+    geojson_poly = utils.convertPolygonToGeojson(polygon_coord_list)
     geojson_dict = json.loads(geojson_poly)
     # Assert that geojson_poly is a string
     assert isinstance(geojson_poly, str)

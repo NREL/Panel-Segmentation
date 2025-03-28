@@ -103,7 +103,7 @@ def generateSatelliteImage(latitude, longitude,
     return Image.open(file_name_save)
 
 
-def generate_address(latitude, longitude, google_maps_api_key):
+def generateAddress(latitude, longitude, google_maps_api_key):
     """
     Gets the address of a latitude, longitude coordinates using Google
     Geocoding API. Please note rates for running geocoding checks here:
@@ -148,13 +148,13 @@ def generate_address(latitude, longitude, google_maps_api_key):
     return address
 
 
-def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
-                                    southeast_latitude, southeast_longitude,
-                                    google_maps_api_key,
-                                    file_save_folder,
-                                    zoom_level=18,
-                                    lat_lon_distance=0.00145,
-                                    number_allowed_images_taken=6000):
+def generateSatelliteImageryGrid(northwest_latitude, northwest_longitude,
+                                 southeast_latitude, southeast_longitude,
+                                 google_maps_api_key,
+                                 file_save_folder,
+                                 zoom_level=18,
+                                 lat_lon_distance=0.00145,
+                                 number_allowed_images_taken=6000):
     """
     Take satellite images via the Google Maps API in a grid fashion for a large
     area, and save the associated images to a folder. The associated images
@@ -268,20 +268,20 @@ def generate_satellite_imagery_grid(northwest_latitude, northwest_longitude,
     return grid_location_list
 
 
-def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
+def visualizeSatelliteImageryGrid(grid_location_list, file_save_folder):
     """
     Using the grid_location_list output from the
-    generate_satellite_imagery_grid() function, visualize all of the images
+    generateSatelliteImageryGrid() function, visualize all of the images
     taken in a grid.
 
     Parameters
     ----------
     grid_location_list: List of dictionaries
         List of dictionaries directly outputed from the
-        generate_satellite_imagery_grid() function.
+        generateSatelliteImageryGrid() function.
     file_save_folder: Str
         Folder path where all of the outputed satellite images from the
-        generate_satellite_imagery_grid() function are stored.
+        generateSatelliteImageryGrid() function are stored.
 
     Returns
     -------
@@ -315,8 +315,8 @@ def visualize_satellite_imagery_grid(grid_location_list, file_save_folder):
     return grid
 
 
-def split_tif_to_pngs(geotiff_file, meters_per_pixel,
-                      meters_png_image, file_save_folder):
+def splitTifToPngs(geotiff_file, meters_per_pixel,
+                   meters_png_image, file_save_folder):
     """
     Take a master GEOTIFF file, grid it, and convert it to a series of PNG
     files.
@@ -400,8 +400,8 @@ def split_tif_to_pngs(geotiff_file, meters_per_pixel,
     return
 
 
-def locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
-                           file_name_save, pixel_resolution=300):
+def locateLatLonGeotiff(geotiff_file, latitude, longitude,
+                        file_name_save, pixel_resolution=300):
     """
     Locate a lat-lon coordinate in a GEOTIFF image, and then box that area
     and capture a PNG image of it.
@@ -486,9 +486,9 @@ def locate_lat_lon_geotiff(geotiff_file, latitude, longitude,
             return None
 
 
-def translate_lat_long_coordinates(latitude, longitude,
-                                   lat_translation_meters,
-                                   long_translation_meters):
+def translateLatLongCoordinates(latitude, longitude,
+                                lat_translation_meters,
+                                long_translation_meters):
     """
     Method to move any lat-lon coordinate by provided meters in lat and long
     direction, and return the new latitude-longitude coordinates.
@@ -535,9 +535,9 @@ def translate_lat_long_coordinates(latitude, longitude,
     return lat_new, long_new
 
 
-def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
-                                          image_x_pixels, image_y_pixels,
-                                          zoom_level):
+def getInferenceBoxLatLonCoordinates(box, img_center_lat, img_center_lon,
+                                     image_x_pixels, image_y_pixels,
+                                     zoom_level):
     """
     Get the latitude-longitude coordinates of the centroid of a box output
     from model inference, based on the image center location & zoom level.
@@ -589,7 +589,7 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
                               meter_pixel_conversion)
     lat_translation_meters = ((image_center_pixels_y - cy) *
                               meter_pixel_conversion)
-    box_lat, box_lon = translate_lat_long_coordinates(
+    box_lat, box_lon = translateLatLongCoordinates(
         latitude=img_center_lat,
         longitude=img_center_lon,
         lat_translation_meters=lat_translation_meters,
@@ -597,7 +597,7 @@ def get_inference_box_lat_lon_coordinates(box, img_center_lat, img_center_lon,
     return (box_lat, box_lon)
 
 
-def binary_mask_to_polygon(mask):
+def binaryMaskToPolygon(mask):
     """
     Convert a binary mask output (from a deep learning model) to a list of
     polygon coordinates, which can later be converted to latitude-longitude
@@ -629,10 +629,10 @@ def binary_mask_to_polygon(mask):
     return contours_new
 
 
-def convert_mask_to_lat_lon_polygon(mask, img_center_lat,
-                                    img_center_lon,
-                                    image_x_pixels, image_y_pixels,
-                                    zoom_level):
+def convertMaskToLatLonPolygon(mask, img_center_lat,
+                               img_center_lon,
+                               image_x_pixels, image_y_pixels,
+                               zoom_level):
     """
     Take an inference mask output from a model, and convert it to a polygon
     with listed latitude-longitude coordinates.
@@ -672,7 +672,7 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_lat,
     if not isinstance(zoom_level, int) or isinstance(zoom_level, bool):
         raise TypeError("zoom_level variable must be of type int.")
     # First convert the mask to a polygon (in pixel coordinates)
-    polygon_coords = binary_mask_to_polygon(mask)
+    polygon_coords = binaryMaskToPolygon(mask)
     x_center, y_center = image_x_pixels/2, image_y_pixels/2
     meter_pixel_conversion = meter_pixel_zoom_dict[zoom_level]
     polygon_coord_list = list()
@@ -681,14 +681,14 @@ def convert_mask_to_lat_lon_polygon(mask, img_center_lat,
         # Get distance changes in x- and y-directions in meters
         dx = -(x_center - coord[0]) * meter_pixel_conversion
         dy = (y_center - coord[1]) * meter_pixel_conversion
-        new_coords = translate_lat_long_coordinates(img_center_lat,
-                                                    img_center_lon,
-                                                    dy, dx)[::-1]
+        new_coords = translateLatLongCoordinates(img_center_lat,
+                                                 img_center_lon,
+                                                 dy, dx)[::-1]
         polygon_coord_list.append(new_coords)
     return polygon_coord_list
 
 
-def convert_polygon_to_geojson(polygon_coord_list):
+def convertPolygonToGeojson(polygon_coord_list):
     """
     Take a list of lat-lon coordinates for a polygon and convert
     to GeoJSON format.
