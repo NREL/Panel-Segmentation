@@ -504,7 +504,7 @@ def testLocateLatLonGeotiffImageOutput(locateLatLonGeotiffParams):
     """
     geotiff_file, latitude, longitude, file_name_save, \
         pixel_resolution = locateLatLonGeotiffParams
-    actual_output = utils.locate_lat_lon_geotiff(
+    actual_output = utils.locateLatLonGeotiff(
         geotiff_file, latitude, longitude, file_name_save, pixel_resolution)
     # Assert that actual_output returns an image
     assert isinstance(actual_output, Image.Image)
@@ -569,7 +569,7 @@ def testTranslateLatLongCoordinatesTypeOutput(translateLatLongCoordsParams):
     """
     latitude, longitude, lat_translation_meters, \
         long_translation_meters = translateLatLongCoordsParams
-    actual_lat, actual_lon = utils.translate_lat_long_coordinates(
+    actual_lat, actual_lon = utils.translateLatLongCoordinates(
         latitude, longitude, lat_translation_meters, long_translation_meters)
     # Assert actual_lat is a float
     assert isinstance(actual_lat, float)
