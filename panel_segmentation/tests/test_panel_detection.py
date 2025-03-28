@@ -159,7 +159,7 @@ def testRunSiteAnalysisPipeline(panelDetectionClass):
         generate_image=False)
     # Assert that a dictionary is returned with specific
     # attributes
-    assert (type(site_analysis_dict) == dict)
+    assert isinstance(site_analysis_dict, dict)
     assert (all([label == 'carport-fixed' for label in
                  site_analysis_dict["mounting_type"]]))
     assert (sorted(site_analysis_dict['associated_azimuths']) ==
