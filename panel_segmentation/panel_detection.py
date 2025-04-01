@@ -23,6 +23,7 @@ import torch
 from tensorflow.keras.preprocessing import image as imagex
 from torchvision import transforms
 from torchvision.ops import nms
+import warnings
 
 panel_seg_model_path = path.join(path.dirname(__file__),
                                  'models',
@@ -83,6 +84,10 @@ class PanelDetection:
             Figure
             Figure of the satellite image
         """
+        # Add Deprecated warning for function
+        warnings.warn(("This function is deprecated and will be replaced " +
+                       "by a new gnerateSatelliteImage function in utils.py"),
+                      DeprecationWarning)
         # Check input variable for types
         if not isinstance(latitude, float):
             raise TypeError("latitude variable must be of type float.")

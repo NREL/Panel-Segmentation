@@ -508,10 +508,8 @@ def translateLatLongCoordinates(latitude, longitude,
 
     Returns
     -------
-    lat_new : float
-        New latitude coordinate, post-translation
-    long_new : float
-        New longitude coordinate, post-translation
+    (lat_new, long_new) : tuple
+        The (latitude, longitude) coordinates, post-translation.
     """
     # Ensure that the inputs are of the correct type
     if not isinstance(latitude, float):
