@@ -85,9 +85,9 @@ class PanelDetection:
             Figure of the satellite image
         """
         # Add Deprecated warning for function
-        warnings.warn(("This function is deprecated and will be replaced " +
-                       "by a new gnerateSatelliteImage function in utils.py"),
-                      DeprecationWarning)
+        warnings.warn(("This function will be deprecated in a future release" +
+                       " and replaced by a new generateSatelliteImage" +
+                       " function in utils.py"), DeprecationWarning)
         # Check input variable for types
         if not isinstance(latitude, float):
             raise TypeError("latitude variable must be of type float.")
