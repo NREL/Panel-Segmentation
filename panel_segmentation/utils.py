@@ -427,10 +427,11 @@ def locateLatLonGeotiff(geotiff_file, latitude, longitude,
     Returns
     -------
     image or None
-        The cropped image is returned as a PIL Image Object if given
-        latitude, longitude coordinates can be located in the GEOTIFF file.
-        Otherwise, returns None if the input coordinates are outside the
-        image bounds or if all regions of the image are all black pixels.
+        The cropped image is returned as a PIL Image Object if designated
+        lat-lon coordinates can be located in the GEOTIFF file with the image
+        center set as designated lat-lon. Otherwise, returns None if the input
+        coordinates are outside the image bounds or if all regions of the
+        image are all black pixels.
 
     """
     # Ensure that the inputs are of the correct type
