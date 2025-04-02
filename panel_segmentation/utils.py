@@ -64,6 +64,7 @@ def generateSatelliteImage(latitude, longitude,
 
     Returns
     -------
+    Figure
         Figure of the satellite image
     """
     # Check input variable for types
