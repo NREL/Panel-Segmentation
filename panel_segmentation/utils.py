@@ -195,7 +195,11 @@ def generateSatelliteImageryGrid(northwest_latitude, northwest_longitude,
 
     Returns
     -------
-    None.
+    grid_location_list: list of dictionaries
+        A list of dictionaries with metadata information about each grid
+        location in the image with the keys "file_name", "latitude", "lon",
+        "grid_x", and "grid_y".
+
     """
     # Ensure that the inputs are of the correct type
     if not isinstance(northwest_latitude, float):
@@ -243,7 +247,6 @@ def generateSatelliteImageryGrid(northwest_latitude, northwest_longitude,
             # For every coordinate, take a satellite image and save it
             file_name = (str(round(lat, 7)) + "_" + str(
                          round(lon, 7)) + ".png")
-            print(file_name)
             file_save = os.path.join(file_save_folder,
                                      file_name)
             grid_location_list.append({"file_name": file_name,
@@ -285,7 +288,7 @@ def visualizeSatelliteImageryGrid(grid_location_list, file_save_folder):
 
     Returns
     -------
-    Plot
+    grid: Plot Object
         Plot of gridded satellite images.
     """
     # Ensure that the inputs are of the correct type
@@ -424,6 +427,11 @@ def locateLatLonGeotiff(geotiff_file, latitude, longitude,
     Returns
     -------
     image or None
+        The cropped image is returned as a PIL Image Object if given
+        latitude, longitude coordinates can be located in the GEOTIFF file.
+        Otherwise, returns None if the input coordinates are outside the
+        image bounds or if all regions of the image are all black pixels.
+
     """
     # Ensure that the inputs are of the correct type
     if not isinstance(geotiff_file, str):
@@ -610,7 +618,7 @@ def binaryMaskToPolygon(mask):
     Returns
     -------
     contours_new : list
-        A list of (x,y) coordinates for a polygon.
+        A list of (x,y) image pixel-coordinate tuples for a polygon.
     """
     # Ensure that the input are of the correct type
     if not isinstance(mask, np.ndarray):
@@ -698,7 +706,7 @@ def convertPolygonToGeojson(polygon_coord_list):
 
     Returns
     -------
-    str
+    geojson_poly: str
         A GeoJSON string representation of the polygon.
     """
     # Ensure that the input are of the correct type
