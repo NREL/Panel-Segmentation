@@ -197,8 +197,8 @@ def generateSatelliteImageryGrid(northwest_latitude, northwest_longitude,
     -------
     grid_location_list: list of dictionaries
         A list of dictionaries with metadata information about each grid
-        location in the image with the keys "file_name", "latitude", "lon",
-        "grid_x", and "grid_y".
+        location in the image with the keys "file_name", "latitude",
+        "longitude", "grid_x", and "grid_y".
 
     """
     # Ensure that the inputs are of the correct type
@@ -251,7 +251,7 @@ def generateSatelliteImageryGrid(northwest_latitude, northwest_longitude,
                                      file_name)
             grid_location_list.append({"file_name": file_name,
                                        "latitude": lat,
-                                       "lon": lon,
+                                       "longitude": lon,
                                        "grid_x": grid_x,
                                        "grid_y": grid_y})
             grid_x += 1
