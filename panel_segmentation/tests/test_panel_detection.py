@@ -112,7 +112,7 @@ def testClassifyMountingConfiguration(panelDetectionClass,
     assert (len(labels) == 4) & (len(scores) == 4) & (len(boxes) == 4)
     assert (all([label == 'carport-fixed' for label in labels]))
     # Assert that all scores associated with the labels are above .65
-    assert(all([score > 0.65 for score in scores]))
+    assert (all([score > 0.65 for score in scores]))
 
 
 def testPlotEdgeAz(panelDetectionClass, satelliteImg):
@@ -159,7 +159,7 @@ def testRunSiteAnalysisPipeline(panelDetectionClass):
         generate_image=False)
     # Assert that a dictionary is returned with specific
     # attributes
-    assert (type(site_analysis_dict) == dict)
+    assert isinstance(site_analysis_dict, dict)
     assert (all([label == 'carport-fixed' for label in
                  site_analysis_dict["mounting_type"]]))
     assert (sorted(site_analysis_dict['associated_azimuths']) ==
