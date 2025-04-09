@@ -1,3 +1,5 @@
+import sphinx_rtd_theme
+import panel_segmentation
 # -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
@@ -23,7 +25,6 @@ project = 'panel-segmentation'
 copyright = ''
 author = 'NREL PVP&R Team'
 
-import panel_segmentation
 version = release = panel_segmentation.__version__
 
 
@@ -48,7 +49,7 @@ extensions = [
 autosummary_generate = True
 
 # allow multiple parameters on one line in a docstring
-napoleon_use_param = False 
+napoleon_use_param = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = []
@@ -87,7 +88,6 @@ extlinks = {
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-import sphinx_rtd_theme
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
@@ -115,6 +115,8 @@ html_static_path = ['_static']
 # html_sidebars = {}
 
 # custom CSS workarounds
+
+
 def setup(app):
     # A workaround for the responsive tables always having annoying scrollbars.
     app.add_stylesheet("no_scrollbars.css")
