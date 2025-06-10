@@ -88,7 +88,8 @@ img_scales = [
 ]
 interval = 10
 launcher = 'none'
-load_from = '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/runs/16_05_2025_15_06_47/best_coco_bbox_mAP_50_epoch_298.pth'
+load_from = ('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/runs/' +
+             '16_05_2025_15_06_47/best_coco_bbox_mAP_50_epoch_298.pth')
 log_level = 'INFO'
 log_processor = dict(by_epoch=True, type='LogProcessor', window_size=50)
 max_epochs = 300
@@ -206,12 +207,12 @@ test_cfg = dict(type='TestLoop')
 test_dataloader = dict(
     batch_size=5,
     dataset=dict(
-        ann_file=
-        '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/test/label_json.json',
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/' +
+                  'test/label_json.json'),
         backend_args=None,
         data_prefix=dict(
-            img=
-            '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/test/images/'
+            img=('/kfs2/projects/pvfleets24/repos/' +
+                 'cv-dl-framework-kirsten/test/images/')
         ),
         data_root='/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten',
         metainfo=dict(classes=(
@@ -253,8 +254,8 @@ test_dataloader = dict(
     persistent_workers=True,
     sampler=dict(shuffle=False, type='DefaultSampler'))
 test_evaluator = dict(
-    ann_file=
-    '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/test/label_json.json',
+    ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/' +
+              'test/label_json.json'),
     backend_args=None,
     format_only=False,
     metric=[
@@ -306,12 +307,12 @@ train_dataloader = dict(
     batch_sampler=None,
     batch_size=4,
     dataset=dict(
-        ann_file=
-        '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/train/label_json.json',
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/' +
+                  'train/label_json.json'),
         backend_args=None,
         data_prefix=dict(
-            img=
-            '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/train/images/'
+            img=('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/' +
+                 'train/images/')
         ),
         data_root='/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten',
         filter_cfg=dict(filter_empty_gt=True, min_size=32),
@@ -554,12 +555,12 @@ val_cfg = dict(type='ValLoop')
 val_dataloader = dict(
     batch_size=5,
     dataset=dict(
-        ann_file=
-        '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/test/label_json.json',
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/' +
+                  'test/label_json.json'),
         backend_args=None,
         data_prefix=dict(
-            img=
-            '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/test/images/'
+            img='/kfs2/projects/pvfleets24/repos/' +
+            'cv-dl-framework-kirsten/test/images/'
         ),
         data_root='/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten',
         metainfo=dict(classes=(
@@ -601,8 +602,8 @@ val_dataloader = dict(
     persistent_workers=True,
     sampler=dict(shuffle=False, type='DefaultSampler'))
 val_evaluator = dict(
-    ann_file=
-    '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/test/label_json.json',
+    ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/' +
+              'test/label_json.json'),
     backend_args=None,
     format_only=False,
     metric=[
@@ -623,8 +624,9 @@ visualizer = dict(
     type='DetLocalVisualizer',
     vis_backends=[
         dict(
-            save_dir=
-            '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/runs/16_05_2025_15_06_47',
+            save_dir=('/kfs2/projects/pvfleets24/repos/' +
+                      'cv-dl-framework-kirsten/runs/16_05_2025_15_06_47'),
             type='LocalVisBackend'),
     ])
-work_dir = '/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/runs/16_05_2025_15_06_47'
+work_dir = ('/kfs2/projects/pvfleets24/repos/cv-dl-framework-kirsten/' +
+            'runs/16_05_2025_15_06_47')

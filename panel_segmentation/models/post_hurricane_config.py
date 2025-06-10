@@ -16,7 +16,9 @@ env_cfg = dict(
     dist_cfg=dict(backend='nccl'),
     mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
 launcher = 'none'
-load_from = '/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs/02_06_2025_20_53_05/best_coco_bbox_mAP_50_epoch_15.pth'
+load_from = \
+    ('/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs/' +
+     '02_06_2025_20_53_05/best_coco_bbox_mAP_50_epoch_15.pth')
 log_level = 'INFO'
 log_processor = dict(by_epoch=True, type='LogProcessor', window_size=50)
 metainfo = dict(classes=('panel', ))
@@ -428,8 +430,8 @@ val_dataloader = dict(
     persistent_workers=True,
     sampler=dict(shuffle=False, type='DefaultSampler'))
 val_evaluator = dict(
-    ann_file=
-    '/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/label_json.json',
+    ann_file=('/kfs2/projects/pvfleets24/repos/' +
+              'cv-dl-framework/test/label_json.json'),
     backend_args=None,
     metric=[
         'bbox',
@@ -444,8 +446,9 @@ visualizer = dict(
     type='DetLocalVisualizer',
     vis_backends=[
         dict(
-            save_dir=
-            '/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs/02_06_2025_20_53_05',
+            save_dir=('/kfs2/projects/pvfleets24/repos/' +
+                      'cv-dl-framework/runs/02_06_2025_20_53_05'),
             type='LocalVisBackend'),
     ])
-work_dir = '/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs/02_06_2025_20_53_05'
+work_dir = ('/)kfs2/projects/pvfleets24/repos/cv-dl-framework' +
+            '/runs/02_06_2025_20_53_05')
