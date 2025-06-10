@@ -293,8 +293,8 @@ test_dataloader = dict(
     persistent_workers=True,
     sampler=dict(shuffle=False, type='DefaultSampler'))
 test_evaluator = dict(
-    ann_file=
-    '/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/label_json.json',
+    ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
+              'test/label_json.json'),
     backend_args=None,
     metric=[
         'bbox',
@@ -394,8 +394,8 @@ val_cfg = dict(type='ValLoop')
 val_dataloader = dict(
     batch_size=2,
     dataset=dict(
-        ann_file=
-        '/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/label_json.json',
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
+                  'test/label_json.json'),
         backend_args=None,
         data_prefix=dict(
             img='/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/images/'
