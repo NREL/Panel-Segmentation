@@ -257,8 +257,8 @@ test_cfg = dict(type='TestLoop')
 test_dataloader = dict(
     batch_size=2,
     dataset=dict(
-        ann_file=
-        '/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/label_json.json',
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework' +
+                  '/test/label_json.json'),
         backend_args=None,
         data_prefix=dict(
             img='/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/images/'
@@ -328,12 +328,12 @@ train_dataloader = dict(
     batch_size=2,
     dataset=dict(
         dataset=dict(
-            ann_file=
-            '/kfs2/projects/pvfleets24/repos/cv-dl-framework/train/label_json.json',
+            ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
+                      'train/label_json.json'),
             backend_args=None,
             data_prefix=dict(
-                img=
-                '/kfs2/projects/pvfleets24/repos/cv-dl-framework/train/images/'
+                img=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
+                     'train/images/')
             ),
             data_root='/kfs2/projects/pvfleets24/repos/cv-dl-framework',
             filter_cfg=dict(filter_empty_gt=True, min_size=32),
