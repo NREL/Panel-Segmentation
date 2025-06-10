@@ -1,4 +1,4 @@
-ConfigParser==7.2.0
+ConfigParser==6.0.0
 cx_Freeze==8.3.0
 detecto==1.2.2
 geopandas==1.0.1
