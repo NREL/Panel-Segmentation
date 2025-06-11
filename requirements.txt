@@ -15,7 +15,7 @@ setuptools==75.2.0
 Shapely==2.0.2
 scikit-image
 sphinx_rtd_theme==3.0.2
-tensorflow
+tensorflow==2.10.0
 tensorflow_intel
 torch
 torchvision
