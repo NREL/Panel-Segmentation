@@ -8,7 +8,6 @@ opencv_python==4.10.0.84
 opencv_python_headless==4.10.0.84
 pandas==2.0.2
 Pillow==10.2.0
-pyproj==3.7.0
 pytest==7.4.4
 rasterio==1.4.2
 Requests==2.32.3
@@ -20,4 +19,3 @@ tensorflow==2.18.0
 tensorflow_intel==2.18.0
 torch==2.5.0
 torchvision==0.20.0
-torchvision==0.20.1
