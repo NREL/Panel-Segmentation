@@ -18,3 +18,4 @@ tensorflow==2.13.0
 tensorflow_intel
 torch
 torchvision
+pytest-mock
