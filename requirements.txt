@@ -19,9 +19,10 @@ tensorflow_intel
 torch
 torchvision
 pytest-mock
-mmcv-lite
+mmcv-lite==2.1.0
 mmdet
 mmengine
 kornia
 scipy
 rasterio
+geopandas
