@@ -22,3 +22,5 @@ pytest-mock
 mmcv-lite
 mmdet
 mmengine
+kornia
+scipy
