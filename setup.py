@@ -29,7 +29,13 @@ INSTALL_REQUIRES = [
     'h5py>=2.10.0',
     'detecto>=1.2.1',
     'torch>=1.9.0',
-    'torchvision>=0.10.0'
+    'torchvision>=0.10.0',
+    'mmcv-lite',
+    'mmdet',
+    'mmengine',
+    'kornia',
+    'scipy',
+    'rasterio'
 ]
 
 TESTS_REQUIRE = [
@@ -57,16 +63,24 @@ setup(
                 'satellite image and perform automated metadata extraction.',
     url='https://github.com/NREL/Panel-Segmentation',
     keywords=KEYWORDS,
-    author='Ayobami Edun, Kirsten Perry, Kevin Anderson, Christopher Campos',
-    author_email='aedun@ufl.edu; kirsten.perry@nrel.gov; '
-                'kevin.anderson@nrel.gov; chris.acampos@yahoo.com',
+    author='Kirsten Perry, Quyen Nguyen, Kevin Anderson, Christopher Campos, Ayobami Edun',
+    author_email='kirsten.perry@nrel.gov; quyen.nguyen@nrel.gov'
+                'kevin.anderson@nrel.gov; chris.acampos@yahoo.com; aedun@ufl.edu',
     package_data={
         'panel_segmentation': [
             'panel_segmentation/examples/*',
             'panel_segmentation/tests/*',
             'panel_segmentation/models/VGG16Net_ConvTranpose_complete.h5',
             'panel_segmentation/models/VGG16_classification_model.h5',
-            'panel_segmentation/models/object_detection_model.pth'
+            'panel_segmentation/models/object_detection_model.pth',
+            'panel_segmentation/models/hail_config.py',
+            'panel_segmentation/models/hail_model.pth',
+            'panel_segmentation/models/post_hurricane_config.py',
+            'panel_segmentation/models/post_hurricane_model.pth',
+            'panel_segmentation/models/pre_hurricane_config.py',
+            'panel_segmentation/models/pre_hurricane_model.pth',
+            'panel_segmentation/models/sol_searcher_config.py',
+            'panel_segmentation/models/sol_searcher_model.pth'            
         ],
     },
     include_package_data=True,

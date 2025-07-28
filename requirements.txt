@@ -24,3 +24,4 @@ mmdet
 mmengine
 kornia
 scipy
+rasterio
