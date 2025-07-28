@@ -1,8 +1,6 @@
 auto_scale_lr = dict(base_batch_size=16, enable=False)
 backend_args = None
 base_lr = 0.004
-checkpoint = ('https://download.openmmlab.com/mmdetection/v3.0/rtmdet/' +
-              'cspnext_rsb_pretrain/cspnext-s_imagenet_600e.pth')
 custom_hooks = [
     dict(
         ema_type='ExpMomentumEMA',
@@ -18,7 +16,7 @@ custom_hooks = [
             dict(
                 keep_ratio=True,
                 ratio_range=(
-                    0.5,
+                    0.1,
                     2.0,
                 ),
                 scale=(
@@ -79,7 +77,8 @@ img_scales = [
 interval = 10
 launcher = 'none'
 load_from = ('/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs/' +
-             '17_05_2025_13_01_40/best_coco_bbox_mAP_50_epoch_297.pth')
+             'sol-searcher.v1i.coco-segmentation/07_06_2025_03_44_01/' +
+             'best_coco_bbox_mAP_50_epoch_324.pth')
 log_level = 'INFO'
 log_processor = dict(by_epoch=True, type='LogProcessor', window_size=50)
 max_epochs = 300
@@ -89,12 +88,11 @@ model = dict(
         act_cfg=dict(inplace=True, type='SiLU'),
         arch='P5',
         channel_attention=True,
-        deepen_factor=0.33,
+        deepen_factor=1.33,
         expand_ratio=0.5,
-        init_cfg=None,
         norm_cfg=dict(type='SyncBN'),
         type='CSPNeXt',
-        widen_factor=0.5),
+        widen_factor=1.25),
     bbox_head=dict(
         act_cfg=dict(inplace=True, type='SiLU'),
         anchor_generator=dict(
@@ -104,9 +102,9 @@ model = dict(
                 32,
             ], type='MlvlPointGenerator'),
         bbox_coder=dict(type='DistancePointBBoxCoder'),
-        exp_on_reg=False,
-        feat_channels=128,
-        in_channels=128,
+        exp_on_reg=True,
+        feat_channels=320,
+        in_channels=320,
         loss_bbox=dict(loss_weight=2.0, type='GIoULoss'),
         loss_cls=dict(
             beta=2.0,
@@ -149,13 +147,13 @@ model = dict(
         act_cfg=dict(inplace=True, type='SiLU'),
         expand_ratio=0.5,
         in_channels=[
-            128,
-            256,
-            512,
+            320,
+            640,
+            1280,
         ],
         norm_cfg=dict(type='SyncBN'),
-        num_csp_blocks=1,
-        out_channels=128,
+        num_csp_blocks=4,
+        out_channels=320,
         type='CSPNeXtPAFPN'),
     test_cfg=dict(
         max_per_img=300,
@@ -170,7 +168,10 @@ model = dict(
         pos_weight=-1),
     type='RTMDet')
 optim_wrapper = dict(
-    optimizer=dict(lr=0.004, type='AdamW', weight_decay=0.05),
+    optimizer=dict(
+        lr=0.0013396075094963768,
+        type='AdamW',
+        weight_decay=0.0764032184205418),
     paramwise_cfg=dict(
         bias_decay_mult=0, bypass_duplicate=True, norm_decay_mult=0),
     type='OptimWrapper')
@@ -193,8 +194,8 @@ test_cfg = dict(type='TestLoop')
 test_dataloader = dict(
     batch_size=5,
     dataset=dict(
-        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
-                  'test/label_json.json'),
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework' +
+                  '/test/label_json.json'),
         backend_args=None,
         data_prefix=dict(
             img='/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/images/'
@@ -236,8 +237,8 @@ test_dataloader = dict(
     persistent_workers=True,
     sampler=dict(shuffle=False, type='DefaultSampler'))
 test_evaluator = dict(
-    ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
-              'test/label_json.json'),
+    ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework' +
+              '/test/label_json.json'),
     backend_args=None,
     format_only=False,
     metric='bbox',
@@ -279,15 +280,15 @@ train_cfg = dict(
             1,
         ),
     ],
-    max_epochs=300,
+    max_epochs=400,
     type='EpochBasedTrainLoop',
     val_interval=3)
 train_dataloader = dict(
     batch_sampler=None,
     batch_size=32,
     dataset=dict(
-        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
-                  'train/label_json.json'),
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework' +
+                  '/train/label_json.json'),
         backend_args=None,
         data_prefix=dict(
             img='/kfs2/projects/pvfleets24/repos/cv-dl-framework/train/images/'
@@ -305,7 +306,7 @@ train_dataloader = dict(
             dict(
                 keep_ratio=True,
                 ratio_range=(
-                    0.5,
+                    0.1,
                     2.0,
                 ),
                 scale=(
@@ -363,7 +364,7 @@ train_pipeline = [
     dict(
         keep_ratio=True,
         ratio_range=(
-            0.5,
+            0.1,
             2.0,
         ),
         scale=(
@@ -409,7 +410,7 @@ train_pipeline_stage2 = [
     dict(
         keep_ratio=True,
         ratio_range=(
-            0.5,
+            0.1,
             2.0,
         ),
         scale=(
@@ -494,8 +495,8 @@ val_cfg = dict(type='ValLoop')
 val_dataloader = dict(
     batch_size=5,
     dataset=dict(
-        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
-                  'test/label_json.json'),
+        ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework' +
+                  '/test/label_json.json'),
         backend_args=None,
         data_prefix=dict(
             img='/kfs2/projects/pvfleets24/repos/cv-dl-framework/test/images/'
@@ -537,8 +538,8 @@ val_dataloader = dict(
     persistent_workers=True,
     sampler=dict(shuffle=False, type='DefaultSampler'))
 val_evaluator = dict(
-    ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
-              'test/label_json.json'),
+    ann_file=('/kfs2/projects/pvfleets24/repos/cv-dl-framework' +
+              '/test/label_json.json'),
     backend_args=None,
     format_only=False,
     metric='bbox',
@@ -556,9 +557,10 @@ visualizer = dict(
     type='DetLocalVisualizer',
     vis_backends=[
         dict(
-            save_dir=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
-                      'runs/17_05_2025_13_01_40'),
+            save_dir=('/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs' +
+                      '/sol-searcher.v1i.coco-segmentation/' +
+                      '07_06_2025_03_44_01'),
             type='LocalVisBackend'),
     ])
-work_dir = ('/kfs2/projects/pvfleets24/repos/cv-dl-framework/' +
-            'runs/17_05_2025_13_01_40')
+work_dir = ('/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs' +
+            '/sol-searcher.v1i.coco-segmentation/07_06_2025_03_44_01')
