@@ -81,8 +81,7 @@ setup(
             'panel_segmentation/models/pre_hurricane_config.py',
             'panel_segmentation/models/pre_hurricane_model.pth',
             'panel_segmentation/models/sol_searcher_config.py',
-            'panel_segmentation/models/sol_searcher_model.pth'         
-        ],
+            'panel_segmentation/models/sol_searcher_model.pth'],
     },
     include_package_data=True,
     license='MIT',
