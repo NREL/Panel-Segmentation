@@ -19,7 +19,7 @@ tensorflow_intel
 torch
 torchvision
 pytest-mock
-mmcv-lite==2.1.0
+mmcv==2.1.0
 mmdet
 mmengine
 kornia

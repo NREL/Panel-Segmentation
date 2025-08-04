@@ -30,7 +30,7 @@ INSTALL_REQUIRES = [
     'detecto>=1.2.1',
     'torch>=1.9.0',
     'torchvision>=0.10.0',
-    'mmcv-lite==2.1.0',
+    'mmcv==2.1.0',
     'mmdet',
     'mmengine',
     'kornia',
