@@ -10,32 +10,12 @@ import time
 import random
 import rasterio
 from rasterio.warp import transform
-import math
 import cv2
 from mpl_toolkits.axes_grid1 import ImageGrid
 import matplotlib.pyplot as plt
 from shapely.geometry import Polygon
 import geopandas
 from pyproj import Transformer
-
-# meter/pixel zoom level data taken from the following source:
-# https://support.plexearth.com/hc/en-us/articles/6325794324497-Understanding-Zoom-Level-in-Maps-and-Imagery
-
-meter_pixel_zoom_dict = {9: 305.8,
-                         10: 152.9,
-                         11: 76.4,
-                         12: 38.22,
-                         13: 19.11,
-                         14: 9.56,
-                         15: 4.78,
-                         16: 2.39,
-                         17: 1.2,
-                         18: 0.5972,
-                         19: 0.256,
-                         20: 0.1493,
-                         21: 0.0746,
-                         22: 0.0373,
-                         23: 0.0187}
 
 
 def generateSatelliteImage(latitude, longitude,
@@ -514,7 +494,7 @@ def translateLatLongCoordinates(latitude, longitude,
         postive, translation moves up, if negative it moves down
     long_translation_meters: float
         Movement of point in meters in longitude direction. If the value is
-        postive, translation moves left, if negative it moves right
+        postive, translation moves right, if negative it moves left
 
     Returns
     -------
@@ -532,14 +512,20 @@ def translateLatLongCoordinates(latitude, longitude,
     if not isinstance(long_translation_meters, float):
         raise TypeError("long_translation_meters variable must be of" +
                         " type float.")
-    earth_radius = 6378.137
-    # Calculate top, which is lat_translation_meters
-    m_lat = (1 / ((2 * math.pi / 360) * earth_radius)) / 1000
-    lat_new = latitude + (lat_translation_meters * m_lat)
-    # Calculate sideways, which is long_translation_meters
-    m_long = (1 / ((2 * math.pi / 360) * earth_radius)) / 1000
-    long_new = longitude + (long_translation_meters * m_long) / \
-        math.cos(latitude * (math.pi / 180))
+    # Project center latitude, longitude (in "EPSG:4326") onto a local
+    # coordinate system to work in meters
+    local_crs = (f"+proj=aeqd +lat_0={latitude} +lon_0={longitude} +x_0=0 " +
+                 "+y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
+    latlon_to_local = Transformer.from_crs("EPSG:4326", local_crs,
+                                           always_xy=True)
+    m_lon, m_lat = latlon_to_local.transform(longitude, latitude)
+    # Apply meter translation
+    m_lon += long_translation_meters
+    m_lat += lat_translation_meters
+    # Convert local crs back to "EPSG:4326"
+    local_to_latlon = Transformer.from_crs(local_crs, "EPSG:4326",
+                                           always_xy=True)
+    long_new, lat_new = local_to_latlon.transform(m_lon, m_lat)
     return lat_new, long_new
 
 
@@ -592,7 +578,8 @@ def getInferenceBoxLatLonCoordinates(box, img_center_lat, img_center_lon,
     cy = int((ymin + ymax) / 2)
     # Get the difference in meters between the main centroid and
     # label centroid, based on the image zoom level
-    meter_pixel_conversion = meter_pixel_zoom_dict[zoom_level]
+    meter_pixel_conversion = 156543.03392 * \
+        np.cos(np.radians(img_center_lat)) / (2**zoom_level)
     lon_translation_meters = ((cx - image_center_pixels_x) *
                               meter_pixel_conversion)
     lat_translation_meters = ((image_center_pixels_y - cy) *
@@ -682,7 +669,9 @@ def convertMaskToLatLonPolygon(mask, img_center_lat,
     # First convert the mask to a polygon (in pixel coordinates)
     polygon_coords = binaryMaskToPolygon(mask)
     x_center, y_center = image_x_pixels/2, image_y_pixels/2
-    meter_pixel_conversion = meter_pixel_zoom_dict[zoom_level]
+    # Google maps pixel to meter conversion:
+    meter_pixel_conversion = 156543.03392 * \
+        np.cos(np.radians(img_center_lat)) / (2**zoom_level)
     polygon_coord_list = list()
     # Convert the polygon coords to lat-long coordinates
     for coord in polygon_coords:
