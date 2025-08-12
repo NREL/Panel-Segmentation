@@ -138,7 +138,7 @@ def generateAddress(latitude, longitude, google_maps_api_key):
     r = requests.get(
         "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
         str(latitude) + "," + str(longitude) + "&key=" + google_maps_api_key,
-        verify=False)
+        verify=True)
     # Raise an exception if address is not successfully returned
     if r.status_code != 200:
         raise ValueError("Response status code " +
