@@ -23,9 +23,15 @@ To install Panel-Segmentation, perform the following steps:
 
 https://git-lfs.github.com/
 
-2. Once git lfs is installed, you can now install Panel-Segmentation on your computer. We are still working on making panel-segmentation availble via PyPi, so entering the following in the command line will install the package locally on your computer:
+2. Once git lfs is installed, you can now install Panel-Segmentation on your computer. We are still working on making panel-segmentation available via PyPi, so entering the following in the command line will install the package locally on your computer:
 
 pip install git+https://github.com/NREL/Panel-Segmentation.git@master#egg=panel-segmentation
+
+3. Panel-Segmentation requires the MMCV package, which can be tricky to install for CPU-only, and needs to be installed from source. To install MMCV for source, run the following in the command line:
+
+pip install git+https://github.com/open-mmlab/mmcv.git@v2.1.0
+
+Please note that installation will likely take several minutes, but is necessary for running any of the storm-related CV models.
 
 3. When initiating the PanelDetection() class, be sure to point your file paths to the model paths in your local Panel-Segmentation folder!
 

@@ -30,7 +30,6 @@ INSTALL_REQUIRES = [
     'detecto>=1.2.1',
     'torch>=1.9.0',
     'torchvision>=0.10.0',
-    'mmcv @ git+https://github.com/open-mmlab/mmcv.git@v2.1.0',
     'mmdet==3.3.0',
     'mmengine==0.10.7',
     'kornia',
