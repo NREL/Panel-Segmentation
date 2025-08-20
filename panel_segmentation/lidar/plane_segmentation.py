@@ -75,8 +75,8 @@ class PlaneSegmentation:
             # Calculate tilt and azimuth
             tilt, az = self.calculatePlaneTiltAzimuth(plane_normal_vectors)
             # Filter for logical rooftop tilt values(any tilt greater
-            # than 65 can be assumed to be walls/ non roof structures)
-            if tilt > 65:
+            # than 85 can be assumed to be walls/ non roof structures)
+            if tilt > 85:
                 # Remove the current pcd from the remaining pcd for the
                 # next plane segmentation
                 current_pcd = current_pcd.select_by_index(inliers, invert=True)
