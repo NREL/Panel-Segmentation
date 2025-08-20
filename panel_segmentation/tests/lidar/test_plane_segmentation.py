@@ -154,10 +154,13 @@ def testVisualizePlanesResult(planeSegmentationClass):
     result_mesh = planeSegmentationClass.visualizePlanes()
     # Assert that the result is a list
     assert isinstance(result_mesh, list)
-    # Assert that the result is of o3d.geometry.TriangleMesh or
-    # o3d.geometry.PointCloud objects
-    assert all(isinstance(object, (o3d.geometry.TriangleMesh,
-               o3d.geometry.PointCloud)) for object in result_mesh)
+    # Assert that the result is a list of dictionaries
+    assert all(isinstance(plane, dict)
+               for plane in result_mesh)
+    # Assert that the desired keys are in the dictionary
+    expected_dict_keys = ["plane_id", "pcd", "plane_mesh", "color"]
+    for plane in result_mesh:
+        assert all(key in plane for key in expected_dict_keys)
 
 
 def testCreateSummaryPlaneDataframeTypeErrors(planeSegmentationClass,
@@ -300,18 +303,60 @@ def testCalculatePlaneTiltAzimuthTypeErrors(planeSegmentationClass):
             plane_normal_vector="(1,2)")
 
 
-def testCalculatePlaneTiltAzimuthResult(planeSegmentationClass):
+def testCalculatePlaneTiltAzimuthNormalization(planeSegmentationClass, capsys):
     """
-    Tests if a tuple of floats of the format (tilt, azimuth) is returned
-    after running calculatePlaneTiltAzimuth.
+    Tests if the plane normal vector is normalized before calculating the tilt
+    and azimuth.
     """
-    # Make a sample normal vector
-    plane_normal_vector = (0, 0, 1)
+    # Make a sample non-normalized vector
+    plane_normal_vector = (10, 10, 10)
+    # Test calculatePlaneTiltAzimuth function
+    planeSegmentationClass.calculatePlaneTiltAzimuth(
+        plane_normal_vector=plane_normal_vector)
+    # Test the the correct print statement is printed
+    captured = capsys.readouterr()
+    print_msg = "Plane vectors are not normalized. Normalizing them now.\n"
+    assert print_msg == captured.out
+
+
+def testCalculatePlaneTiltAzimuthOrientation(planeSegmentationClass):
+    """
+    Tests if the plane normal vector is in the correct orientation
+    (z vector is facing upwards) before calculating the tilt and azimuth.
+    """
+    # Make a sample vector where z vector is facing downwards
+    # The tilt and azimuth should be 45 degrees
+    plane_normal_vector = (-1, -1, -(np.sqrt(2)/2))
     # Test calculatePlaneTiltAzimuth function
     result = planeSegmentationClass.calculatePlaneTiltAzimuth(
         plane_normal_vector=plane_normal_vector)
     # Assert that the result is a tuple
     assert isinstance(result, tuple)
+    tilt, azimuth = result
     # Assert that the result is a tuple of floats
-    assert isinstance(result[0], float)
-    assert isinstance(result[1], float)
+    assert isinstance(tilt, float)
+    assert isinstance(azimuth, float)
+    # Check if the tilt and azimuth returned the expected result
+    assert tilt == 45.0
+    assert azimuth == 45.0
+
+
+def testCalculatePlaneTiltAzimuthResult(planeSegmentationClass):
+    """
+    Tests if a tuple of floats of the format (tilt, azimuth) is returned
+    after running calculatePlaneTiltAzimuth.
+    """
+    # Make a sample normal vector where tilt and azimuth should be 45 degrees
+    plane_normal_vector = (1, 1, (np.sqrt(2)/2))
+    # Test calculatePlaneTiltAzimuth function
+    result = planeSegmentationClass.calculatePlaneTiltAzimuth(
+        plane_normal_vector=plane_normal_vector)
+    # Assert that the result is a tuple
+    assert isinstance(result, tuple)
+    tilt, azimuth = result
+    # Assert that the result is a tuple of floats
+    assert isinstance(tilt, float)
+    assert isinstance(azimuth, float)
+    # Check if the tilt and azimuth returned the expected result
+    assert tilt == 45.0
+    assert azimuth == 45.0

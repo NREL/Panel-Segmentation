@@ -206,30 +206,33 @@ class PlaneSegmentation:
 
         Returns:
         --------
-        plane_mesh_list: list
-            A list of the original, unfiltered point cloud data (pcd),
-            pcd within the plane, and plane mesh generated from the plane.
-            The pcd is an open3d.geometry.PointCloud object and the plane
-            mesh is an open3d.geometry.TriangleMesh object.
+        pcd_plane_mesh_list: list
+            A list of dictionaries with pcd and its associated mesh.
+            The dictionaries has the following "plane_id",
+            "pcd", "mesh", and "color" keys.
         """
         # A list to store the all the plane mesh
-        plane_mesh_list = []
-        # Overlay planes on top of the point cloud data
-        pcd_points = self.pcd.paint_uniform_color([0.7, 0.7, 0.7])
-        plane_mesh_list.append(pcd_points)
+        pcd_plane_mesh_list = []
         # Create a mesh for each plane in the list
         for plane in self.plane_list:
-            # Add colors to pcd
-            colored_plane = plane["pcd"]
-            plane_mesh_list.append(colored_plane)
+            # Make a dict to store the pcd and its assocaited mesh
+            pcd_plane_mesh_dict = {
+                "plane_id": plane["plane_id"],
+                # open3d.geometry.PointCloud object
+                "pcd": plane["pcd"],
+                # open3d.geometry.TriangleMesh object
+                "plane_mesh": None,
+                "color": plane["color"],
+            }
             # Needs at least 3 points to create a mesh from convex hull
             if plane["num_points"] > 3:
                 # Create mesh/surface model of plane from convex hull
-                hull, _ = colored_plane.compute_convex_hull(joggle_inputs=True)
+                hull, _ = plane["pcd"].compute_convex_hull(joggle_inputs=True)
                 hull.compute_vertex_normals()
                 hull.paint_uniform_color(plane["color"])
-                plane_mesh_list.append(hull)
-        return plane_mesh_list
+                pcd_plane_mesh_dict["plane_mesh"] = hull
+            pcd_plane_mesh_list.append(pcd_plane_mesh_dict)
+        return pcd_plane_mesh_list
 
     def createSummaryPlaneDataframe(self, source_crs, scales, offsets):
         """
@@ -414,11 +417,19 @@ class PlaneSegmentation:
                             "tuple, list, or numpy.ndarray.")
         normal_x, normal_y, normal_z = plane_normal_vector
         if abs(normal_x) > 1 or abs(normal_y) > 1 or abs(normal_z) > 1:
-            print("Plane vectors are not normalized. Please normalize them.")
+            print("Plane vectors are not normalized. Normalizing them now.")
+            # Normalize the plane's vector if they are not normalized
+            magnitude = np.linalg.norm(plane_normal_vector)
+            normal_x, normal_y, normal_z = (normal_x/magnitude,
+                                            normal_y/magnitude,
+                                            normal_z/magnitude)
+        # Make sure that the vectors are in the correct orientation
+        if normal_z < 0:
+            normal_x, normal_y, normal_z = -normal_x, -normal_y, -normal_z
         # Get tilt angle from horizontal
-        tilt = np.degrees(np.arccos(abs(normal_z)))
+        tilt = np.degrees(np.arccos(normal_z))
         # Get azimuth angle in degrees
-        azimuth = np.degrees(np.arctan2(abs(normal_x), abs(normal_y)))
+        azimuth = np.degrees(np.arctan2(normal_x, normal_y))
         # Make sure azimuth is in 0-360 range
         if azimuth < 0:
             azimuth += 360
