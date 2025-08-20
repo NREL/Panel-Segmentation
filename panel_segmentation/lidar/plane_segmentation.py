@@ -197,8 +197,7 @@ class PlaneSegmentation:
 
     def visualizePlanes(self):
         """
-        Visualizes the planes on top of the point cloud data.
-        A mesh is created for each plane to create a surface model
+        Creates a mesh for each plane to create a surface model
         for visualization.
 
         Parameters:
@@ -207,30 +206,30 @@ class PlaneSegmentation:
 
         Returns:
         --------
-        plane_mesh: list
+        plane_mesh_list: list
             A list of the original, unfiltered point cloud data (pcd),
             pcd within the plane, and plane mesh generated from the plane.
             The pcd is an open3d.geometry.PointCloud object and the plane
             mesh is an open3d.geometry.TriangleMesh object.
         """
         # A list to store the all the plane mesh
-        plane_mesh = []
+        plane_mesh_list = []
         # Overlay planes on top of the point cloud data
         pcd_points = self.pcd.paint_uniform_color([0.7, 0.7, 0.7])
-        plane_mesh.append(pcd_points)
+        plane_mesh_list.append(pcd_points)
         # Create a mesh for each plane in the list
         for plane in self.plane_list:
             # Add colors to pcd
             colored_plane = plane["pcd"]
-            plane_mesh.append(colored_plane)
+            plane_mesh_list.append(colored_plane)
             # Needs at least 3 points to create a mesh from convex hull
             if plane["num_points"] > 3:
                 # Create mesh/surface model of plane from convex hull
                 hull, _ = colored_plane.compute_convex_hull(joggle_inputs=True)
                 hull.compute_vertex_normals()
                 hull.paint_uniform_color(plane["color"])
-                plane_mesh.append(hull)
-        return plane_mesh
+                plane_mesh_list.append(hull)
+        return plane_mesh_list
 
     def createSummaryPlaneDataframe(self, source_crs, scales, offsets):
         """
