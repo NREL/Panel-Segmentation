@@ -1,5 +1,4 @@
 import numpy as np
-from pyproj import Transformer
 import pandas as pd
 import pyproj
 
@@ -349,10 +348,10 @@ class PlaneSegmentation:
         if source_crs.is_compound:
             # For componded crs, get its horizontal crs component
             horizontal_crs = source_crs.sub_crs_list[0]
-            transformer = Transformer.from_crs(
+            transformer = pyproj.Transformer.from_crs(
                 horizontal_crs, "EPSG:4326",  always_xy=True)
         else:
-            transformer = Transformer.from_crs(
+            transformer = pyproj.Transformer.from_crs(
                 source_crs, "EPSG:4326",  always_xy=True)
         # Project lidar source crs onto lat, lon "EPSG:4326" crs
         center_lon, center_lat = transformer.transform(scaled_x, scaled_y)

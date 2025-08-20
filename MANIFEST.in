@@ -5,3 +5,4 @@ include panel_segmentation/models/VGG16Net_ConvTranpose_complete.h5
 include panel_segmentation/models/object_detection_model.pth
 include panel_segmentation/examples/*
 include panel_segmentation/tests/*
+include panel_segmentation/lidar/*

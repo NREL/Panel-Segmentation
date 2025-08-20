@@ -70,7 +70,7 @@ class USGSLidarAPI:
         # If metadata parquet is already saved, get its data
         if os.path.exists(metadata_file_path):
             metadata_df = pd.read_parquet(metadata_file_path)
-            print(f"{output_filename} exists." +
+            print(f"{output_filename} exists. " +
                   "Pulling metadata from parquet file.")
             return metadata_df
         # If metadata parquet is not already saved, generate one and save it
