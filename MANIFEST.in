@@ -3,5 +3,13 @@ include panel_segmentation/_version.py
 include panel_segmentation/models/VGG16_classification_model.h5
 include panel_segmentation/models/VGG16Net_ConvTranpose_complete.h5
 include panel_segmentation/models/object_detection_model.pth
+include panel_segmentation/models/hail_config.py
+include panel_segmentation/models/hail_model.pth
+include panel_segmentation/models/post_hurricane_config.py
+include panel_segmentation/models/post_hurricane_model.pth
+include panel_segmentation/models/pre_hurricane_config.py
+include panel_segmentation/models/pre_hurricane_model.pth
+include panel_segmentation/models/sol_searcher_config.py
+include panel_segmentation/models/sol_searcher_model.pth
 include panel_segmentation/examples/*
 include panel_segmentation/tests/*
