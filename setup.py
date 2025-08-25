@@ -54,7 +54,8 @@ EXTRAS_REQUIRE = {
         'sphinx_rtd_theme==0.5.2',
         'ipython'
     ],
-    'test': TESTS_REQUIRE
+    'test': TESTS_REQUIRE,
+    'optional': []
 }
 
 
