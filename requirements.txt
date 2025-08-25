@@ -1,7 +1,6 @@
 boto3==1.37.38
 cfgrib==0.9.15.0
 ConfigParser==6.0.0
-dask==2023.5.0
 detecto==1.2.2
 folium==0.18.0
 geopandas==0.12.2
