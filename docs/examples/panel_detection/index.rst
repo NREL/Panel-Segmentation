@@ -9,3 +9,4 @@ solar panels and get its metadata information from a satellite image.
 
    Panel_Detection_example.ipynb
    Sol-Searcher_example.ipynb
+   Train_Model_Example.ipynb

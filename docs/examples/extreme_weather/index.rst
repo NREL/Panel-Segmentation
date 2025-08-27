@@ -8,4 +8,3 @@ weather events like hurricanes and hail storms.
 
    Austin_hail_damage_example.ipynb
    Hurricane_damage_example.ipynb
-   Train_Model_Example.ipynb
