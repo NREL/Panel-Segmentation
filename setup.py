@@ -49,10 +49,11 @@ TESTS_REQUIRE = [
 
 EXTRAS_REQUIRE = {
     'doc': [
-        'sphinx==3.2',
+        'sphinx==5.0',
         'jinja2<3.1',
         'sphinx_rtd_theme==0.5.2',
-        'ipython'
+        'ipython',
+        'nbsphinx'
     ],
     'test': TESTS_REQUIRE,
     'optional': []

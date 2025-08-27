@@ -1,4 +1,4 @@
-# Panel Segmentation
+![Panel Segmentation Icon](asset/panel_segmentation_cropped_icon.png)
 
 This repo contains the scripts for automated metadata extraction of solar PV installations, 
 using satellite imagery coupled with computer vision techniques. In this package, the user
