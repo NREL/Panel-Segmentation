@@ -42,6 +42,11 @@ INSTALL_REQUIRES = [
     'open3d==0.18.0',
     'pyarrow==17.0.0',
     'pyproj==3.5.0'
+    'boto3>=1.37.38',
+    'cfgrib>=0.9.15.0',
+    'folium>=0.18.0',
+    'simplekml>=1.3.6',
+    'xarray>=2023.1.0',
 ]
 
 TESTS_REQUIRE = [
@@ -55,7 +60,8 @@ EXTRAS_REQUIRE = {
         'sphinx_rtd_theme==0.5.2',
         'ipython'
     ],
-    'test': TESTS_REQUIRE
+    'test': TESTS_REQUIRE,
+    'optional': []
 }
 
 
