@@ -30,7 +30,8 @@ class USGSLidarAPI:
         self.base_url = ("https://rockyweb.usgs.gov/vdelivery/Datasets/" +
                          "Staged/Elevation/LPC/Projects/")
 
-    def getAllXmlMetadata(self, dataset_name, thread_max_workers=12):
+    def getAllXmlMetadata(self, dataset_name, thread_max_workers=12,
+                          log_output=True):
         """
         Gets xml formatted LiDAR metadata for a specific dataset name from
         the USGS website's metadata folder. Saves metadata information as
@@ -43,6 +44,9 @@ class USGSLidarAPI:
         thread_max_workers: int
             Maximum number of workers thread for parallelization.
             Defaulted to 12.
+        log_output: bool
+            If true, prints the xml file name to the console, otherwise
+            does not print anything. Defaulted to True.
 
         Returns
         --------
@@ -58,6 +62,8 @@ class USGSLidarAPI:
         if not isinstance(thread_max_workers, int) or \
                 isinstance(thread_max_workers, bool):
             raise TypeError("thread_max_workers variable must be of type int.")
+        if not isinstance(log_output, bool):
+            raise TypeError("log_output variable must be of type bool.")
         # Check if metadata folder contains the metadata parquet for the
         # dataset
         metadata_folder = os.path.join(self.output_folder, "lidar_metadata")
@@ -70,13 +76,15 @@ class USGSLidarAPI:
         # If metadata parquet is already saved, get its data
         if os.path.exists(metadata_file_path):
             metadata_df = pd.read_parquet(metadata_file_path)
-            print(f"{output_filename} exists. " +
-                  "Pulling metadata from parquet file.")
+            if log_output:
+                print(f"{output_filename} exists. " +
+                      "Pulling metadata from parquet file.")
             return metadata_df
         # If metadata parquet is not already saved, generate one and save it
         else:
-            print(f"{output_filename} does not exist. " +
-                  "Pulling metadata data from parquet file.")
+            if log_output:
+                print(f"{output_filename} does not exist. " +
+                      "Pulling metadata data from parquet file.")
             # Make a master metadata list to keep track of lidar file metadata
             metadata_list = list()
             # Get lists of metadata xml files
@@ -99,7 +107,7 @@ class USGSLidarAPI:
                 # get results
                 for xml_link in full_xml_links:
                     future = executor.submit(
-                        self.getOneXmlMetadata, xml_link)
+                        self.getOneXmlMetadata, xml_link, log_output)
                     futures.append(future)
                 for future in as_completed(futures):
                     data = future.result()
@@ -113,7 +121,7 @@ class USGSLidarAPI:
             time.sleep(15)
             return metadata_df
 
-    def getOneXmlMetadata(self, full_xml_link):
+    def getOneXmlMetadata(self, full_xml_link, log_output=True):
         """
         Parses one xml file and gets the specific metadata information from
         that xml file.
@@ -122,6 +130,9 @@ class USGSLidarAPI:
         -----------
         full_xml_link: string
             Full xml url of the file for parsing.
+        log_output: bool
+            If true, prints the xml file name to the console, otherwise
+            does not print anything. Defaulted to True.
 
         Returns
         --------
@@ -134,18 +145,20 @@ class USGSLidarAPI:
         # Ensure that the inputs are of the correct type
         if not isinstance(full_xml_link, str):
             raise TypeError("full_xml_link variable must be of type string.")
+        if not isinstance(log_output, bool):
+            raise TypeError("log_output variable must be of type bool.")
         # Make persistent Retry HTTP sessions to fix connection issues
         session = requests.Session()
         retry = Retry(connect=6, backoff_factor=1)
         adapter = HTTPAdapter(max_retries=retry)
-        session.mount("http://", adapter)
         session.mount("https://", adapter)
-        # Make GET resquest to full_xml_link and get its information
+        # Make GET request to full_xml_link and get its information
         xml_response = session.get(full_xml_link)
         root = ET.fromstring(xml_response.content)
         # Get data set title name
         title_name = root.find(".//title").text
-        print(f"Extracting information from {title_name}")
+        if log_output:
+            print(f"Extracting information from {title_name}")
         # Get latitude, longitude bounding box
         west = root.find(".//westbc").text
         east = root.find(".//eastbc").text
@@ -174,11 +187,107 @@ class USGSLidarAPI:
         }
         return metadata_dict
 
+    def getOneDataset(self, current_url, current_path, log_output=True):
+        """
+        Pulls ONE LiDAR dataset name by getting the dataset folder from
+        the current url.
+
+        Parameters
+        -----------
+        current_url: string
+            Current url to scan for laz and metadata folders.
+        current_path: string
+            Current path to the dataset name. For example, if the current
+            url is "https://rockyweb.usgs.gov/vdelivery/Datasets/Staged/
+            Elevation/LPC/Projects/USGS_LPC_TX_Central_B1_2017_LAS_2019/",
+            then the current path is "USGS_LPC_TX_Central_B1_2017_LAS_2019/".
+            If a laz and metadata folder is present in the current url,
+            then the dataset name is that current path,
+            "USGS_LPC_TX_Central_B1_2017_LAS_2019/".
+        log_output: bool
+            If true, prints the dataset names to the console, otherwise
+            does not print anything. Defaulted to True.
+
+        Returns
+        --------
+        dataset_list: list of dictionaries
+            List of dictionary containing the dataset names found in USGS
+            LiDAR website and if the dataset is deprecated.
+            The dictionary contains "dataset_names" and "deprecated_scans"
+            keys.
+        subfolders: list of tuples
+            List of tuples containing the subfolders url and path to check
+            if they contain laz and metadata folders. The list of tuples
+            is in the format [(url1, path1), (url2, path2), ...].
+        """
+        # Ensure that the inputs are of the correct type
+        if not isinstance(current_url, str):
+            raise TypeError("current_url variable must be of type string.")
+        if not isinstance(current_path, str):
+            raise TypeError("current_path variable must be of type string.")
+        if not isinstance(log_output, bool):
+            raise TypeError("log_output variable must be of type bool.")
+        # Make a request to the url
+        response = requests.get(current_url)
+        # Dataset names are found in href headers with "/" at the end
+        soup = BeautifulSoup(response.content, "html.parser")
+        # Ignore certain href that are not dataset names
+        links = soup.find_all("a", href=lambda href:
+                              href and
+                              href.endswith("/") and
+                              not href.startswith("https://") and
+                              href not in ["../", "./"])
+        # Look for laz/ and metadata/ folders if it exists
+        laz_links = [
+            link for link in links if "laz/" in link["href"].lower()]
+        metadata_links = [
+            link for link in links if "metadata/" in link["href"].lower()]
+        # Keep track of subfolders to check if they contain laz and metadata
+        subfolders = []
+        # If there exists laz and metadata folder
+        # then add the dataset folder name to dataset list
+        if laz_links and metadata_links:
+            if log_output:
+                print("Dataset found: ", current_path)
+            # Keep track of deprecated scans, which may have different xml
+            # and lidar formats
+            if "legacy/" in current_path:
+                dataset_dict = {"dataset_name": current_path,
+                                "deprecated_scans": True}
+                return dataset_dict, subfolders
+            else:
+                dataset_dict = {"dataset_name": current_path,
+                                "deprecated_scans": False}
+                return dataset_dict, subfolders
+        # Keep track of deprecated scans, which may not have metadata
+        # in the metadata folders
+        elif laz_links and not metadata_links:
+            if log_output:
+                print("Dataset found: ", current_path)
+            dataset_dict = {"dataset_name": current_path,
+                            "deprecated_scans": True}
+            return dataset_dict, subfolders
+        else:
+            # If no parent dataset name is found,
+            # add subfolders url to the next iteration
+            # to check if they contain laz and metadata folders
+            dataset_dict = None
+            for link in links:
+                subfolder_name = link["href"]
+                new_url = f"{current_url}{subfolder_name}"
+                if current_path:
+                    new_path = f"{current_path}{subfolder_name}"
+                else:
+                    new_path = subfolder_name
+                subfolders.append((new_url, new_path))
+            return dataset_dict, subfolders
+
     def getAllDataset(
             self,
-            output_filename="master_usgs_lidar_dataset_names.parquet"):
+            output_filename="master_usgs_lidar_dataset_names.parquet",
+            log_output=True):
         """
-        Pulls all the LiDAR dataset names by scanning folders in USGS
+        Pulls ALL the LiDAR dataset names by scanning folders in USGS
         Projects page that contains laz and metadata subfolders.
         This only needs to run once to generate a
         master_usgs_lidar_dataset_names.parquet that will be saved in memory.
@@ -191,6 +300,10 @@ class USGSLidarAPI:
             Path and filename for the output parquet file containing all
             dataset names found in USGS LiDAR website.
             Defaulted to "master_usgs_lidar_dataset_names.parquet".
+        log_output: bool
+            If true, prints the dataset names to the console, otherwise
+            does not print anything.
+            Defaulted to True.
 
         Returns
         --------
@@ -202,6 +315,8 @@ class USGSLidarAPI:
         # Ensure that the inputs are of the correct type
         if not isinstance(output_filename, str):
             raise TypeError("output_filename variable must be of type string.")
+        if not isinstance(log_output, bool):
+            raise TypeError("log_output variable must be of type bool.")
         # Make a master list of all LiDAR USGS dataset names
         dataset_list = []
         # Keep track of which url that already ran
@@ -210,50 +325,14 @@ class USGSLidarAPI:
         # subfolders containing laz and metadata folders
         while url_list:
             current_url, current_path = url_list.pop()
-            # Make a request to the url
-            response = requests.get(current_url)
-            # Dataset names are found in href headers with "/" at the end
-            soup = BeautifulSoup(response.content, "html.parser")
-            # Ignore certain href that are not dataset names
-            links = soup.find_all("a", href=lambda href:
-                                  href and
-                                  href.endswith("/") and
-                                  not href.startswith("https://") and
-                                  href not in ["../", "./"])
-            # Look for laz/ and metadata/ folders if it exists
-            laz_links = [
-                link for link in links if "laz/" in link["href"].lower()]
-            metadata_links = [
-                link for link in links if "metadata/" in link["href"].lower()]
-            # If there exists laz and metadata folder
-            # then add the dataset folder name to dataset list
-            if laz_links and metadata_links:
-                print("Dataset found: ", current_path)
-                # Keep track of deprecated scans, which may have different xml
-                # and lidar formats
-                if "legacy/" in current_path:
-                    dataset_list.append({"dataset_name": current_path,
-                                        "deprecated_scans": True})
-                else:
-                    dataset_list.append({"dataset_name": current_path,
-                                        "deprecated_scans": False})
-            # Keep track of deprecated scans, which may not have metadata
-            # in the metadata folders
-            elif laz_links and not metadata_links:
-                print("Dataset found: ", current_path)
-                dataset_list.append({"dataset_name": current_path,
-                                    "deprecated_scans": True})
-            else:
-                # Add subfolders url to the next iteration
-                # to check if they contain laz and metadata folders
-                for link in links:
-                    subfolder_name = link["href"]
-                    new_url = f"{current_url}{subfolder_name}"
-                    if current_path:
-                        new_path = f"{current_path}{subfolder_name}"
-                    else:
-                        new_path = subfolder_name
-                    url_list.append((new_url, new_path))
+            # Process one dataset
+            dataset_dict, subfolders = self.getOneDataset(
+                current_url, current_path, log_output)
+            # If dataset is found, add it to the master list
+            if dataset_dict:
+                dataset_list.append(dataset_dict)
+            # If no dataset is found, add subfolders to the next iteration
+            url_list.extend(subfolders)
         # Save to parquet file
         dataset_df = pd.DataFrame(dataset_list)
         dataset_df.to_parquet(os.path.join(self.output_folder,
@@ -293,7 +372,9 @@ class USGSLidarAPI:
         lat_lon_df = metadata_df[((metadata_df["bbox_south"] <= latitude) &
                                   (latitude <= metadata_df["bbox_north"]) &
                                   (metadata_df["bbox_west"] <= longitude) &
-                                  (longitude <= metadata_df["bbox_east"]))]
+                                  (longitude <= metadata_df["bbox_east"]))
+                                 ].copy()
+
         # Check if LiDAR data exists
         if len(lat_lon_df) > 0:
             # If there are multiple results, get the latest lidar dataset

@@ -35,7 +35,13 @@ INSTALL_REQUIRES = [
     'kornia',
     'scipy',
     'rasterio',
-    'geopandas'
+    'geopandas',
+    'beautifulsoup4==4.12',
+    'dash==2.6.0',
+    'laspy[laszip]==2.5.4',
+    'open3d==0.18.0',
+    'pyarrow==17.0.0',
+    'pyproj==3.5.0'
 ]
 
 TESTS_REQUIRE = [

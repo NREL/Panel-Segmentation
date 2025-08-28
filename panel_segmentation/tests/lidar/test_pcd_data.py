@@ -5,8 +5,11 @@ from shapely.wkt import loads
 import laspy
 import open3d as o3d
 import numpy as np
+import pandas as pd
+from pyproj import Transformer
 
-example_path = os.path.join("panel_segmentation", "examples", "lidar_examples")
+example_path = os.path.join("panel_segmentation", "examples",
+                            "lidar_tilt_azimuth_detection_examples")
 
 
 @pytest.fixture
@@ -53,12 +56,26 @@ def pcdClassLatLon(pcdParams):
 @pytest.fixture
 def lazData(pcdParams):
     """
-    A sample laz data.
+    A sample laz data with its transformer, scales,
+    and offsets.
     """
     laz_file_path, _, _, _ = pcdParams
     # read in .laz file
     with laspy.open(laz_file_path) as laz_reader:
         laz_data = laz_reader.read()
+        # Get CRS data
+        source_crs = laz_reader.header.parse_crs()
+        # Make a transformer for the data
+        # The sample data is compounded crs
+        horizontal_crs = source_crs.sub_crs_list[0]
+        dst_crs = f"EPSG:{horizontal_crs.to_epsg()}"
+        # Make transformer from EPSG:4326 to LiDAR crs
+        transformer = Transformer.from_crs(
+            "EPSG:4326", dst_crs, always_xy=True)
+        # Get scales and offset
+        laz_data.transformer = transformer
+        laz_data.scales = laz_reader.header.scales
+        laz_data.offsets = laz_reader.header.offsets
     return laz_data
 
 
@@ -110,35 +127,102 @@ def testInitNoPolyOrLatLonValueErrors(pcdParams):
         PCD(laz_file_path)
 
 
-def testReadCropLazTypeErrors(pcdClassPolygon):
+def testReadLazTypeErrors(pcdClassPolygon):
     """
     Tests if TypeErrors are raised for incorrect variable types.
     """
-    # Test if lat_lon_bbox is correct
+    # Test if chunk_size is correct
+    with pytest.raises(TypeError,
+                       match="chunk_size variable must be of type int."):
+        pcdClassPolygon.readLaz(chunk_size=1234.5)
+
+
+def testReadLazPolygonResult(pcdClassPolygon):
+    """
+    Tests if the returned laz data is a laspy.LasData object after running
+    readLaz given a shapely polygon.
+    """
+    result = pcdClassPolygon.readLaz()
+    # Assert that the result is a laspy.LasData object
+    assert isinstance(result, laspy.LasData)
+
+
+def testReadLazLatLonResult(pcdClassLatLon):
+    """
+    Tests if the returned laz data is a laspy.LasData object after running
+    readLaz given a lat, lon coordinates.
+    """
+    result = pcdClassLatLon.readLaz()
+    # Assert that the result is a laspy.LasData object
+    assert isinstance(result, laspy.LasData)
+
+
+def testFilterLazTypeErrors(pcdClassPolygon, lazData):
+    """
+    Tests if TypeErrors are raised for incorrect variable types.
+    """
+    # Add transformer, scales and offset to class
+    pcdClassPolygon.transformer = lazData.transformer
+    pcdClassPolygon.scales = lazData.scales
+    pcdClassPolygon.offsets = lazData.offsets
+    # Test if laz_data is correct
+    with pytest.raises(
+            TypeError,
+            match="laz_data variable must be a laspy.LasData object."):
+        pcdClassPolygon.filterLaz("4234")
+    # Test if classification_list is correct
+    with pytest.raises(
+            TypeError,
+            match="classification_list variable must be of type list."):
+        pcdClassPolygon.filterLaz(lazData, classification_list="4234")
+    # Test if lat_lon_bbox_size is correct
     with pytest.raises(
             TypeError,
             match="lat_lon_bbox_size variable must be of type int."):
-        pcdClassPolygon.readCropLaz(lat_lon_bbox_size=1224.3)
+        pcdClassPolygon.filterLaz(lazData, lat_lon_bbox_size=1234.5)
 
 
-def testReadCropLazPolygon(pcdClassPolygon):
+def testFilterLazPolygonResult(pcdClassPolygon, lazData):
     """
     Tests if the returned laz data is a laspy.LasData object after running
-    readCropLaz for a shapely polygon.
+    filterLaz given a shapely polygon.
     """
-    result = pcdClassPolygon.readCropLaz()
+    # Add transformer, scales and offset to class
+    pcdClassPolygon.transformer = lazData.transformer
+    pcdClassPolygon.scales = lazData.scales
+    pcdClassPolygon.offsets = lazData.offsets
+    result = pcdClassPolygon.filterLaz(lazData)
     # Assert that the result is a laspy.LasData object
     assert isinstance(result, laspy.LasData)
 
 
-def testReadCropLazLatLon(pcdClassLatLon):
+def testFilterLazLatLonResult(pcdClassLatLon, lazData):
     """
     Tests if the returned laz data is a laspy.LasData object after running
-    readCropLaz for a lat, lon center point.
+    filterLaz given a lat, lon coordinates.
     """
-    result = pcdClassLatLon.readCropLaz()
+    # Add transformer, scales and offset to class
+    pcdClassLatLon.transformer = lazData.transformer
+    pcdClassLatLon.scales = lazData.scales
+    pcdClassLatLon.offsets = lazData.offsets
+    result = pcdClassLatLon.filterLaz(lazData)
     # Assert that the result is a laspy.LasData object
     assert isinstance(result, laspy.LasData)
+
+
+def testFilterLazNoneResult(pcdClassPolygon, lazData):
+    """
+    Tests if the returned laz data is None after running filterLaz.
+    """
+    # Add transformer, scales and offset to class
+    pcdClassPolygon.transformer = lazData.transformer
+    pcdClassPolygon.scales = lazData.scales
+    pcdClassPolygon.offsets = lazData.offsets
+    # Make an empty laspy.LasData object pcd
+    empty_las = laspy.create()
+    result = pcdClassPolygon.filterLaz(empty_las)
+    # Assert that the result is None
+    assert result is None
 
 
 def testPreprocessPcdTypeErrors(pcdClassPolygon, lazData):
@@ -238,3 +322,24 @@ def testVisualizePolygonOnLidarResult(pcdClassPolygon, op3dData, mocker):
     result = pcdClassPolygon.visualizePolygonOnLidar(op3dData, op3dData)
     # Assert that the result is None
     assert result is None
+
+
+def testGetLidarClassificationTypeErrors(pcdClassPolygon):
+    """
+    Tests if TypeErrors are raised for incorrect variable types.
+    """
+    # Test if laz_data is correct
+    with pytest.raises(
+            TypeError,
+            match="laz_data variable must be a laspy.LasData object."):
+        pcdClassPolygon.getLidarClassification([133, 121])
+
+
+def testGetLidarClassificationResult(pcdClassPolygon, lazData):
+    """
+    Tests if the returned classification_df is a pandas.DataFrame object after
+    running getLidarClassification.
+    """
+    result = pcdClassPolygon.getLidarClassification(lazData)
+    # Assert that the result is a pandas.DataFrame object
+    assert isinstance(result, pd.DataFrame)

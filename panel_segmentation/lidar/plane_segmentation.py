@@ -13,7 +13,8 @@ class PlaneSegmentation:
         self.pcd = pcd
 
     def segmentPlanes(self, distance_threshold=1.0, ransac_n=3,
-                      num_ransac_iterations=5000, min_plane_points=3):
+                      num_ransac_iterations=5000, min_plane_points=3,
+                      max_num_planes=10):
         """
         Segment planes from point cloud data using RANSAC algorithm.
 
@@ -32,6 +33,13 @@ class PlaneSegmentation:
         min_plane_points: int
             The minimum number of points to form a plane.
             Defaulted to 3.
+        max_num_planes: int
+            The maximum number of planes to created from the point cloud
+            data using the RANSAC algorithm. Lesser number of planes can
+            be created if the RANSAC algorithm used up all the points
+            to create a plane or if it cannot find a plane with
+            the requested minimum number of points.
+            Defaulted to 10.
 
         Returns:
         --------
@@ -51,13 +59,16 @@ class PlaneSegmentation:
         if not isinstance(min_plane_points, int) or \
                 isinstance(min_plane_points, bool):
             raise TypeError("min_plane_points variable must be of type int.")
+        if not isinstance(max_num_planes, int) or \
+                isinstance(max_num_planes, bool):
+            raise TypeError("max_num_planes variable must be of type int.")
         # A master list of dictionaries with info from all generated planes
         self.plane_list = []
         # Initialize while loop
         current_pcd = self.pcd
         plane_count = 0
-        # Create 10 planes max
-        while plane_count <= 10:
+        # Create planes up to max number of planes
+        while plane_count <= max_num_planes:
             # Stop loop if there's not enough points to create a plane with
             # the requested minimum points
             if len(current_pcd.points) < min_plane_points:
@@ -276,7 +287,7 @@ class PlaneSegmentation:
         plane_metadata_list = []
         # Iterate through each plane in the list
         for plane in self.plane_list:
-            # Get x, y center oordinates from plane and convert those into
+            # Get x, y center coordinates from plane and convert those into
             # EPSG:4326 lat, lon center coordinates
             points = np.asarray(plane["pcd"].points)
             center_points = np.mean(points, axis=0)

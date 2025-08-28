@@ -77,6 +77,10 @@ def testSegmentPlanesTypeErrors(planeSegmentationClass):
     with pytest.raises(TypeError,
                        match="min_plane_points variable must be of type int."):
         planeSegmentationClass.segmentPlanes(min_plane_points=9.0)
+    # Test if max_num_planes is correct
+    with pytest.raises(TypeError,
+                       match="max_num_planes variable must be of type int."):
+        planeSegmentationClass.segmentPlanes(max_num_planes="10")
 
 
 def testSegmentPlanesResult(planeSegmentationClass):

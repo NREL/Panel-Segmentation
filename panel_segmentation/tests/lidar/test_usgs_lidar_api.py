@@ -137,6 +137,10 @@ def testAllXmlMetadataTypeErrors(usgsLidarApiClass):
             TypeError,
             match="thread_max_workers variable must be of type int."):
         usgsLidarApiClass.getAllXmlMetadata("dataset_name", "12")
+    with pytest.raises(
+            TypeError,
+            match="log_output variable must be of type bool."):
+        usgsLidarApiClass.getAllXmlMetadata("dataset_name", 12, "False")
     # Clean up output folder
     shutil.rmtree(usgsLidarApiClass.output_folder)
 
@@ -150,7 +154,7 @@ def testAllXmlMetadataFileExists(usgsLidarApiClass, capsys):
     # Create a test output folder and parquet file
     lidar_metadata_folder = os.path.join(
         usgsLidarApiClass.output_folder, "lidar_metadata")
-    os.makedirs(lidar_metadata_folder)
+    os.makedirs(lidar_metadata_folder, exist_ok=True)
     metadata_df = pd.DataFrame({"dataset_name": ["dataset_name"]})
     metadata_df.to_parquet(os.path.join(lidar_metadata_folder,
                                         "dataset_name.parquet"), index=False)
@@ -222,14 +226,18 @@ def testAllXmlMetadataFileDoesNotExist(usgsLidarApiClass, sampleDatasetHtml,
     shutil.rmtree(usgsLidarApiClass.output_folder)
 
 
-def testGetOneXmlMetadataTypeErrors(usgsLidarApiClass):
+def testGetOneXmlMetadataTypeErrors(usgsLidarApiClass, sampleXmlMetadata):
     """
     Tests if TypeErrors are raised for incorrect variable types.
     """
+    full_xml_link = sampleXmlMetadata["xml_link"]
     # Test for full_xml_link type
     with pytest.raises(TypeError,
                        match="full_xml_link variable must be of type string."):
-        usgsLidarApiClass.getOneXmlMetadata(816)
+        usgsLidarApiClass.getOneXmlMetadata(816, True)
+    with pytest.raises(TypeError,
+                       match="log_output variable must be of type bool."):
+        usgsLidarApiClass.getOneXmlMetadata(full_xml_link, "True")
     # Clean up output folder
     shutil.rmtree(usgsLidarApiClass.output_folder)
 
@@ -261,6 +269,24 @@ def testGetOneXmlMetadataResults(usgsLidarApiClass, sampleXmlMetadata, capsys):
     shutil.rmtree(usgsLidarApiClass.output_folder)
 
 
+def testOneDatasetTypeErrors(usgsLidarApiClass):
+    """
+    Tests if TypeErrors are raised for incorrect variable types.
+    """
+    # Test for output_filename type
+    with pytest.raises(TypeError,
+                       match="current_url variable must be of type string."):
+        usgsLidarApiClass.getOneDataset(4612, "a_path")
+    with pytest.raises(TypeError,
+                       match="current_path variable must be of type string."):
+        usgsLidarApiClass.getOneDataset("a_url", 4612)
+    with pytest.raises(TypeError,
+                       match="log_output variable must be of type bool."):
+        usgsLidarApiClass.getOneDataset("a_url", "a_path", "True")
+    # Clean up output folder
+    shutil.rmtree(usgsLidarApiClass.output_folder)
+
+
 def testAllDatasetTypeErrors(usgsLidarApiClass):
     """
     Tests if TypeErrors are raised for incorrect variable types.
@@ -270,6 +296,31 @@ def testAllDatasetTypeErrors(usgsLidarApiClass):
             TypeError,
             match="output_filename variable must be of type string."):
         usgsLidarApiClass.getAllDataset(4612)
+    with pytest.raises(
+            TypeError,
+            match="log_output variable must be of type bool."):
+        usgsLidarApiClass.getAllDataset("output_file.parquet", "True")
+    # Clean up output folder
+    shutil.rmtree(usgsLidarApiClass.output_folder)
+
+
+def testOneDatasetResults(usgsLidarApiClass, sampleDatasetHtml, mocker):
+    """
+    Tests if a dictionary and list of tuples are returned when running
+    getOneDataset.
+    """
+    # Mock requests and get a response of sampleDatasetHtml
+    _, dataset_html, _ = sampleDatasetHtml
+    mock_response = mocker.Mock()
+    mock_response.content = dataset_html.encode()
+    mocker.patch("requests.get", return_value=mock_response)
+    # Test getOneDataset is a dictionary
+    result_dict, subfolders = usgsLidarApiClass.getOneDataset(
+        "current_url", "current_path")
+    # Test if the result is a dictionary
+    assert isinstance(result_dict, dict)
+    # Test if the result is a list
+    assert isinstance(subfolders, list)
     # Clean up output folder
     shutil.rmtree(usgsLidarApiClass.output_folder)
 
@@ -278,11 +329,11 @@ def testAllDatasetResults(usgsLidarApiClass, sampleDatasetHtml, mocker):
     """
     Tests if a dataframe is returned when running getAllDataset.
     """
-    # Mock requests and get a response of sampleDatasetHtml
-    _, dataset_html, _ = sampleDatasetHtml
-    mock_response = mocker.Mock()
-    mock_response.content = dataset_html.encode()
-    mocker.patch("requests.get", return_value=mock_response)
+    # Mock getOneDataset function to return an example data
+    mock_dataset_dict = {"dataset_name": "test_dataset",
+                         "deprecated_scans": False}
+    mocker.patch.object(usgsLidarApiClass, "getOneDataset",
+                        return_value=(mock_dataset_dict, []))
     # Test getAllDataset is a dataframe
     result_df = usgsLidarApiClass.getAllDataset()
     assert isinstance(result_df, pd.DataFrame)
