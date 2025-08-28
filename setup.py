@@ -41,7 +41,7 @@ INSTALL_REQUIRES = [
     'laspy[laszip]==2.5.4',
     'open3d==0.18.0',
     'pyarrow==17.0.0',
-    'pyproj==3.5.0'
+    'pyproj==3.5.0',
     'boto3>=1.37.38',
     'cfgrib>=0.9.15.0',
     'folium>=0.18.0',
