@@ -7,7 +7,8 @@ import open3d as o3d
 import pandas as pd
 import pyproj
 
-example_path = os.path.join("panel_segmentation", "examples", "lidar_examples")
+example_path = os.path.join("panel_segmentation", "examples",
+                            "lidar_tilt_azimuth_detection_examples")
 
 
 @pytest.fixture
