@@ -1,0 +1,4 @@
+/* Fixes light scrollbar color during dark theme */
+html[data-theme="dark"] {
+    scrollbar-color: #555 #2b2b2b;
+}
