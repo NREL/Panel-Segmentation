@@ -13,3 +13,4 @@ include panel_segmentation/models/sol_searcher_config.py
 include panel_segmentation/models/sol_searcher_model.pth
 include panel_segmentation/examples/*
 include panel_segmentation/tests/*
+include panel_segmentation/lidar/*
