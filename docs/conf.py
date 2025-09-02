@@ -1,4 +1,4 @@
-import sphinx_rtd_theme
+import pydata_sphinx_theme
 import panel_segmentation
 
 # -*- coding: utf-8 -*-
@@ -17,12 +17,12 @@ import panel_segmentation
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../'))
+sys.path.insert(0, os.path.abspath('..'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'panel-segmentation'
+project = 'Panel Segmentation'
 copyright = ''
 author = 'NREL PVP&R Team'
 
@@ -54,7 +54,7 @@ autosummary_generate = True
 napoleon_use_param = False
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = []
+templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -90,16 +90,45 @@ extlinks = {
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-
+html_title = 'Panel Segmentation'
+html_theme = 'pydata_sphinx_theme'
+html_logo = '_static/panel_segmentation_long_icon.png'
+html_favicon = '_static/panel_segmentation_icon.png'
 html_show_copyright = False
-
+html_show_sourcelink = False
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    # top navigation bar settings
+    "navbar_align": "content",
+    'navbar_end': ['navbar-icon-links', 'theme-switcher'],
+    # sidebar settings
+    'show_nav_level': 2,
+    'navigation_depth': 4,
+    'show_toc_level': 2,
+    # Remove right side bar and put everything on the left side bar
+    'secondary_sidebar_items': [],
+    # external links 
+    'github_url': "https://github.com/NREL/Panel-Segmentation",
+    # Footer settings
+    'footer_start': ['copyright'],
+    'footer_end': ['sphinx-version'],
+}
+
+# Combine the left and right sidebars and put everything on the left side
+html_sidebars = {
+    "**": ["page-toc", "sidebar-nav-bs"]  
+}
+
+html_context = {
+    'github_user': 'NREL',
+    'github_repo': 'Panel-Segmentation',
+    'github_version': 'master', 
+    'default_mode': 'light',
+    'version': panel_segmentation.__version__,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -122,6 +151,7 @@ html_static_path = ['_static']
 def setup(app):
     # A workaround for the responsive tables always having annoying scrollbars.
     app.add_css_file("no_scrollbars.css")
+    app.add_css_file("table_styles.css")
 
 
 # -- Options for HTMLHelp output ---------------------------------------------

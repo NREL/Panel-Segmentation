@@ -51,7 +51,7 @@ EXTRAS_REQUIRE = {
     'doc': [
         'sphinx==5.0',
         'jinja2<3.1',
-        'sphinx_rtd_theme==0.5.2',
+        'pydata-sphinx-theme==0.14.0',
         'ipython',
         'nbsphinx'
     ],

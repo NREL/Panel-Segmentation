@@ -1,4 +1,4 @@
-![Panel Segmentation Icon](asset/panel_segmentation_cropped_icon.png)
+![Panel Segmentation Icon](docs/_static/panel_segmentation_cropped_icon.png)
 
 This repo contains the scripts for automated metadata extraction of solar PV installations, 
 using satellite imagery coupled with computer vision techniques. In this package, the user
@@ -16,6 +16,11 @@ image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_Con
 and classify mounting type and configuration of solar installations in satellite imagery. This includes
 classification of fixed tilt and single-axis trackers, as well as the rooftop, 
 ground, and carport mounting configurations.
+- Detect solar panels and get its latitude, longitude, and address within a geographic bounding box through the SOL-Searcher Pipeline.
+- Detect and calculate hurricane damage on solar installations given pre-hurricane and post-hurricane satellite imagery through the Hurricane Detection Pipeline.
+- Detect and calculate hail damage on solar installations given satellite imagery through the Hail Detection pipeline.
+- Convert NOAA MESH (Maximum Estimated Size of Hail) grib2 files into kml or geojson files.
+- Estimate tilt and azimuth of a solar array by processing USGS LiDAR data for the array's location.
 
 To install Panel-Segmentation, perform the following steps:
 

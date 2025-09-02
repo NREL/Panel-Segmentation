@@ -1,0 +1,7 @@
+/* Makes pandas tabels spaced out and not have text ontop of each other*/
+table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 1em;
+}

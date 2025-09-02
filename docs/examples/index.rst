@@ -1,7 +1,7 @@
-Examples Gallery
-================
+Examples
+========
 
-This gallery contains examples showcasing the functionalities of the panel-segmentation package.
+This example gallery contains examples showcasing the functionalities of the panel-segmentation package.
 
 .. toctree::
    :maxdepth: 2
