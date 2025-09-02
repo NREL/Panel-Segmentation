@@ -31,7 +31,7 @@ Documentation Contents
 .. include a toctree entry here so that the index page appears in the top navigation bar
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
 
    self
    getting_started
