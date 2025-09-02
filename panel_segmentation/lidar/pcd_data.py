@@ -122,7 +122,7 @@ class PCD:
         Filters LiDAR data from a .laz file based on a shapely polygon
         or latitude, longitude coordinate bounding box. The LiDAR data
         can be further filtered to only include certain classification
-        types. Futher information about common classification can be found
+        types. Further information about common classification can be found
         on Table 17 (page 30) of the LAS 1.4 standard specification:
         https://www.asprs.org/wp-content/uploads/2019/03/LAS_1_4_r14.pdf
         Classification types:

@@ -78,36 +78,36 @@ class PlaneSegmentation:
                 distance_threshold=distance_threshold,
                 ransac_n=ransac_n,
                 num_iterations=num_ransac_iterations)
-            # Get pcd that generates a plane
-            plane_pcd = current_pcd.select_by_index(inliers)
-            # Get plane's x, y, z normal vectors
-            plane_normal_vectors = np.array(plane_model[:3])
-            # Calculate tilt and azimuth
-            tilt, az = self.calculatePlaneTiltAzimuth(plane_normal_vectors)
-            # Filter for logical rooftop tilt values(any tilt greater
-            # than 85 can be assumed to be walls/ non roof structures)
-            if tilt > 85:
-                # Remove the current pcd from the remaining pcd for the
-                # next plane segmentation
-                current_pcd = current_pcd.select_by_index(inliers, invert=True)
-            else:
-                # Generate a random plane color for visualization later
-                color = np.random.rand(3)
-                # Store plane information
-                plane_info_dict = {
-                    "plane_id": plane_count,
-                    "normal_plane_vectors": plane_normal_vectors,
-                    "tilt": tilt,
-                    "azimuth": az,
-                    "num_points": len(inliers),
-                    "pcd": plane_pcd,
-                    "color": color
-                }
-                self.plane_list.append(plane_info_dict)
-                # Remove the current pcd from the remaining pcd for the
-                # next plane segmentation
-                current_pcd = current_pcd.select_by_index(inliers, invert=True)
-                plane_count += 1
+            # # Get pcd that generates a plane
+            # plane_pcd = current_pcd.select_by_index(inliers)
+            # # Get plane's x, y, z normal vectors
+            # plane_normal_vectors = np.array(plane_model[:3])
+            # # Calculate tilt and azimuth
+            # tilt, az = self.calculatePlaneTiltAzimuth(plane_normal_vectors)
+            # # Filter for logical rooftop tilt values(any tilt greater
+            # # than 85 can be assumed to be walls/ non roof structures)
+            # if tilt > 85:
+            #     # Remove the current pcd from the remaining pcd for the
+            #     # next plane segmentation
+            #     current_pcd = current_pcd.select_by_index(inliers, invert=True)
+            # else:
+            #     # Generate a random plane color for visualization later
+            #     color = np.random.rand(3)
+            #     # Store plane information
+            #     plane_info_dict = {
+            #         "plane_id": plane_count,
+            #         "normal_plane_vectors": plane_normal_vectors,
+            #         "tilt": tilt,
+            #         "azimuth": az,
+            #         "num_points": len(inliers),
+            #         "pcd": plane_pcd,
+            #         "color": color
+            #     }
+            #     self.plane_list.append(plane_info_dict)
+            #     # Remove the current pcd from the remaining pcd for the
+            #     # next plane segmentation
+            #     current_pcd = current_pcd.select_by_index(inliers, invert=True)
+            #     plane_count += 1
 
     def mergeSimilarPlanes(self, tilt_diff_threshold=5.0,
                            azimuth_diff_threshold=10.0):
