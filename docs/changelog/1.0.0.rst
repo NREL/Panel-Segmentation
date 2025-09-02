@@ -1,0 +1,30 @@
+
+.. py:currentmodule:: panel_segmentation
+
+Version 1.0.0 (September 2, 2025)
+---------------------------------
+
+Documentation
+~~~~~~~~~~~~~
+- Updated Sphinx Documentation to account for new functions, features, installations, and other documentation updates. (:pull:`48`)
+- Added example gallery for the Mesh Scan, LiDAR, SOL-Searcher, Hail, and Hurricane Detection pipelines. (:pull:`48`)
+- Added Juypter Notebook tutorial to download and process MESH scans. (:pull:`44`)
+
+Scripts
+~~~~~~~
+- Added the scripts for LiDAR pipeline in the lidar folder :py:mod:`panel_segmentation.lidar`. (:pull:`45`)
+- Added unit testing for all functions in the lidar folder. (:pull:`45`)
+
+Bug Fixes
+~~~~~~~~~
+- Fixed incorrect pixel to meter conversion in the :py:func:`panel_segmentation.utils.translateLatLongCoordinates` function and
+  :py:func:`panel_segmentation.utils.getInferenceBoxLatLonCoordinates` function. (:pull:`43`)
+
+Other Changes
+~~~~~~~~~~~~~
+- Updated setup.py and requirements.txt to include the new dependencies for Mesh Scan and LiDAR pipeline.
+
+Contributors
+~~~~~~~~~~~~
+- Quyen Nguyen (:ghuser:`qnguyen345`)
+- Kirsten Perry (:ghuser:`kperrynrel`)

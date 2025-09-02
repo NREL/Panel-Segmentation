@@ -1,0 +1,9 @@
+/* genindex table styling to display 1 column instead of 2 */
+.indextable.genindextable td {
+    width: 100% !important;
+    display: block !important;
+}
+
+.indextable.genindextable tr {
+    display: block !important;
+}

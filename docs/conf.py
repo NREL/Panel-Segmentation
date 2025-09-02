@@ -82,8 +82,9 @@ exclude_patterns =  ['_build','**.ipynb_checkpoints']
 pygments_style = None
 
 extlinks = {
-    'issue': ('https://github.com/NREL/Panel-Segmentation/issues/%s', 'GH'),
-    'pull': ('https://github.com/NREL/Panel-Segmentation/pull/%s', 'GH'),
+    'issue': ('https://github.com/NREL/Panel-Segmentation/issues/%s', 'GitHub Issue #'),
+    'pull': ('https://github.com/NREL/Panel-Segmentation/pull/%s', 'GitHub PR #'),
+    'ghuser': ('https://github.com/%s', 'GitHub User: '),
 }
 
 # -- Options for HTML output -------------------------------------------------
@@ -156,6 +157,8 @@ def setup(app):
     app.add_css_file("table_styles.css")
     # A workaround for the scrollbar to be dark mode in dark mode
     app.add_css_file("scrollbar_dark_color.css")
+    # A workaround for the genindex table to display 1 column instead of 2
+    app.add_css_file("genindex.css")
 
 
 # -- Options for HTMLHelp output ---------------------------------------------

@@ -3,7 +3,8 @@
    sphinx-quickstart on Mon Nov 2 00:00:00 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
-
+.. currentmodule:: panel_segmentation
+   
 .. image:: _static/panel_segmentation_cropped_icon.png
    :alt: Panel Segmentation Icon
    :align: center
@@ -34,14 +35,13 @@ Documentation Contents
    :maxdepth: 2
 
    self
-   getting_started
-   api
-   examples/index
-   changelog
+   index_getting_started
+   index_api
+   examples/index_examples
+   changelog/index_changelog
    
 
 Navigation
 ==========
 * :ref:`genindex` - Function index
-* :ref:`modindex` - Module index
 * :ref:`search` - Search the documentation
