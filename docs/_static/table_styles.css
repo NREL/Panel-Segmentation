@@ -1,5 +1,5 @@
-/* Makes pandas tabels spaced out and not have text ontop of each other*/
-table {
+/* Makes pandas df tables spaced out and not have text ontop of each other*/
+.dataframe {
     display: block;
     overflow-x: auto;
     white-space: nowrap;

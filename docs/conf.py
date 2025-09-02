@@ -45,7 +45,8 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.githubpages',
     'sphinx.ext.extlinks',
-    "nbsphinx",
+    "nbsphinx", # To display juypter notebooks
+    "sphinx_copybutton", # To add copy button to code blocks (for usability)
 ]
 
 autosummary_generate = True
@@ -151,7 +152,10 @@ html_static_path = ['_static']
 def setup(app):
     # A workaround for the responsive tables always having annoying scrollbars.
     app.add_css_file("no_scrollbars.css")
+    # A workaround for the text overlaying each other on tables
     app.add_css_file("table_styles.css")
+    # A workaround for the scrollbar to be dark mode in dark mode
+    app.add_css_file("scrollbar_dark_color.css")
 
 
 # -- Options for HTMLHelp output ---------------------------------------------

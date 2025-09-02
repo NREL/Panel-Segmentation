@@ -53,7 +53,8 @@ EXTRAS_REQUIRE = {
         'jinja2<3.1',
         'pydata-sphinx-theme==0.14.0',
         'ipython',
-        'nbsphinx'
+        'nbsphinx',
+        "sphinx_copybutton"
     ],
     'test': TESTS_REQUIRE,
     'optional': []
