@@ -16,6 +16,8 @@ image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_Con
 and classify mounting type and configuration of solar installations in satellite imagery. This includes
 classification of fixed tilt and single-axis trackers, as well as the rooftop, 
 ground, and carport mounting configurations.
+- Automatically estimate the solar array's tilt and azimuth by pulling and processing USGS LiDAR data
+within a shapely polygon outlining the solar array.
 
 To install Panel-Segmentation, perform the following steps:
 
