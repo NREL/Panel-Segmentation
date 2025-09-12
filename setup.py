@@ -55,10 +55,12 @@ TESTS_REQUIRE = [
 
 EXTRAS_REQUIRE = {
     'doc': [
-        'sphinx==3.2',
+        'sphinx==5.0',
         'jinja2<3.1',
-        'sphinx_rtd_theme==0.5.2',
-        'ipython'
+        'pydata-sphinx-theme==0.14.0',
+        'ipython',
+        'nbsphinx',
+        "sphinx_copybutton"
     ],
     'test': TESTS_REQUIRE,
     'optional': []
@@ -76,7 +78,7 @@ setup(
     url='https://github.com/NREL/Panel-Segmentation',
     keywords=KEYWORDS,
     author='Kirsten Perry, Quyen Nguyen, Kevin Anderson, Christopher Campos, Ayobami Edun',
-    author_email='kirsten.perry@nrel.gov; quyen.nguyen@nrel.gov'
+    author_email='kirsten.perry@nrel.gov; nguyquye@oregonstate.edu'
                 'kevin.anderson@nrel.gov; chris.acampos@yahoo.com; aedun@ufl.edu',
     package_data={
         'panel_segmentation': [

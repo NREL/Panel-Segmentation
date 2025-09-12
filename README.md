@@ -1,11 +1,11 @@
-# Panel Segmentation
+![Panel Segmentation Icon](docs/_static/panel_segmentation_cropped_icon.png)
 
 This repo contains the scripts for automated metadata extraction of solar PV installations, 
 using satellite imagery coupled with computer vision techniques. In this package, the user
 can perform the following actions:
 - Automatically generate a satellite image using a set of lat-long coordinates, and a Google 
 Maps API key. To get a Google Maps API key, go to the following site and set up an account:
-https://developers.google.com/maps/documentation/javascript/get-api-key?utm_source=google&utm_medium=cpc&utm_campaign=FY20-Q3-global-demandgen-displayonnetworkhouseads-cs-GMP_maps_contactsal_saf_v2&utm_content=text-ad-none-none-DEV_c-CRE_460848633529-ADGP_Hybrid%20%7C%20AW%20SEM%20%7C%20BKWS%20~%20Google%20Maps%20API%20Key-KWID_43700035216023629-kwd-298247230705-userloc_1014524&utm_term=KW_google%20maps%20api%20key-ST_google%20maps%20api%20key&gclid=Cj0KCQjwit_8BRCoARIsAIx3Rj7XZb01kt1iLH3zzxGODvmM62g0K4ujEMpla5pL1p057tQXmp6MXpsaAscrEALw_wcB
+https://developers.google.com/maps/documentation/maps-static/get-api-key
 - Determine the presence of a solar array in the satellite image (boolean True/False), using a 
 classification model (VGG16_classification_model.h5).
 - Perform image segmentation on the satellite image, to locate the solar array(s) in the 
@@ -16,6 +16,11 @@ image on a pixel-by-pixel basis, using an image segmentation model (VGG16Net_Con
 and classify mounting type and configuration of solar installations in satellite imagery. This includes
 classification of fixed tilt and single-axis trackers, as well as the rooftop, 
 ground, and carport mounting configurations.
+- Detect solar panels and get its latitude, longitude, and address within a geographic bounding box through the SOL-Searcher Pipeline.
+- Detect and calculate hurricane damage on solar installations given pre-hurricane and post-hurricane satellite imagery through the Hurricane Detection Pipeline.
+- Detect and calculate hail damage on solar installations given satellite imagery through the Hail Detection pipeline.
+- Convert NOAA MESH (Maximum Estimated Size of Hail) grib2 files into kml or geojson files.
+- Estimate tilt and azimuth of a solar array by processing USGS LiDAR data for the array's location.
 - Automatically estimate the solar array's tilt and azimuth by pulling and processing USGS LiDAR data
 within a shapely polygon outlining the solar array.
 
