@@ -21,6 +21,8 @@ ground, and carport mounting configurations.
 - Detect and calculate hail damage on solar installations given satellite imagery through the Hail Detection pipeline.
 - Convert NOAA MESH (Maximum Estimated Size of Hail) grib2 files into kml or geojson files.
 - Estimate tilt and azimuth of a solar array by processing USGS LiDAR data for the array's location.
+- Automatically estimate the solar array's tilt and azimuth by pulling and processing USGS LiDAR data
+within a shapely polygon outlining the solar array.
 
 To install Panel-Segmentation, perform the following steps:
 
