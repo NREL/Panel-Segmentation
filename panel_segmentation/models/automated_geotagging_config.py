@@ -633,7 +633,7 @@ visualizer = dict(
     vis_backends=[
         dict(
             save_dir=
-            '/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs/automated_geotagging/15_09_2025_14_13_11',
+            '/cv-dl-framework/runs/automated_geotagging/15_09_2025_14_13_11',
             type='LocalVisBackend'),
     ])
-work_dir = '/kfs2/projects/pvfleets24/repos/cv-dl-framework/runs/automated_geotagging/15_09_2025_14_13_11'
+work_dir = '/cv-dl-framework/runs/automated_geotagging/15_09_2025_14_13_11'
